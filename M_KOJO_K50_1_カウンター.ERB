@@ -1,0 +1,674 @@
+﻿;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;"COUNTER"계 구상
+;※※※※※※※※※※※※※※※※※※※※※※※※※※
+;-------------------------------------------------
+;커뮤니케이션
+;-------------------------------------------------
+;==================================================
+;거리가 가깝다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_1
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_1_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_1_1
+IF TALENT:연모
+	PRINTFORML 「가까이 붙어있다니, 그렇지 않은 걸」
+	IF TALENT:연인
+		PRINTFORML 「앞으로 함께 있어 주는 거지? 그러니 이 정도 쯤이야~」
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;슬쩍 봄
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_2
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_2_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_2_1
+IF TALENT:연인
+	PRINTFORML 「뭘 하고있든 자꾸만 %CALLNAME:MASTER%한테 눈이 가」
+	PRINTFORML 「……좋아한다는 기분을 억누르지 못 하는 거려나」
+ELSEIF TALENT:연모
+	PRINTFORML 「왜 눈앞에 아른거려 보이지? 아무리 생각해도 모르겠어」
+ENDIF
+RETURN 1
+
+;==================================================
+;이야기
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_3
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_3_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_3_1
+IF TALENT:연인
+	PRINTFORML 「%CALLNAME:MASTER%에 대해서 좀 더 알고싶으니」
+	PRINTFORML 「이야기 또 들려주지 않을래?」
+ELSEIF TALENT:연모
+	PRINTFORML 「난 평소엔 계속 지하에만 있으니까」
+	PRINTFORML 「%CALLNAME:MASTER%의 이야기를 듣고싶어」
+ENDIF
+RETURN 1
+
+;==================================================
+;좋은 냄새
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_4
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_4_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_4_1
+IF TALENT:연인
+	PRINTFORML 「%조사처리(CALLNAME:MASTER, "는")% 내 냄새가 좋다곤 하지만」
+	PRINTFORML 「항상 같은 냄새인 건 아니니까, 오늘도 %CALLNAME:MASTER%가 좋아하는 냄새일지 또 어떨지 모르는데…」
+	PRINTFORML 「그러니, 한번 맡아봐. %조사처리(CALLNAME:MASTER, "가")% 좋아하는 향이 맞는지 확인해주는 거야?」
+ELSEIF TALENT:연모
+	PRINTFORML 「%조사처리(CALLNAME:MASTER, "는")% 어떤 향수가 좋아?」
+	PRINTFORML 「ㄴ, 내 냄새가 좋다고?」
+	PRINTFORML 「뭔가…되게 쑥스럽네」
+ENDIF
+RETURN 1
+
+;-------------------------------------------------
+;베리소프트
+;-------------------------------------------------
+;==================================================
+;접근해 온다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_11
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_11_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_11_1
+IF TALENT:연인
+	PRINTFORML 「연인이니까, %CALLNAME:MASTER% 옆엔 내가 있어야겠지?」
+	PRINTFORML 아무래도 다른 누군가가 있었다면 분신을 써서라도 양옆을 차지했을게 분명하다……
+ELSEIF TALENT:연모
+	PRINTFORML 「%CALLNAME:MASTER%옆에 있어도, 되는 거지?」
+ENDIF
+RETURN 1
+
+;==================================================
+;웃는 얼굴을 띠운다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_12
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_12_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_12_1
+IF TALENT:연모
+	PRINTFORML 무슨 일이 있길래 그리 기분 좋은지, 당신을 보며 웃고 있는 플랑에게 물어본다.
+	PRINTFORML 「당신이 옆에 있는게 좋아서……라던가 좀 부끄럽네」
+	IF TALENT:연인
+		PRINTFORML 「나 스스로도, 입꼬리가 올라가버리는 건 알아」
+	ELSE
+		PRINTFORML 「나 왜 이럴까, %CALLNAME:MASTER%?」
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;관계를 원한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_13
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_13_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_13_1
+IF TALENT:연인
+	PRINTFORML 플랑에게 옷자락을 잡아당겨졌다.
+	PRINTFORML 「%CALLNAME:MASTER%의 연인은 나, 플랑드르 스칼렛, 맞지?」
+	PRINTFORML 「나를 잔뜩 사랑해줘... 연인이니까 %CALLNAME:MASTER%에게 이쁨받아도 되는 거지?
+ELSEIF TALENT:연모
+	PRINTFORML 플랑이 %CALLNAME:MASTER%의 옷자락에 손을 뻗어 늘어뜨리곤, 곧 바로 멈췄다.
+	PRINTFORML 이렇게까지 어리광피워도 되는 걸까 고민하는 듯 하다.
+ENDIF
+RETURN 1
+
+;==================================================
+;몸을 문질러댄다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_14
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_14_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_14_1
+IF TALENT:연모
+	PRINTFORML 「%CALLNAME:MASTER%의 품은 따뜻하네~」
+	IF TALENT:연인
+		PRINTFORML 「나도, %CALLNAME:MASTER%을(를) 따뜻하게 해줄 수 있으려나?」
+		PRINTFORML 플랑은 당신의 품에 꾹 눌려 온기를 전하고 있다.
+	ELSE
+	    PRINTFORML 플랑은 마치 고양이가 자기 소유라고 냄새를 묻히듯이 %CALLNAME:MASTER%의 품에 몸을 이리저리 비벼대고 있다.
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;응시해 온다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_15
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_15_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_15_1
+IF TALENT:연모
+	PRINTFORML 플랑은 행복해보이는 얼굴로 %CALLNAME:MASTER%을(를) 응시하고 있다.
+	IF TALENT:연인
+		PRINTFORML 「좋아하는 사람의 얼굴이니까 보고있음 싫증이 안 나」
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;어깨에 턱을 얹어
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_16
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_16_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_16_1
+IF TALENT:연인
+	PRINTFORML 「으응~, 왜일까. 유독 안심돼」
+	PRINTFORML 「옆에 %CALLNAME:MASTER%의 얼굴이 있는게, 무척이나.」
+ELSEIF TALENT:연모
+	PRINTFORML 「웅ー 이거 생각보다 좋을지도」
+	PRINTFORML 그렇게 말하곤 일부러 몸이 뜰 때까지 어깨에 턱을 올리고 있다.
+ENDIF
+RETURN 1
+
+;-------------------------------------------------
+;소프트
+;-------------------------------------------------
+;==================================================
+;요염한 몸짓
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_20
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_20_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_20_1
+RETURN 1
+
+;==================================================
+;응시한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_21
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_21_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_21_1
+RETURN 1
+
+;==================================================
+;몸을 밀착한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_22
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_22_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_22_1
+RETURN 1
+
+;==================================================
+;치마를 넘긴다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_23
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_23_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_23_1
+RETURN 1
+
+;==================================================
+;숨결을 내뿜는다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_24
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_24_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_24_1
+RETURN 1
+
+;==================================================
+;엉덩이를 쓰다듬는다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_25
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_25_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_25_1
+RETURN 1
+
+;==================================================
+;팔에 달라붙어
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_26
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_26_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_26_1
+RETURN 1
+;==================================================
+;골짜기를 과시한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_27
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_27_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_27_1
+RETURN 1
+
+;-------------------------------------------------
+;성희롱
+;-------------------------------------------------
+;==================================================
+;키스
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_30
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_30_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_30_1
+RETURN 1
+
+;==================================================
+;뒤로부터 안겨든다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_31
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_31_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_31_1
+RETURN 1
+
+;==================================================
+;앞에서 안겨든다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_32
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_32_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_32_1
+RETURN 1
+
+;==================================================
+;가슴을 비비게 한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_33
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_33_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_33_1
+RETURN 1
+
+;==================================================
+;고간을 만지작거린다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_34
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_34_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_34_1
+RETURN 1
+
+;==================================================
+;치마 속을 드러낸다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_35
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_35_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_35_1
+RETURN 1
+
+;==================================================
+;뒤로부터 가슴을 만지작 만지작
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_36
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_36_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_36_1
+RETURN 1
+
+;==================================================
+;엿강탈
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_39
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_39_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_39_1
+RETURN 1
+
+;-------------------------------------------------
+;애원
+;-------------------------------------------------
+;==================================================
+;정상위V애원
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_41
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_41_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_41_1
+RETURN 1
+
+;==================================================
+;정상위V애원2
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_43
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_43_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_43_1
+RETURN 1
+
+;==================================================
+;후배위A애원
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_44
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_44_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_44_1
+RETURN 1
+
+;-------------------------------------------------
+;애무
+;-------------------------------------------------
+;==================================================
+;수음
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_50
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_50_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_50_1
+RETURN 1
+
+;==================================================
+;펠라치오
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_51
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_51_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_51_1
+RETURN 1
+
+;==================================================
+;스마타
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_52
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_52_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_52_1
+RETURN 1
+
+;==================================================
+;파이즈리
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_53
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_53_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_53_1
+RETURN 1
+
+;==================================================
+;풋잡
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_54
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_54_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_54_1
+RETURN 1
+
+;==================================================
+;애널애무
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_55
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_55_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_55_1
+RETURN 1
+
+;==================================================
+;애널핥기
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_56
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_56_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_56_1
+RETURN 1
+
+;==================================================
+;손가락挿入
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_57
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_57_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_57_1
+RETURN 1
+
+;==================================================
+;가슴애무
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_58
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_58_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_58_1
+RETURN 1
+
+;==================================================
+;유두빨기
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_59
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_59_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_59_1
+RETURN 1
+
+;==================================================
+;딥키스
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_60
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_60_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_60_1
+RETURN 1
+
+
+;-------------------------------------------------
+;봉사
+;-------------------------------------------------
+;==================================================
+;커닐링구스강제
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_70
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_70_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_70_1
+RETURN 1
+
+;==================================================
+;펠라치오강제
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_71
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_71_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_71_1
+RETURN 1
+
+;==================================================
+;애널봉사
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_72
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_72_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_72_1
+RETURN 1
+
+;==================================================
+;파후파후
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_73
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_73_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_73_1
+RETURN 1
+
+;==================================================
+;젖맞대기
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_74
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_74_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_74_1
+RETURN 1
+
+;==================================================
+;타와시아라이
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_75
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_75_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_75_1
+RETURN 1
+
+;==================================================
+;강제보지애무
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_76
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_76_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_76_1
+RETURN 1
+
+;==================================================
+;젖을 빨게 한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_77
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_77_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_77_1
+RETURN 1
+
+;-------------------------------------------------
+;성교
+;-------------------------------------------------
+;==================================================
+;삽입당한다（MASTER가 당한다）
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_80
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_80_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_80_1
+RETURN 1
+
+;==================================================
+;V삽입한다（TARGET이 당한다）
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_85
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_85_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_85_1
+RETURN 1
+
+;==================================================
+;정말좋아 hold
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_86
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_86_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_86_1
+RETURN 1
+
+;==================================================
+;A삽입한다（TARGET이 당한다）
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_87
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_87_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_87_1
+RETURN 1
+
+;==================================================
+;V허리흔들기（MASTER가 당한다）
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_88
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_88_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_88_1
+RETURN 1
+
+;==================================================
+;A허리흔들기（MASTER가 당한다）
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_89
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_89_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_89_1
+RETURN 1
+
+;==================================================
+;A삽입당한다（MASTER가 당한다）
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_90
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_90_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_90_1
+RETURN 1
+
+;==================================================
+;이라마치오당한다（MASTER가 당한다）
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_91
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_91_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_91_1
+RETURN 1
+
+;==================================================
+;애널개발허가를 요구한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_92
+CALL EVENT_COUNTER_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COUNTER_K50_92_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_COUNTER_K50_92_1
+RETURN 1
+
+;-------------------------------------------------
+;우후후 카운터
+;-------------------------------------------------
+;아직
