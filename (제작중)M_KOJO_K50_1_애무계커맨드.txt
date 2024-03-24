@@ -1,0 +1,1169 @@
+﻿;※※※※※※※※※※※※※※※※※※※※※※※※※
+;애무계 커맨드
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;0,애무
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		IF TALENT:연인
+			PRINTFORML 「우응…앗, 하아아, 좋아, 이대로 계속…흐읏」
+			PRINTFORMW 「계속, 날 이뻐해줘어…… 흐으으, 응…!」
+			PRINTFORMW 몸이 조금 굳어있는데, 다른 사람에게 만져지는게 아직은 낯선 걸까?
+			PRINTFORMW 이대로는 플랑이 힘들겠다 싶었던 당신은 우선 그 긴장을 풀어주고자 하였다.
+			PRINTFORML 「……후에? 왜 하다가 마는 거야, %CALLNAME:MASTER%……?」
+			CALL ASK_M("키스해준다", 1, "안심시킨다", 1, "끌어안는다", 1)
+			SELECTCASE RESULT
+				CASE 0
+					PRINTFORMW 플랑의 고개를 돌리곤 기습적으로 키스를 하였다.
+					PRINTFORMW 「우믓?! …웅, 햐읍, 후으읏%UNICODE(0x2665)% 쪼옥, 우응……」
+					PRINTFORMW 당황한 표정을 짓다가도 점점 키스에 몰두해 가는 모습이 무척 흥분됐다.
+					PRINTFORMW 「푸하아아… 방금, 뭐랄까. %CALLNAME:MASTER%의 맛에 취하는 느낌이였어……」
+					SIF TALENT:키스미경험
+						PRINTFORMW 「첫키스는, 무척이나 달콤한 거구나. 조금 놀랐긴 했지만…… 그래도 정말 좋아%UNICODE(0x2665)%」
+					PRINTFORML 「아앗, 응, 히으응! 이상해…앳, 흐야앙%UNICODE(0x2665)% 온몸잇, 찌릿찌릿해서어……!」
+					PRINTFORMW 키스 덕분에 긴장이 풀린 건지 이전보다 잘 느끼고 있는 것 같아 다행이라 여긴 당신이였다.
+					CALL ADD_KISS(50)
+				CASE 1
+					PRINTFORML 아무래도 플랑은 새로운 것을 익히는 데에 유독 어려워하는 감이 있었지.
+					PRINTFORMW 정사도 이번이 처음인 플랑을 좀 더 배려해야겠다 생각한 당신이였다.
+					PRINTFORML 「그게…… 모처럼이니까 열심히 해보겠다곤 했는데」
+					PRINTFORMW 「반응이 영 시원찮기만 하니까, 내가 %조사처리(CALLNAME:MASTER, "를")% 실망시킨 걸까…?」
+					PRINTFORMW 처음엔 남의 손이 어색한 건 당연하다, 라고 알려주며 플랑의 머리를 쓰다듬어주았다.
+					PRINTFORMW 「응…… 알았어」
+					PRINTFORMW 「얼른 내 몸도 %조사처리(CALLNAME:MASTER, "를")% 좋아하게 됐으면……」
+					PRINTFORML 플랑은 말끝을 흐리면서 시선을 아래로 향하는 듯 했다.
+					PRINTFORMW 「……%UNICODE(0x2665)%」
+				CASE 2
+					PRINTFORMW 와락― 하고 플랑을 끌어안고선, 잘했어잘했어 하고 머리를 쓰다듬어주었다.
+					PRINTFORMW 「ㅁ, 무, 무슨 일 있어?? 하다 말고 갑자기 이렇게 안아주면, 저기이……」
+					PRINTFORMW 「좋긴, 좋다만……」
+					PRINTFORMW 「……」
+					PRINTFORMW 말수가 없어지길래 더는 싫은 건가 싶어서 손을 멈췄더니
+					PRINTFORMW 당신의 품에 묻혀있던 플랑이 얼굴을 들어올려 애처로운 눈빛을 보내고 있었다.
+					PRINTFORMW 「쓰담쓰담, 안 해주는 거야…?」
+					PRINTL
+					PRINTW
+					PRINTFORMW 「응, 이제 충분한 것 같아. 아이마냥 달래진 건 좀 쑥스럽긴 하다만……」
+					PRINTFORMW 「%조사처리(CALLNAME:MASTER, "가")% 상냥하다는 걸 다시금 느낄 수 있어서, 편히 몸을 맡길 수 있을 것 같아」
+					PRINTFORMW 「……고마워. %CALLNAME:MASTER%%UNICODE(0x2665)%」
+			ENDSELECT
+		ELSEIF TALENT:연모
+			PRINTFORML 「읏, 후으으…아앗, 응! 하아……」
+			PRINTFORMW 「괜찮…으니까아, 내가 하게 해줘 %CALLNAME:MASTER%……」
+			PRINTFORMW 봉사할 땐 실컷 해왔으면서, 정작 자신은 전희를 거부하고 있다.
+			PRINTFORML 아직 플랑은 자기 나름의 선을 넘지 않으려는 듯이 보인다.
+			PRINTFORML 그럼 어떡하면 좋을까……
+			CALL ASK_M("첫키스라면?", TALENT:키스미경험, "키스한다", !TALENT:키스미경험, "설득한다", 1)
+			SELECTCASE RESULT
+				CASE 0
+					PRINTFORMW 당신은 움직이던 손을 멈추곤 플랑을 주시하였다. 아니, 정확히는……
+					PRINTFORMW 이 앳된 소녀의 매끈하고 선명한 선홍빛의 입술을.
+					PRINTFORMW 눈으로만 바라보아도 저 입술이 뭉그러지며 부드럽게 포개지는 감촉이 느껴질 것만 같다.
+					PRINTFORMW 「……저기이, 그렇게 빤히 쳐다보기만 하면 좀 부담스러운데에……」
+					PRINTFORMW 「너무 가깝기도 하니까, 슬슬 이쯤 하고――」
+					PRINTFORMW 조금씩 뒤로 내빼는 플랑의 어깨를 붙잡는다.
+					PRINTFORMW 「응앗?! ㅁ, 뭐야, 그런 눈빛을 하고……잠깐, 설마?」
+					PRINTFORML 「정말로 나한테? 진짜, 진짜 나랑 해도 괜찮아??」
+					PRINTFORMW 「아니 그게, 싫은 건 아닌…… 것보다 이 이상은?!」
+					PRINTFORMW 이젠 플랑의 숨결이 느껴질 정도로 가까워졌다.
+					PRINTFORMW 플랑도 어느새 눈을 질끈 감고 있다. 지금 이대로……
+					CALL ASK_M("입을 맞춘다", 1, "이마에 뽀뽀한다", 1)
+					SELECTCASE RESULT
+						CASE 0
+							PRINTFORMW 힘껏 오므라든 부끄럼쟁이 입에 정중히 노크를 하듯
+							PRINTFORMW 쪽, 하며 %CALLNAME:MASTER%의 입술이 살포시 내려앉다 다시 떨어져 나왔다.
+							PRINTFORMW 어째 조용해진 플랑의 섬붉은 눈가에 눈물이 조금 맺혀있다. 아니, 눈물이 점점 더 흐르고 있다.
+							PRINTFORMW ……막상 해보니까 싫어진 걸까?
+							PRINTFORMW 「아아…… 진짜로 했어, %CALLNAME:MASTER%와의 첫키스……」
+							PRINTFORMW 「날 마음에 두지 않았을까 했는데, 정말로 %조사처리(CALLNAME:MASTER, "가")% 와줬어…!」
+							PRINTFORML 당신이 그 말에 의아해하고 있던 사이에, 어느새 플랑이 다가와 스스로 키스를 해왔다.
+							PRINTFORMW 「햐웁, 응츄웃, 츄루르……%UNICODE(0x2665)% 햐읍, 웅후아아, 죠아앗……%UNICODE(0x2665)%」
+							PRINTFORMW 수줍어하던 모습과 반대되어 이젠 입술부터 입안 혀까지 모두 허용해버린 모습이 무척이나 사랑스러웠다.
+							PRINTFORMW 「~~~우므읏, 푸하아아…… 하아아, %CALLNAME:MASTER%……」
+							PRINTFORMW 「언젠가, 나와――」
+							PRINTW
+							PRINTW
+							PRINTFORMW 「……아니야, 아무 것도 아니니까」
+							PRINTFORMW 「그냥 이대로 나와 함께 있어주면 돼. 알았지?」
+							;이 때의 플랑은 관계를 발전시키고자 할 의항은 있었지만, 주인공이 거절하고 떠나버릴 것을 두려워하여 마음을 숨긴 것
+							CALL ADD_KISS(50)
+						CASE 1
+							PRINTFORMW 두 입술이 절묘하게 닿을락말락한 순간에 이마로 입을 옮겼다.
+							PRINTFORMW 쪽, 하는 소리와 함께 변한 플랑의 벙찐 얼굴에 무심코 장난기가 발동됐다.
+							PRINTFORMW 마지막에 입을 앙 오므리던 플랑쨩 귀엽네에~
+							PRINTFORMW 「~~~~~~~!!!!!」
+							PRINTFORMW 얼굴이 새빨개진 것도 잘 어울린다고 한마디 더 하려 했지만……
+							PRINTFORMW 「………흑, 으흑……」
+							PRINTFORML 「흐아아앙――! 이 바보야아아……!」
+							PRINTFORMW 「으그흑…… 후으으, %CALLNAME:MASTER% 진짜 싫어어……」
+							PRINTW
+							PRINTW
+							PRINTFORML 「으응, 진정됐어. 갑자기 그렇게 돼서, 미안해……」
+							PRINTFORMW 당신은 사과를 거듭하고 일련의 행동들에 이유를 대며 겨우겨우 달랠 수 있었다.
+							PRINTFORMW 「그러니까, 내가 너무 사양만 하니까 %조사처리(CALLNAME:MASTER, "가")% 신경 써줬다는 거네」
+							PRINTFORMW 「……아까 그건 좀 심한 장난이였던 것 같지만.」
+							PRINTFORMW 「그래도 이제 무슨 뜻인지는 알았으니까, 앞으로는 %CALLNAME:MASTER%에게 부탁해볼게」
+							PRINTL
+							PRINTFORMW 「상냥하게…해줘야 해?」
+					ENDSELECT
+				CASE 1
+					PRINTFORMW 플랑의 고개를 천천히 이쪽으로 돌린다.
+					PRINTFORMW 「으, 응? 뭐 할 말이 있ㄴ……우므읏?!」
+					PRINTFORMW 기습적인 뽀뽀에 수줍어하며 닫혀버린 입술.
+					PRINTFORML 혀로 그 사이를 비집어 들어가려하자 큰 저항 없이 열리게 된다.
+					PRINTFORMW 「햐우읍…! 응, 후우…… 쪽, 아하앗……」
+					PRINTFORML 「후으응%UNICODE(0x2665)% 츄웃, 헤으읍……웅후웃!%UNICODE(0x2665) *2%」
+					PRINTFORMW 무의식적으로 허용해버린 입안은 곧 쾌감으로 뒤덮어져 망설임이 흩어져간다.
+					PRINTFORMW 그렇게, 소녀의 마음만 남을 때까지 키스를 계속 해주었다……
+					PRINTL
+					PRINTW
+					PRINTFORMW 「후아아아, 하아…… %CALLNAME:MASTER%, %CALLNAME:MASTER%……」
+					PRINTFORML 당신은 키스에 함락되어 반쯤 발정하게 된 플랑을 마음껏 음미하고자 하였다.
+					PRINTFORMW 「히야앗…! 아, 아흐응%UNICODE(0x2665)% 가, 가스음, 거기도옷, 괴롭히며언%UNICODE(0x2665)%」
+					PALAM:욕정 += 3000
+					EXP:키스경험 += 1
+					EXP:MASTER:키스경험 +=1
+				CASE 2
+					PRINTFORML 내가 얼마나 싫었으면 이렇게 우리 사이를 밀쳐내는 걸까.
+					PRINTFORMW 당신이 서운하다고 얘기하니 플랑이 흠칫하며 이쪽을 바라보았다.
+					PRINTFORMW 「ㄱ, 그런 뜻으로 말한게…!」
+					PRINTFORML 「그니까, 싫은게 아니고, 해도 상관은 없다만 뭐랄까……」
+					PRINTFORMW 「서로, 조, 좋아아……하는 사람한테, 받고 싶다랄까……?」
+					PRINTFORMW 그럼 플랑이 좋아해주는 만큼 나도 보답해주는 건 안 될까?
+					PRINTFORMW 「……」
+					PRINTFORML 「그리 말한다면, 뭐어…… 어쩔 수 없겠네.」
+					PRINTFORMW 플랑이 이쪽으로 두팔을 뻗어온다.
+					PRINTFORMW 「그 전에, 꼬~옥하고 안아주면 좋겠는데……」
+			ENDSELECT
+		;ELSEIF TALENT:사모
+		ENDIF
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;삽입중
+	;기입체크
+	LOCAL:1 = 1
+	;-------------------------------------------------
+	;V삽입
+	IF LOCAL:1 && TEQUIP:50 == PLAYER
+		;사정했다
+		IF NOWEX:PLAYER:11
+			IF TALENT:연인
+				PRINTFORMW 
+			ELSEIF TALENT:연모
+				PRINTFORMW
+			RETURN 1
+		;정상위 애무
+		ELSEIF PREVCOM == 60
+			PRINTFORML 당신은 피스톤질을 이어나감과 동시에 유두와 클리를 같이 고문하기 시작했다.
+			PRINTFORMW 「아앗, 안댓, 흐야앙%UNICODE(0x2665)% 지금 그렇게 만지는 거, 반칙이야앗%UNICODE(0x2665)%」
+			PRINTFORMW 「응후아앗%UNICODE(0x2665)% 돌기만 괴롭히면, 나, 금방 가서어%UNICODE(0x2665)%」
+            PRINTFORMW 자극을 줄 때마다 안쪽에서 움찔거리는 것도 그렇고, 계속할 수록 점점 더 육봉을 조여와 서로가 엄청난 쾌감을 느끼고 있다. 
+            RETURN 1
+		;후배위 애무
+		ELSEIF PREVCOM == 61
+			PRINTFORML 「아하으응! 내 뒤에 자지이, 좀 더 격렬하게에……%UNICODE(0x2665)% 아, 잠깐 그쪽ㅇ……응히익%UNICODE(0x2665) *3%?!」
+			PRINTFORMW 「히야앙, 아, 후응앗%UNICODE(0x2665)% 앙댸앳…! 클리, 만져주면 곧 가버려엇……히그응%UNICODE(0x2665) *2%」
+			PRINTFORMW 쓸쓸해보이던 클리를 문질러주니 가드가 완전히 풀린 듯 온몸으로 쾌감을 느끼기 시작한 플랑이였다.
+			PRINTFORMW 「햐으응…! ㅈ, 젖꼭지됴오, 떼굴떼굴……좋아앙%UNICODE(0x2665) *2%」
+			PRINTFORMW 온몸을 감싸쥘 때마다 달콤한 소리를 내며 반응하는 사랑스러운 모습에 당신은 더욱더 흥분되어 간다.
+            RETURN 1
+		;기승위 애무
+		ELSEIF PREVCOM == 65
+			PRINTFORML 「시러엉, 오라버니 안 돼엣♪ 플랑이, 플랑이 전부, 히앗우♪  해 줄거야앗」
+			RETURN 1
+		;대면좌위 애무
+		ELSEIF PREVCOM == 67
+			PRINTFORMW
+			RETURN 1
+		;배면자위 애무
+		ELSEIF PREVCOM == 68
+			PRINTFORMW %조사처리(CALLNAME:PLAYER,"는")% 플랑의 어린 비렬을 찔러 올린다.
+			RETURN 1
+		ELSE
+			RETURN 1
+		ENDIF
+	;A삽입
+	ELSEIF LOCAL:1 && TEQUIP:51 == PLAYER
+		;사정했다
+		IF NOWEX:PLAYER:11
+			PRINTFORMW 
+			RETURN 1
+		;정상위애널 애무
+		ELSSIF PREVCOM == 62
+			PRINTFORMW 「앗, 싫어엉! 오라버니의 손, 기분 조아…♪」
+            PRINTFORML %조사처리(CALLNAME:PLAYER,"가")% 애무를 시작하자, 플랑은 기쁜 듯이 몸을 비비 꼰다
+            PRINTFORM 손을 아래쪽에 가져가 
+			PRINTFORMW 어떻게든 클리토리스를 찾아 내자, 문질문질 상냥하게 자극해 준다
+			PRINTFORMW 「후응우우웃응!♪ 싫엇! 콩, 동글동글 만지몃!♪」
+            PRINTFORMW 손의 자극을 더할 때마다 플랑의 어림은 신축해, 기쁜 듯이 %조사처리(CALLNAME:PLAYER,"를")% 조여준다
+		;후배위애널 애무
+		ELSEIF PREVCOM == 63
+			PRINTFORMW 「응, 후읏! 앗, 앗, 오라버니, 제대로, 뒤에, 있는 거지잇?」
+            PRINTFORMW 어떻게든 목을 돌려서 이쪽을 확인하려고 하는 플랑의 신체에 손을 감아준다
+            PRINTFORMW 「앗, 오라버니의 손이다아♪ 응웃! 싫엇, 가슴 문지르면!」
+            PRINTFORM 빙글빙글 유두를 굴리면서, 
+			PRINTFORMW 하복부에는 육립(肉粒)을 찾아내어 문지른다
+            PRINTFORMW 「아아앙! 오라버니 좋아앗! 좀 더, 좀 더엇, 엣찌 해줘엇♪」
+            PRINTFORMW 작은 플랑에게 덮어 씌우듯이 하여, 향락인 채로 유녀의 신체를 범해 간다
+            RETURN 1
+		;기승위애널 애무
+		ELSEIF PREVCOM == 66
+			PRINTFORML 「시러엉, 오라버니 안 돼엣♪ 플랑이, 플랑이 전부, 히앗우♪  해 줄거야앗」
+            PRINTFORMW %조사처리(CALLNAME:PLAYER,"가")% 말타기가 되어 있는 유녀의 지체에 손을 뻗자, 플랑은 싫어싫어하며 목소리를 높인다
+            PRINTFORMW 「오라버니는 얌전히 있으면, 되는 거야앗, 응웃, 후아앗!♪」
+            PRINTFORML 불만을 말하면서 달콤히 허덕이는 플랑이 귀엽게 느껴진다, %조사처리(CALLNAME:PLAYER,"는")% 손을 뻗어 애무를 거듭해 간다
+            PRINTFORMW 「아앙, 후아♪ 안되는데에, 정말 오라버니 바보오…♪ 아아, 응」
+            PRINTFORMW 이윽고 플랑은 허리를 상하시키며, %조사처리(CALLNAME:PLAYER,"가")% 애무하기 쉽게 상체를 넘어뜨려 왔다
+			RETURN 1
+		;대면자위애널 애무
+		ELSEIF PREVCOM == 69
+			PRINTFORMW
+			RETURN 1
+		;배면자위애널 애무
+		ELSEIF PREVCOM == 70
+			PRINTFORMW %조사처리(CALLNAME:PLAYER,"는")% 플랑의 소중한 배설기관을 찔러 올린다
+			RETURN 1
+		ELSE
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;-------------------------------------------------
+	;후타나리
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && (TALENT:2 & 3) == 3
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;1,커닐링구스
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_1
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_1_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_1_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;-------------------------------------------------
+	;질내사정직후
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && TCVAR:100 == PLAYER
+		IF TCVAR:102
+			PRINTFORMW 
+			RETURN 1
+		ENDIF
+	ENDIF
+	;-------------------------------------------------
+	;절정했다
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && NOWEX:0
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;C감각 or B감각 LV3 이상
+	ELSEIF ABL:C감각 >= 3 || ABL:B감각 >= 3
+		;연인
+		IF TALENT:연인
+			RETURN 1
+		;연모
+		ELSEIF TALENT:연모
+			RETURN 1
+		;사모(아직 대기중)
+		;ELSEIF TALENT:사모
+			;RETURN 1
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	;ABL:C감각B감각기교
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+;나머지는 적당한 분기를 추가해주세요
+;==================================================
+;2,펠라한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_2
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_2_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_2_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;3,손가락삽입
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_3
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_3_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_3_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;4,애널핥기
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_4
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_4_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_4_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;5,애널애무
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_5
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_5_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_5_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;6,가슴애무
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_6
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_6_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_6_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;7,유두자극
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_7
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_7_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_7_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;8,보지벌리기
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_8
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_8_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_8_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;9,자위
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_9
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_9_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_9_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;연모
+	IF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+[SKIPSTART]
+;다른 커맨드화
+;==================================================
+;10,유두빨기
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_10
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_10_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_10_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;연모
+	IF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+[SKIPEND]
+;==================================================
+;11,유두빨기
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_11
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_11_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_11_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;12,가슴주무르기
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_12
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_12_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_12_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;13,애널벌리기
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_13
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_13_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_13_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;15,클리애무
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_15
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_15_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_15_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;소프트계 커맨드
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;19,키스한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_19
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_19_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_19_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;20,키스한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_20
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_20_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_20_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+
+;==================================================
+;21,아무것도 안 한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_21
+;CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_21_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_21_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;22,유혹한다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_22
+;CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_22_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_22_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;기본세트
+	;시간(時姦)중
+	IF FLAG:70
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;괘씸3
+	ELSEIF MARK:괘씸각인 == 3
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;23,필로토크
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_23
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_23_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_23_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;-------------------------------------------------
+	;소분기
+	;-------------------------------------------------
+	;처음
+	;기입체크
+	LOCAL:1 = 0
+	;-------------------------------------------------
+	IF LOCAL:1 && FIRSTTIME(SELECTCOM)
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+	;실패
+	IF TFLAG:193
+		PRINTFORMW 
+		RETURN 1
+	;연모
+	ELSEIF TALENT:연모
+		PRINTFORMW 
+		RETURN 1
+	;사모
+	ELSEIF TALENT:사모
+		PRINTFORMW 
+		RETURN 1
+	;그 이외
+	ELSE
+		PRINTFORMW 
+		RETURN 1
+	ENDIF
+ENDIF
+RETURN 1

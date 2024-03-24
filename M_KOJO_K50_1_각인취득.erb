@@ -1,0 +1,79 @@
+﻿;-------------------------------------------
+;각인취득
+;-------------------------------------------
+@M_KOJO_ふらん_MESSAGE_MARKCNG_K50
+;이대로라면 지문이 표시되지 않습니다
+;지문을 표시하고 싶으신 분은、아래의 주석처리를 삭제해 주세요
+CALL MARK_MESSAGE
+;고통각인
+IF TFLAG:고통각인취득 == 1
+	PRINTL 「잠깐… 아프잖아! 적당히 좀 해」
+	PRINTW 「나도 힘 조절 하지 말아봐?」
+ELSEIF TFLAG:고통각인취득 == 2
+	PRINTW 
+ELSEIF TFLAG:고통각인취득 == 3
+	PRINTW 
+ENDIF
+
+;시간각인
+IF TFLAG:시간각인취득 == 1
+	PRINTW 
+ELSEIF TFLAG:시간각인취득 == 2
+	PRINTW 
+ELSEIF TFLAG:시간각인취득 == 3
+	PRINTW 
+ENDIF
+
+;쾌락각인
+IF TFLAG:23 == 1
+	PRINTW 「아, 읏! 뭔가……이상한 느낌」
+ELSEIF TFLAG:23 == 2
+	PRINTW 「아, 간닷, 으으읏! ……이거 푹 빠졌을지도」
+ELSEIF TFLAG:23 == 3
+	PRINTL 「가, 가버, 읏…… 아, 하읏! 아, 아, 아아・・・으 ~ 읏!」
+	PRINTW 「앗, 하아… 나, 너한테 완전히 사로잡혔나봐……%UNICODE(0x2665)%」
+ENDIF
+
+;괘씸각인
+;쾌락에 의한 각인
+;LV1
+IF TFLAG:24 == 11
+	PRINTW 
+;LV2
+ELSEIF TFLAG:24 == 12
+	PRINTW 
+;LV3
+ELSEIF TFLAG:24 == 13
+	PRINTW 
+;굴복, 복종에 의한 각인
+;LV1
+ELSEIF TFLAG:24 == 31
+	PRINTW 「……기분탓, 이라는 걸까」
+;LV2
+ELSEIF TFLAG:24 == 32
+	PRINTL 「심란하다…… 그래, 마음이 심란한 거야……」
+	PRINTDW 혼자서 무언가 중얼거리고 있다.
+;LV3
+ELSEIF TFLAG:24 == 33
+	PRINTW 「연애가 승부라면, 난 완패한 거네. 정말이지」
+ENDIF
+
+;반발각인
+IF TFLAG:반발각인취득 == 1
+	IF TALENT:연모 || TALENT:연인
+		PRINTL 「동작그만. 그거, 그만둬줄래?」
+		PRINTFORMW 「……%CALLNAME:MASTER%, 너 슬슬 짜증 난단 말이야.」
+	ELSE
+		PRINTW 「……짜증나, 닥치고 얼른 꺼져.」
+	ENDIF
+ELSEIF TFLAG:반발각인취득 == 2
+	PRINTDW 플랑은 그 어떠한 감정도 담겨있지 않은 공허한 두 눈으로 이쪽을 보고있다……
+ELSEIF TFLAG:반발각인취득 == 3
+	DRAWLINE
+	PRINTDL 콰드드득――
+	PRINTW 「역시 인간이란, 이리 간단하게 부서져 버린단 말이지...?」
+	PRINTDL 플랑의 무언가가 어긋나있는 건지, 겨우 이해하였다.
+	PRINTDW 다만 그것은, 인간의 모습을 한 재앙과도 다름없는, 플랑의 망설임 없는 모습이었다고……
+	DRAWLINE
+	BASE:MASTER:체력 -= 10000
+ENDIF

@@ -1,0 +1,4314 @@
+﻿;※※※※※※※※※※※※※※※※※※※※※※※※※
+;일상계 커맨드
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;恋人、恋慕じゃない部分の埋めは後回しにしつつ
+;연인,연모 아닌 부분 메우기는 미루면서
+;==================================================
+;300,회화
+;TFLAG:193 (1=대성공 0=성공 -1=실패 -2=대실패 (TARGET이 MASTER보다 교양이 4이상 높다))
+;TCVAR:302 (0=회화가능 1>=비연모시 회화불가)
+;MARK:반발각인 (3이상=회화불가)(4이상은 버그)
+;TCVAR:만취 (1=통상성공or대실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_300
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1=강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_300
+;커맨드 공통 메시지(TRAIN_MESSAGE) 
+;삭제하면 「~이야기를 했다.」 이런 것들이 사라집니다. 또, 삭제했을 경우는 자동으로 구상색이 붙지 않습니다.
+CALL TRAIN_MESSAGE
+;구상메인호출
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_300_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_300_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연인
+		;금일 첫 회화 구상
+		IF !TCVAR:350
+			TCVAR:350 ++
+			SELECTCASE DAY:2
+			CASE 1 
+			;만우절
+				IF DAY:3 == 1
+					PRINTL 「오늘은 만우절이네.」
+					PRINTL 「거짓말이라 해도, 싫어한다는 말은 듣고 싶지도 않고, 그렇게 말하고 싶지도 않지만」
+					PRINTL 「그렇다고 좋아한다고 말하기도 어려운…… 무척 곤란한 날인 걸.」
+			;화이트 데이
+				ELSEIF DAY:3 == 14
+					PRINTL 「오늘은, 그…… 화이트 데이인데 말이지이」
+					IF TALENT:처녀
+						PRINTL 「그러니깐…… 아, 쿠키? 같이 먹자고?」
+						PRINTW 「……그래, 고마워」
+					ELSE
+						PRINTL 「나랑…… ㅇ, 야한 거라도, 할래?」
+						PRINTW 「아니, 내 말은, 오늘은 새하얀 날이기도 하니까, 당신이랑…… 저기, 그러니까아」
+						PRINTDL 얼굴이 새빨갛게 달아올라 지금도 마치 김이 새어나올 것만 같다.
+						PRINTDW 모처럼의 유혹이니, 오늘은 실컷 즐기자고 생각한 당신이었다.
+					ENDIF
+				ELSE
+					PRINTFORML 「왔어, %CALLNAME:MASTER%?」
+					PRINTFORMW 「봄이라곤 해도, 밤이니까 %마스터는% 쌀쌀하려나...」
+					PRINTW 「그럼 같이 차라도 마시지 않을래? 아님 서로 껴안아서, 따뜻하게...♪」
+				ENDIF
+			CASE 2
+				;칠석
+				IF DAY:3 == 7
+					PRINTFORML 「%CALLNAME:MASTER% 왔구나? 오늘은 칠석이야.」
+					IF TIME:5 == 1 || TIME:5 == 0
+						PRINTL 「은하수가 무척 예뻐보이네.」
+						PRINTL 「견우와 직녀도, 서로 만났을까?」
+						PRINTL 「일년 동안 못 만난다는 건 상상만 해도 못 견디겠어......」
+						PRINTW 「……일분일초도, 떨어지고 싶지 않으니까.」
+					ELSEIF TIME:5 == 2 || TIME:5 == 3
+						PRINTL 「은하수가 안 보이는 것만은 아니지만」
+						PRINTL 「나의 소망이 제대로 닿을지, 좀 불안하네」
+						PRINTW 「……뭐, 당신의 마음에 닿아만준다면 그걸로 족하긴 하지만.」
+					ELSEIF TIME:5 == 4 || TIME:5 == 5
+						PRINTL 「오늘은, 비가 내렸을까…」
+						PRINTL 「이전까지 칠석이란 거 어찌 되든 상관 없었는데」
+						PRINTL 「지금은 이루어줬으면 하는 소망이 잔뜩 생겨서 마음에 걸리게 되네.」
+						PRINTW 「……당신하고 쭉 함께 있고 싶다든지, 말이야.」
+					ELSE
+						PRINTL 「공교롭게도, 날씨가 맑네」
+						PRINTW 「견우와 직녀가, 소원을 들어줄 수 없는 모양이야.」
+					ENDIF
+				ELSE
+					PRINTFORML 「안녕, %CALLNAME:MASTER%」
+					PRINTW 「왠지 밤인데도 덥네......」
+				ENDIF
+			CASE 3
+				;달구경
+				;아래 달 이름은 MOON_WATCH.ERB에 나와있는 그대로 가져온 KR판 번역명입니다
+				IF NAME_MOON(DAY:3) == "보름 -중추의 명월- "
+					PRINTFORML 「오늘은 보름날이래, %CALLNAME:MASTER%.」
+					IF TIME:5 == 0 || TIME:5 == 1
+						PRINTFORMW 「……달이 참 예쁘다, 그렇지?」
+						CALL ASK_YN("고백에 답해준다", "\"달이 왜?\"")
+						IF !RESULT
+							PRINTFORML 「응! 나도 좋아해%UNICODE(0x2665)%」
+							PRINTDL 당신도 좋아한다고 답하자, 플랑은 기쁜 얼굴을 하곤 입을 포개어 왔다.
+							CALL ADD_KISS(50)
+							PRINTFORMW 「우으응, 츄우…… 응, 우음%UNICODE(0x2665)%」
+							PRINTFORMW 「후아아…… 좀 더, %CALLNAME:MASTER%한테 안길래♪」
+						ELSE
+							SELECTCASE RAND:3
+							CASE 0
+								PRINTFORML 「에헤헤…… 역시 %CALLNAME:MASTER%답네. 딱히 기대도 안 했지만.」
+								PRINTFORMDL 플랑은 체념하듯 스르르 %CALLNAME:MASTER%의 몸에 기댔다.
+								PRINTW 「그래도, 가끔은 스스로 알아차리란 말이야 이 바보야……」
+							CASE 1
+								PRINTDL 예상치 못한 반응에 플랑의 표정이 확 굳어 버리고 말았다.
+								PRINTL 「지, 진짜 이러기야? 이 날만을 얼마나 기다렸는데에…!」
+								PRINTFORMDW 서러움에 벅찬 얼굴로 %마스터를% 바라보더니,
+								PRINTL 「……금기「레바테인」!!」
+								PRINTL
+								PRINTFORMDW 이후, 플랑 옆에는 너덜너덜해진 꼴로 실신해 있던 %마스터가% 있었다고……
+							CASE 2
+								PRINTL 「아, 아냐! 그냥 오늘따라 더 예뻐 보여서 그랬어」
+								PRINTL 「……그냥 이거 먹으면서 같이 달구경할래?」
+								PRINTFORMDW 당고를 쥐어주는 플랑은 조금 실망한 듯 보였지만, 금새 미소지으며 %마스터를% 반겨주었다.
+							ENDSELECT
+						ENDIF
+					ELSEIF TIME:5 == 2 || TIME:5 == 3
+						PRINTL 「흐리긴 해도, 왜인지 밝은 밤이네.」
+						PRINTL 「……조금, 들뜨는 기분이야.」
+						PRINTW 「우선 당고라도 먹고 있을까?」
+					ELSEIF TIME:5 == 4 || TIME:5 == 5
+						PRINTL 「비오네……」
+						PRINTW 「오늘 대신으로 사쿠야라도 보면서 당고 먹을래?」
+						PRINTL 「'이자요이 사쿠야' 라니, 마치 보름날같잖아.」
+						PRINTDW  [역: 이자요이 사쿠야의 뜻풀이는 16일 전날 밤, 즉 15일 보름날]
+					ELSE
+						PRINTL 「아이 참, 이런 날씨면 달이 보이지가 않잖아.」
+						PRINTL 「아쉽지만 사쿠야라도 보면서 당고나 먹지 않을래?」
+						PRINTDW  [역: 이자요이 사쿠야의 뜻풀이는 16일 전날 밤, 즉 15일 보름날]
+					ENDIF
+				ELSEIF DAY:3 == 30
+				;할로윈
+					PRINTL 「오늘은 할로윈이니 Trick or Treat 이 빠질 순 없겠지?」
+					IF TALENT:마조
+						PRINTFORMW 「대신 이번엔 나 말고 %마스터가% 나한테 해주는 걸로 하자!」
+						PRINTL 「응? 왜냐니? 사탕을 줘야 할 사람이 사탕을 못 주면, 못된 장난을 치는 거잖아?」
+						PRINTW 「그리고 난 지금,」
+						CLEARLINE 1
+						PRINTFORMW 「그리고 난 지금, 사탕이 없으니까……%UNICODE(0x2665)%」
+					ELSE
+						PRINTDL 잠시 음흉하게 웃음을 자아내던 얼굴은 순식간에 발랄한 미소로 바뀌며, 당신을 놀래키는 시늉을 한다.
+						PRINTW 「Trick or Treat!」
+						PRINTFORML 「어라아~? %마스터는% 나에게 줄 사탕이 없나본데~?」
+						PRINTFORMW 「흐흣%UNICODE(0x2665)% 사탕이 없는 %CALLNAME:MASTER%에겐 못된 장난을...」
+						PRINTDL 스윽…… 짠!
+						PRINTW 「...에, 사탕바구니?」
+						CALL COLORMESSAGE(@"콰앙――", C_RED, 1, 1)
+						PRINTW
+						PRINTDL 서프라이즈로 미리 준비해놨던 사탕이 담긴 바구니가 눈앞에서 통째로 파괴되었다.
+						PRINTW 「사탕같은 거 필요없어……」
+						PRINTFORMW 「……%CALLNAME:MASTER% 미워……」
+						PRINTDW 한동안 토라진 플랑을 껴안아 달래주던 당신이었다.
+					ENDIF
+				ELSE
+					PRINTFORML 「잘 잤어 %CALLNAME:MASTER%?」
+					PRINTW 「꽤나 선선한 게, 밖에서도 지내기가 편해졌어.」
+				ENDIF
+			CASE 4
+				;정월(오세가츠)
+				IF DAY:3 == 1
+					PRINTL 「새해 복 많이 받으세요.」
+					PRINTW 「올해도 잘 부탁드립니다.」
+					PRINT 「...너무 딱딱한 인사는 여기까지만 하고,
+					IF TALENT:처녀 != 1 && EXP:TARGET:1 >= 3
+						PRINTFORMW  새해 첫 섹스...하자? 꺄앗%UNICODE(0x2665)%」
+					ELSEIF ABL:TARGET:요리기능 >= 2 && ABL:MASTER:요리기능 >= 3
+						PRINTL  같이 오세치 요리 만들어 먹을까? 재료 손질하는 거 도와줄게.」
+						PRINTFORMW 「다 만들고 나서 %마스터가%, 아~앙%UNICODE(0x2665)% 하고 먹여줬으면……헤헤♪」
+					ELSE
+						PRINTL  같이 귤이나 까먹을까?」
+						PRINTW 「달다아~ 손바닥이 노래질 때까지도 계속 먹을 것 같아」
+					ENDIF
+				ELSEIF DAY:3 == 14
+					;발렌타인 데이
+					;초콜릿 상자 모양은 뽀로로의 대모험(Pororo to the Cookie Castle)의 초코레또 백작이 꺼낸 하트 초콜릿 상자를 떠올리며 썼음.
+					IF ABL:TARGET:요리기능 > 1
+						PRINTFORML 「%CALLNAME:MASTER%. 자, 이거 줄게」
+						PRINTDW 플랑으로부터 하트 모양의 고급진 상자 하나를 받았다.
+						PRINTDW 곧바로 포장을 열어보니, 3중의 하트틀 안에 자리 잡은 각 각의 칸에 가지각색의 초콜릿들이 담겨있었다.
+						PRINTL 「당신과 지내면서, 요리도 제법 늘었으니깐」
+						PRINTL 「분명 그 초콜릿들도 맛있게 잘 됐을 거야.」
+						PRINTW 「답례, 기대하고 있을게♪」
+					ELSE
+						PRINTFORML 「저기, %CALLNAME:MASTER%. 이거……」
+						PRINTDW 플랑으로부터 정성스럽게 포장된 하트 모양의 통을 하나 받았다.
+						PRINTL 「초콜릿…… 만들어 봤는데, 그게, 우으으……」
+						PRINTW 「머, 먹어보고 맛 없으면 버려도 돼!」
+						PRINTL 곧바로 포장을 열어 먹어보기로 한다. 근데 이거, 초콜릿치곤 몰캉몰캉한게 혹시?
+						PRINTW 세상에나! 이것은 당신이 좋아하는 초콜릿 무스였다!
+						PRINTL 「어…맛있어? 다, 다행이다아……」
+						PRINTDW 좌절하려던 플랑은 수저들고 개같이 처묵처묵하던 당신을 보곤 그제서야 안도하는 표정을 지었다.
+						PRINTL
+						PRINTW 「저기, 좀만 천천히 먹어도 되는데…」
+					ENDIF
+				ELSEIF DAY:3 == 25
+					;크리스마스
+					PRINTL 「오늘은 크리스마스야.」
+					PRINTFORMW 「%마스터는% 산타 할아버지께 받고싶은 거라도 빌었어?」
+					PRINT 「난 뭘 빌었냐고? 나는
+						IF TALENT:마조
+							PRINTW  목걸이를, 빌었달까?」
+							PRINTFORML 「내가 %CALLNAME:MASTER%의 것이라는 걸 누구나 알 수 있도록 차고 다닐 거야♪」
+							PRINTFORMW 「...산타 할아버지, 와주시려나?%UNICODE(0x2665)%」
+						ELSEIF EXP:데이트경험 >= 100
+							PRINTW  새 옷을 받고싶다고 빌었어.」
+							PRINTL 「이 옷 이외엔 가지고 있는게 없으니까.」
+							PRINTW 「데이트 할 때 계속 같은 복장이면, 당신이 질려할 수도 있고 그래서……」
+							PRINTDW 그렇게 될 일은 절대로 없지만, 다음 데이트 때 플랑에게 옷을 사줘야겠다 결심한 당신이었다.
+						ELSE
+							PRINTW  당신과 함께 케이크를 먹고싶다고 빌었어.」
+							IF ABL:MASTER:요리기능 > 2
+								PRINTDL 그 정돈 식은 죽 먹기지!
+								PRINTDL 당신은 순식간에 크리스마스 케이크를 만들어 플랑에게 한 조각 잘라 건네주었다!
+								PRINTW 「와아, 굉장하다! 이렇게나 빠르게……」
+								CLEARLINE 1
+								PRINTW 「와아, 굉장하다! 이렇게나 빠르게…… 어, 나 이거 먹어도 되는 거야?」
+								PRINTFORML 「진짜?! 고마워! %CALLNAME:MASTER% 최고~!」
+								PRINTL 「그럼 잘 먹겠습니다♪」
+								PRINTDW 당신은 싱글벙글한 플랑의 모습을 감상하며 함께 케이크를 먹었다.
+							ELSE
+								PRINTDL 당신은 그 즉시 인간마을에서 케이크를 사오곤, 플랑에게 같이 먹자고 권하였다.
+								PRINTW 「우와아, 엄청나다! 갑자기 사라졌다가 1분도 안 되곤 케이크를 들고 나타났어!」
+								PRINTFORML 「그럼 %마스터는% 내 소원을 이루어주려 나타난 산타인 거네?」
+								PRINTFORMW 「후훗, 고마워. 산타 %CALLNAME:MASTER%씨♪」
+							ENDIF
+						ENDIF
+				ELSEIF DAY:3 == 31
+					;섣달그믐날(오오미소카)
+					PRINTL 「섣달그믐날, 이네」
+					PRINTW 「올해도 일년이 다 가는구나.」
+					SIF ABL:TARGET:40 >= 2
+						PRINTL 「대청소도 함께 다 했고」
+					SIF ABL:TARGET:44 >= 2
+						PRINTL 「토시코시소바도 먹었으니」
+					PRINTFORMW 「올해에 또 할 일이 남아있을까, %CALLNAME:MASTER%?」
+					PRINTL 「예를 들면......」
+					IF TALENT:TARGET:6
+						PRINTW 「나랑, 저기…… 키, 키스…하는 거라든지, 말야」
+					ELSEIF TALENT:TARGET:처녀
+						PRINTW 「나랑, 야한 거라도…… 한다든지?」
+						PRINTFORMW 「……%UNICODE(0x2665)%」
+					ENDIF
+				ELSE
+					PRINTL 「지하에 있어도 추운 계절이 왔어.」
+					PRINTFORMW 「아 그래. 새해 처음이니 첫 인사로…… 잘 잤어, %CALLNAME:MASTER%?」
+				ENDIF
+			ENDSELECT
+			TCVAR:50:350 = 1
+		;취했을 때
+		;곤드레만드레
+		ELSEIF BASE:술기운 > (MAXBASE:술기운 / 10) * 8
+			PRINTDATAW
+				DATALIST
+					DATA 「우먀아아~~암, 음냐아……」
+					DATAFORM 「므에? 와아아♪ %CALLNAME:MASTER%다아――! 올치올치해조오, 빨리이」
+					DATA 「아헤헤헤……♪좀 더어~ 웅?」
+				ENDLIST
+				DATALIST
+					DATA 「쥬인님 쥬인님! 어어…… 멍? 냥?」
+					DATA 「어느 쪼기 더 조아아?」
+					;DATAFORM ……확실히 동물 꼬리가 달린 플랑도 귀여우려나.
+				ENDLIST
+				DATALIST
+					DATA 「껴안아 조, 꾸욱하구. 옳지옳지하고 쓰담쓰담해줘어~」
+					DATA 「……놓지말아 줘, 계에속……」
+				ENDLIST
+				DATALIST
+					DATA 플랑은 당신의 손을 잡고 부비적거리고있다.
+					DATA 뺨을 집어보니, 말랑말랑한게 상당히 부드럽다.
+					DATA 「워하능거야아~」
+					DATA 축 늘어지며 웃음을 띠는 플랑은 무척이나 사랑스럽다.
+				ENDLIST
+				DATALIST
+					DATAFORM 「%CALLNAME:MASTER%~ 죠아해애~」
+					DATA 「겨론하자아, 웅?」
+				ENDLIST
+				DATALIST
+					DATA 플랑은 당신의 팔을 끌어안곤 노 젓듯이 몸을 쓸어 올리며 비벼댄다.
+					DATA ......팔을 놓아줄 생각은 없는 모양이다.
+				ENDLIST
+			ENDDATA
+		;(거나하게)취함
+		ELSEIF BASE:술기운 > (MAXBASE:술기운 / 10) * 5
+			PRINTDATAW
+				DATALIST
+					DATA 「조금, 취했을지도......」
+					DATA 「술이 그렇게 독하지가 않아서, 나도 모르게 다 마셔버릴 지도오?」
+					DATAFORM 「그러니, %마스터가% 옆에서 계속 잘 봐줘야 해?」
+				ENDLIST
+				DATALIST
+					DATA 「어깨, 잠깐만 빌릴게」
+					DATA 「취하니까 이젠 좀 힘들어서... 안 될까?」
+				ENDLIST
+				DATALIST
+					DATA 「술이 들어가면 나, 조금 수다스러워질지도 몰라」
+					DATA 「평소엔 말하지 않은 것들이 술술 튀어나올 정도로 말야」
+					DATAFORM 「예를 들면, 내가, %마스터를% 엄청 좋아한다든지...」
+					DATA 「...」
+					DATA 「아무 것도 아냐.」
+					DATA 여태 그리 말해놓고 이제와서 부끄러움을 느끼는 플랑이었다.
+				ENDLIST
+			ENDDATA
+		ELSE
+		;금일 첫 회화 이후 통상 회화
+			SELECTCASE DAY:2
+			;봄의 회화
+			CASE 1 
+				SELECTCASE RAND:10
+				CASE 0
+					PRINTL 「조금, 따뜻해지기 시작하네.」
+					PRINTL 「여태까지 줄곧 지하에 있었으니 눈치 채지 못 했었는데」
+					PRINTW 「지금은 봄이 무척이나 기다려지는 기분을 알겠어.」
+				CASE 1
+					PRINTL 「봄이라 하면 벚꽃이지.」
+					PRINTL 「그렇지만, 어째서 그런 벚꽃을 예쁘다고 보는 걸까?」
+					PRINTW 「덧없이 잎이 떨어지는 모습은, 그 어떤 꽃들도 변함이 없을 텐데...」
+				CASE 2
+					PRINTL 「피었다 싶으면, 이미 떨어져가는 벚꽃을」
+					PRINTL 「또 내년이 있으니까, 라면서 안타깝게 지켜볼 뿐... 이랄까ㄴ」
+					PRINTW 「...내년에도, 함께 보러 가자. 무조건 꼭 가는 거야?」
+				CASE 3
+					PRINTL 「이제 좀 따뜻해졌다고 생각했는데, 벌써 더워지기 시작했어」
+					PRINTW 「당신과 있어서 그런 걸까, 하루가 빨리 지나니 어쩔 수 없나보네.」
+				CASE 4
+					PRINTFORML 「%CALLNAME:MASTER% 잠깐만, 가만히 있어 봐.」
+					PRINTW 「이렇게 올리면…」
+					CLEARLINE 1
+					PRINTW 「이렇게 올리면… 짜안♪ 플랑표 화관입니다~」
+					PRINTL 「어딘가에서 이렇게 화관을 만들어 주면 좋아한다길래, 나도 한번 해봤는데」
+					;습득느림 때문인지 처음 하는 거에 서툰 모습
+					PRINTL 「워낙 서투른 탓에 잘 하지는 못 했어. 나한텐 생각보다 어렵더라...」
+					PRINTW 「그래도 이거 나름대로 예쁘게 만들었지, 어때?」
+					PRINTDW 당신은 이 화관이 예쁘다고 칭찬해주며 플랑의 머리를 쓰다듬어 주었다.
+					PRINTFORML 「에헤헤…♪%마스터가% 좋아해 주니 다행이야.」
+				CASE 5
+					PRINTL 「봄의 일곱 나물이라 해도, 순무나 무밖에 안 먹었을지도?」
+					PRINTW 「다른 건, 평소엔 먹어보겠다고는 하지 않으니깐.」
+				CASE 6
+					PRINTL 「이별의 계절, 이라고들 하지. 봄 말이야」
+					PRINTL 「......조금 걱정되긴 해도, 헤어지고 싶다든가 하지는 않은 거지?」
+					PRINTFORMW 「%마스터가% 내게 사랑의 말을 속삭이며, 그렇지 않다고 해줬으면 좋겠어……」
+				CASE 7
+					PRINTL 「봄은 만남의 계절이라고도 부르곤 하더라.」
+					PRINTFORML 「나와 %마스터는% 언제 만났었던가?」
+					PRINTL 「처음 만났을 땐 이런 관계가 될 거라곤 생각지도 않았으니까, 언제였는지 기억이 안 나.」
+					PRINTFORML 「그래도, 처음으로 %CALLNAME:MASTER%에게 안겼다든가, 처음으로 데이트도 나왔다든가」
+					IF TALENT:처녀
+						PRINTL 「그, 그리고, 처음으로 상냥하게 만져졌다든가......」
+					ELSE
+						PRINTL 「그리고, 저기...... ㅅ, 섹스했다든가……」
+					ENDIF
+					PRINTFORML 「……아무튼, %CALLNAME:MASTER%와의 여러 첫 경험들은 생생하게 다 기억하고 있어.」
+				CASE 8	
+					PRINTDL     仏には       桜の花を    たてまつれ
+					PRINTW 「"불상위에는 벚나무에핀꽃을 바쳐올려라" 라던가? 가끔은 시 짓기도 괜찮으려나.」
+					PRINTL 「뭐? 이미 있는 시 배껴쓰는 거라고? 그런가……」
+					PRINTDL [역: 사이교 법사의 「산가집(山家集)」봄의 장의 구절 중 하나]
+				CASE 9
+					PRINTL 「동백꽃의 계절이네. 언제 한번 보러 가지 않을래?」
+					PRINTFORML 「이 시기에 동백꽃이 제일 많이 핀다고 하니까, %CALLNAME:MASTER%도 분명 좋아할 거야.」
+				ENDSELECT
+			;여름의 회화
+			CASE 2
+				SELECTCASE RAND:10
+				CASE 0
+					PRINTL 「본격적으로 더워지기 시작했어.」
+					PRINTFORML 「그래도 %CALLNAME:MASTER%한테서 떨어지지는 않을 거야.」
+					PRINTW 「숨막힐 듯이 더운 것 이상으로, 행복하니까♪」
+				CASE 1
+					PRINTFORML 「밤이 짧아져서, 불가항력으로 %CALLNAME:MASTER%하고 있을 수 있는 시간도 짧아졌어.」
+					PRINTL 「또 당신이 만나러 와줄 거라는 건 알고는 있긴 한데 말야…」
+					PRINTW 「……여름이 싫어졌어.」
+				CASE 2
+					PRINTL 「하도 더워서 앓아 누울 지경이야…」
+					PRINTW 「뭐라도…… 시원한 거 하나 사주면 안 돼? 응?」
+				CASE 3
+					PRINTL 「이렇게나 더운데, 강에도 들어갈 수조차 없다니...」
+					PRINTW 「역시, 흡혈귀란 거 지~인짜 성가셔 죽겠어.」
+				CASE 4
+					PRINTL 「사쿠야한테 얘기해서, 목욕탕에 물 받아놓으라 할 테니까」
+					PRINTW 「같이 들어갈래? 분명 기분 좋을 거야.」
+				CASE 5
+					PRINTL 「숙녀는 아무리 더워도 꾹 참는다고 들었지만」
+					PRINTFORMW 「%CALLNAME:MASTER% 앞에서는, 잠시만, 조금 벗어도 괜찮지?」
+					IF TALENT:TARGET:가슴사이즈 < 0
+						PRINTDL 그러나 옷 아래로 드러난 가진 것 하나 없던 그 가슴은 초라해 보였다...
+						PRINTFORMW 「……%CALLNAME:MASTER% 너, 너무 실망하는 거 아냐?」
+						PRINTDW 오히려 단 1도 없기에 아이다움을 어필할 수 있을지도 모른다!
+						PRINTW 「그딴 칭찬 필요 없거든?!」
+						;PRINTFORMDL 옷 아래로 드러난 가진 것 하나 없던 그 가슴은...
+						;CALL ASK_YN("초라해 보였다","잘 어울려 보였다")
+						;PRINTFORMDW 오히려 가진 게 없기에 당당해질 수 있었던 걸까?
+						;IF !RESULT
+						;	PRINTFORMW 「……너무 실망하는 거 아냐? 」
+					ELSEIF TALENT:TARGET:가슴사이즈 == 0
+						PRINTDL 그러나 그 가슴은…… 의외로 있긴 있었다.
+						PRINTDW 당신은 플랑에게 봉긋 튀어나온 가슴이 있다는 것에 주목하고 있다.
+						PRINTW 「후후, 나도 성장하고 있단 말씀!」
+						IF MARK:반발취득이력 == 3
+							CLEARLINE 1
+							PRINTW 「후후, 나도 성장하고 있단 말씀! ……여태 이 상태 그대로였냐고?」
+							CALL COLORMESSAGE("「너도 납작하게 만들어서 평생 인간쓰레기로 살아가게 해줄까?」", C_RED, 1,0)  
+							PRINTW
+							PRINTDL 인간의 모습을 한 재앙을 맞이하기 전에,
+							PRINTDW 당신은 필사적으로 폭주 직전의 플랑을 진정시켰다……
+						ENDIF
+					ELSE
+						PRINTDL 옷을 벗으니, 작은 몸과 반대되는 풍만한 가슴이 공공연히 드러난다.
+						PRINTW 「……」
+						;PRINTL (여길 빤히 쳐다보고 있어... 그것도 가슴만?!)
+						;PRINTFORML (막상 꿈에서나 볼법한 사이즈가 되니까 은근 어색한데……)
+						PRINTFORMW (전보다 커져서 그런가, 막상 %마스터가% 보면 더 신경 쓰여서...!)
+						PRINTDW 자기가 직접 벗어놓고 뒤늦게 가리기 시작하던 플랑이었다.
+					ENDIF
+				CASE 6
+					PRINTL 「멋대로 피를 빨아먹는 모기는 싫지만…」
+					PRINTL 「하고있는 짓은 흡혈귀도 다를 바 없으려나.」
+					PRINTW 「...그래도 모기와 동급으로 불리는 건 좀 싫은 걸.」
+				CASE 7
+					PRINTL 「그러고 보면, 환상향에선 불꽃놀이는 못 보는 걸까?」
+					PRINTL 「알록달록한게 엄청 이쁘다고 하던데」
+					PRINTFORMW 「%마스터가% 옆에 있어준다면, 분명 이쁘겠지?」
+				CASE 8
+					PRINTL 「축제, 가 보고 싶다.」
+					PRINTFORML 「유카타도 입고, %마스터와% 서로 만난 다음에, 노점들도 들러보고♪」
+					PRINTFORML 「불꽃놀이도 보면서, %CALLNAME:MASTER%하고 키스도 하면――」
+					PRINTW 「……크흠. 조금, 동화같은 얘기이긴 하지?」
+					PRINTW 「그래도 정말로, 그런 일이 있음 좋겠다고 생각해.」
+				CASE 9
+					;쓰르라미 울 적에를 안 해 봐서 추가로 못 넣겠다
+					PRINTL 「쓰르라미 우는 소리가, 해질녘 즈음에 들려오게 됐네.」
+					PRINTW 「뭐랄까, 되게 감성적이게 되는 소리라고 생각하지 않아?」
+				ENDSELECT
+			;가을의 회화
+			CASE 3
+				SELECTCASE RAND:10
+				CASE 0
+					PRINTL 「가을은 밤이 점점 길어진다고 하지만」
+					PRINTFORML 「%마스터가% 있으면, 낮이든 밤이든 순식간에 지나가버려」
+					PRINTW 「좀 더 오래오래, 당신과 함께 지내고 싶은데도 말이야.」
+				CASE 1
+					PRINTL 「독서의 계절, 이긴 한데……」
+					PRINTL 「당신이 마음에 걸려서 독서에 집중할 수 없어」
+					PRINTW 「그러니까아…… 오늘은 나하고 잔뜩 놀자, 응?」
+				CASE 2
+					PRINTL 「식욕의 가을이 왔네, 역시나」
+					PRINTL 「당신을 만나고 나서 여러가지로 맛있는 것들을 먹을 수 있었으니까」
+					PRINTW 「기대심에 가슴이 부풀어 올라.」
+					IF TALENT:TARGET:가슴사이즈 < 0
+						PRINTDL 당신은 희망이 보이지 않는 절벽을 바라보았다.
+						PRINTW 「……뭐, 왜, 가슴은 아직 자라는 중이라고!」
+					ELSEIF TALENT:TARGET:가슴사이즈 < 1
+						PRINTDL 그 말에 따라 가슴을 쳐다본 당신은, 말 없이 유감을 표하였다.
+						PRINTW 「너... 자꾸 내 가슴에 불만이라도 있는 거야!?」
+						;PRINTFORMW 「……이것 봐라? 두고 봐, 앞으로 %CALLNAME:MASTER% 것보다 커져서 짓눌러버릴 거라고!」
+					ENDIF
+				CASE 3
+					PRINTL 「가을의 식욕이라 하면, 역시 군고구마겠지?」
+					PRINTW 「갓 구워내서, 단 맛이 강한게 최고거든.」
+				CASE 4
+					PRINTL 「밤도 맛있지. 밤만쥬라든가, 밤이 들어간 타키코미밥도 좋더라.」
+					PRINTDW [*여러 재료와 육수•쯔유를 넣고 짓는 일본식 모둠솥밥]
+					PRINTL 「다만 조금, 껍질 깔 때 힘조절이 어려워. 꼭 하나씩은 터뜨려버리는데 말이지」
+					PRINTDW 설마 밤을 맨손으로 깐다는 말인가...?
+					;渋皮どうやってむくんだろう・・・？
+					;속껍질 어떻게 벗기지・・・?
+				CASE 5
+					PRINTL 「깨닫고 보면 어느새 추워져있으니까, 옷 갈아입는 타이밍 잡기가 어려워」
+					PRINTW 「뭐, 지하에만 있으면 딱히 기온이 확 내려간다거나 하진 않지만」
+				CASE 6
+					PRINTL 「태풍이 잦은 계절이네.」
+					PRINTL 「누군가가 에어리얼한테 명령이라도 내리는 걸까?」
+					PRINTDW [*공기의 요정, 셰익스피어의 희극 '폭풍' 中]」
+				CASE 7
+					PRINTL 「장마일 때도 싫지만, 태풍은 말이야......」
+					PRINTW 「우산을 써도 바깥에 나갈 수가 없으니, 우울해진단 말이야」
+				CASE 8
+					PRINTL 「"우리는 꿈과 같은 것으로 이루어져, 우리의 덧없는 목숨은 잠과 함께 끝난다..." 라던가?」
+					PRINTDW [*셰익스피어의 희극 '폭풍' 제4막 1장 中]
+					PRINTL 「당신이 나를 연인으로 받아준 이 현실이, 그저 꿈이었다면... 그건 정말 싫겠지만」
+					PRINTL 「그럼에도, 지금의 나에게 가능한 건 당신에게 사랑을 전하는 것 뿐이니까.」
+					PRINTFORMW 「……좋아해, %CALLNAME:MASTER%」
+					;THE TEMPESTの一節
+				CASE 9
+					PRINTL 「수확의 계절이 왔어.」
+					PRINTFORML 「나는 빵이 좋은데, %마스터는% 뭘 좋아해?」
+					PRINTW 「나중에 내가 저녁밥 만들 때 참고하려고.」
+				ENDSELECT
+			;겨울의 회화
+			CASE 4
+				SELECTCASE RAND:9
+				CASE 0
+					PRINTL 「단숨에 추워졌네……」
+					PRINTFORML 「그래도 %CALLNAME:MASTER%에게 달라붙을 핑계론 괜찮을지도?」
+					PRINTW 「자, 꼬옥 안아줘!」
+				CASE 1
+					PRINTL 「귤이 맛있는 계절이 왔구나.」
+					PRINTW 「코타츠까지 나오면 더는 여기서 꼼짝 못 할지도……」
+				CASE 2
+					PRINTL 「눈싸움 같은 거 하고 싶지 않아.」
+					PRINTW 「뭉친 눈덩이를 쥐어 잡으려 하면 무너지니깐 말야……」
+				CASE 3
+					PRINTL 「간장하고 김하고 설탕, 그리고 콩가루도 준비 끄~읏!」
+					PRINTW 「좀 이따 화로도 가져와서 바로 떡 구워먹자!」
+				CASE 4
+					PRINTL 「냄비요리가 맛있는 계절이 왔네」
+					PRINTL 「이건, 그러니까아…… 밀푀유요리, 라고?」
+					PRINTW 「아무튼 맛있으니까 금방 다 먹을 것 같아.」
+				CASE 5
+					PRINTL 「흡혈귀는 야행성이니까」
+					PRINTW 「따뜻한 시간에 일어나지 않은 만큼, 추위가 몰려오네...」
+				CASE 6
+					PRINTL 「이불 속에서 당신 곁에 붙어 있으면, 당신의 온기가 느껴져...」
+					PRINTFORML 「앞으로 이불 밖이 아니라, %CALLNAME:MASTER% 밖이 무섭다고 해야겠어.」
+					PRINTFORMW 「응? 아아, 내 체온이 더 높긴 하지, 그치. 그래도 %CALLNAME:MASTER%의 품은 따뜻해서 좋아.」
+				CASE 7
+					PRINTL 「스님들도 바삐 뛰어 다닌다는 섣달이라곤 하지만, 정말이지...」
+					PRINTL 「여러 가지로 있잖아? 설날에, 크리스마스에, 섣달그믐날, 또 발렌타인도 있고」
+					PRINTL 「전부 다 여태까진 어찌 되든 상관 없는 날들이었는데.」
+					PRINTW 「지금은, 모두 다 얼른 왔으면 하는 마음이야.」
+				CASE 8
+					PRINTFORML 「지금은 그렇진 않지만, 이 이후에 %마스터를% 또 만나기 전까지는 이불 밖으로 나갈 수 없어서……」
+					PRINTW 「지금은 어떠냐고? 좀 더 따스한, 나의 소중한 사람이 같은 이불 안에 있어서 못 나가겠어」
+				ENDSELECT
+			;연인 통상 회화
+			CASEELSE
+				SELECTCASE RAND:11
+				CASE 0
+					PRINTW 「이전에 날개가 방해가 되지 않냐고 물어본 적이 있잖아?」
+					PRINTL 「정상위가 어려우니까 방해되려나~ 하고 나도 생각한 적은 있는데」
+					SIF TALENT:처녀 != 1
+						PRINTFORML 「%마스터가% 끌어안아주며 해주니까 바닥에 닿지도 않고, 무엇보다도 말이야?」
+					PRINTW 「날개로 팔까지 감싸서 꼬~옥 하고 끌어안을 수 있으니까」
+					PRINTW 「지금은 이 날개가 있어서 다행이라고 생각해♪」
+				CASE 1
+					PRINTL 「피를 빨아마시면 야한 기분이 돼 버린다고 이전에 얘기했었지?」
+					PRINTFORMW 「그런데도 또 물어본다는 건, 유혹하는 걸로 봐도 좋다는 거지...?%UNICODE(0x2665)%」
+				CASE 2
+					PRINTL 「간단히 파괴되는 것이라도, 파괴하고 싶지 않다고 생각했어」
+					PRINTW 「처음이었다 하더라도, 이것이 사랑이란 걸 알았으니까.」
+				CASE 3
+					PRINTFORML 「%CALLNAME:MASTER%에게 좋아한다는 말을 들으면, 마음이 따뜻해져.」
+					PRINTFORMW 「%CALLNAME:MASTER%도 같은 마음이었음 좋겠다~」
+				CASE 4
+					PRINTL 「인간들이랑 하고 싶은 일이 전부 다 끝나면 알려줘야 해?」
+					PRINTFORMW 「앞으로 나하고 쭈~욱 함께 지낼 수 있게, %CALLNAME:MASTER%도 흡혈귀로 만들 거니까.」
+				CASE 5
+					PRINTL 「달은 예쁘긴 하지만, 햇빛을 훔쳐서 환하게 빛나고 있으니깐」
+					PRINTL 「밤이여도 우리들은 햇빛을 쬐고 있다는 것과 다름없지 않을까?」
+					PRINTW 「그치만 실제론 달빛은 뭔가 상쾌한 기분이라 좀 이상해.」
+				CASE 6
+					PRINTL 「며느리가 미우면 손자까지 밉다, 라고 해도」
+					PRINTL 「거꾸로 좋아하는 사람은, 어떻게 하더라도 좋아하게 돼 버려.」
+					PRINTFORMW 「어느새 깨닫고 나니, 아무렇지도 않았던 %CALLNAME:MASTER%의 얼굴이 멋있다고 느껴졌단 말이야…」
+				CASE 7
+					PRINTFORML 「만약 신이 있다면, %마스터가% 태어난 것과, 또 만난 것에 감사해야 하려나?」
+					PRINTFORMW 「%CALLNAME:MASTER%하고 사귄 건, 나도 노력한 그 결과니깐.」
+				CASE 8
+					PRINTL 「She got married and then there were none...」
+					PRINTDW 언젠가 플랑이 당신을 기다릴 때에 홀로 부르던 노래인 듯하다.
+					PRINTFORMW 「그런 결말… 기대해도 되는 걸까 %CALLNAME:MASTER%?」
+				CASE 9
+					PRINTL 「일일천추라고, 예전에 내가 이해 못 하던 말이 있었어.」
+					PRINTW 「홀로 495년을 보내왔는데, 천년같은 하루라고 해서 뭐가 다를까 싶었지.」
+					PRINTL 
+					PRINTDL 와락, 하고 플랑이 당신에게 안겨왔다.
+					PRINTW 「……매일매일 보고 싶은 이가 생기기 전까지는 말야.」
+					PRINTL 「내 심정이 어땠는지, 좀 더 얘기해도 돼?」
+					CALL ASK_YN("들어준다", "사양한다")
+					IF !RESULT
+						PRINTL 「응, 고마워……」
+						PRINTFORMW 「……%마스터가% 언제 찾아올지 기다리던 시간은 몇백몇천의 정도가 아니였어」
+						PRINTL 「혼자 있지 않아도 된다는 희망과 동시에 또 혼자 남겨질 거라는 불안감이 뒤엉켜져서」
+						PRINTW 「결국엔 감당 못 한 채로 머릿속이 혼란스러워질 때면, 유독 시간이 흐르지 않는 것 같아서 무서워……」
+						PRINTDW 당신은 플랑에게 살포시 입술을 얹어주었다.
+						PRINTFORMW 「……내 곁에 쭉 있어줘, %CALLNAME:MASTER%.」
+					ELSE
+						PRINTFORML 「흐응~? %마스터는% 별로 듣고 싶지는 않나본데?」
+						PRINTW 「――후흣, 농담이야. 다음에 얘기해도 상관 없어.」
+						PRINTW 「그냥 잠깐만, 이대로 있을래…♪」
+					ENDIF
+				;원작자가 ntr은 금지라 했으므로 언급만 한다, ntr은 당연히 없다
+				;왠지 홍마관 ntr이 생각나는 분위기이긴 하다
+				CASE 10
+					PRINTFORML 「있지, %CALLNAME:MASTER%.」
+					PRINTL 「몇몇 인간들은 자기 애인을 남한테 빼앗기는 것에 흥미가 있다고도 하는데…」
+					PRINTFORMW 「혹시 %마스터는%, 누가 날 빼앗을까 봐 걱정 하고 있었어?」
+					CALL ASK_YN("그렇다", "아니다")
+					IF !RESULT
+						PRINTW 「헤에~ 진심으로 걱정해 주니까 왠지 기쁘기도 한 걸♪」
+						PRINTW 「그래도 마음이 안 놓이면…」
+						PRINTFORMDL 플랑은 %CALLNAME:MASTER%의 손을 잡아 속옷 안으로 집어 넣어 문지르기 시작했다.
+						PRINTFORMW 「내 몸 구석구석마다… 앗, %CALLNAME:MASTER%의 냄새와 자국을 잔뜩 남기자구%UNICODE(0x2665)%」
+					ELSE
+						PRINTL 「"플랑쨩은 누구보다 강해서 그럴 일이 없다"… 라니,」
+						PRINTW 「걱정하는 척이라도 해 주지, 그게 뭐야! 흥이다!」
+						PRINTW 「……하기야 그런 음흉한 녀석들은 진작부터 죽어 있었겠네.」
+						PRINTDW 어느새 칭찬으로 알아들었는지 히죽히죽거리는 모습이 눈에 보였다.
+					ENDIF
+					;PRINTFORML 「외롭다는 기분도 사랑을 아는 이들만이 느낄 수 있을 거고.」
+					;PRINTFORMW 「그렇담 고독한 시절의 나도, 누군가에게 사랑받은 적이 있었던 걸까?」
+				ENDSELECT
+			ENDSELECT
+		ENDIF
+;마지막 CASEELSE 절대사로 분기가 되어있다니 이거
+;어떻게 등확률로 낼 수 없을까
+	ELSEIF TALENT:연모
+		SELECTCASE RAND:9
+			CASE 0
+				PRINTL 「인간마을의 과자점 소문을 들었는데, 낮에는 못 가니 무리인가」
+				PRINTW 「엇, 24시간 영업인 거야...?」
+			CASE 1
+				PRINTL 「날개가 방해가 되진 않았냐고?」
+				PRINTW 「우음, 반듯이 누워서 잘 수 없는게 불편하려나」
+			CASE 2
+				PRINTL 「밤 이외엔 일어나지 못 하는 것도 불편하네」
+				PRINTL 「만약 당신이 규칙적인 생활을 했으면, 날 못 찾았을지도 모르니깐」
+				PRINTFORMW 「%마스터가% 제때 잠을 안 자는 불량한 아이로 자라서 참 다행이야, 그치?」
+			CASE 3
+				PRINTL 「꾸욱 하면, 간단하게 파괴되어버려」
+				PRINTL 「그게 생명이든, 물건이든,」
+				PRINTW 「……소중한 사람이든 간에.」
+			CASE 4
+				PRINTL 「피는 맛있지. 그야 흡혈귀니깐」
+				PRINTL 「다만... 본능적으로, 말이지?」
+				PRINTW 「조금 야한 기분이 들게 되니까…」
+			CASE 5
+				PRINTL 「흡혈귀가 되고 싶어? 흐음... 뭐 되고 싶다면, 못 해줄 건 없지만.」
+				PRINTL 「단점은 많은데도, 장점이라곤 나하고 있는 시간이 늘어나는 것 뿐」
+				PRINTW 「어때? 그럼에도 흡혈귀가 되고 싶어?」
+			CASE 6
+				PRINTW 「나의 어디가 미쳐 있다는 걸까, 가끔 이해가 되지 않아」
+				PRINTFORML 「%마스터는% 항상 나를 긍정해주니까 모를 테지만」
+				PRINTL 「다른 이들은 당연하다는 듯 날 광인으로 보곤 해.」
+				PRINTFORMW 「혹시... %마스터는%, 날 어떻게 생각해?」
+			CASE 7
+				PRINTDL "그리고 아무도 없게 됐다."
+				PRINTL 「...이 방에서는, 말이지?」
+				PRINTW 「그런 해석도 있을지도 모르겠네.」
+			CASE 8
+				PRINTL 「495년은, 확실히 길긴 했지만」
+				PRINTL 「그 이상으로 누군가를 길게 생각한 적은 없었어.」
+				PRINTL 「……그게 너라는 얘기는 아직 안 했거든?」
+		ENDSELECT
+	ELSEIF TALENT:사모
+		SELECTCASE RAND:23
+			CASE 0
+				PRINTL 「저런 곳에 가둬졌던 이유?」
+				PRINTL 「다루지를 못 하잖아, 나 말이야.」
+				PRINTL 「언제 자신들에게 엄니를 드러낼지 모르는, 저주받은 무기이기도 하니까.」
+			CASE 1
+				PRINTL 「미친 흡혈귀라고, 또 다시 들려오고 말았어.」
+				PRINTFORML 「%CALLNAME:MASTER%도 내가 미쳐 있다고 생각해?」
+				PRINTW 「...딱히 위로를 듣고 싶다는 건 아니야. 그냥 궁금해서.」
+				CALL ASK_YN("미치지 않았어","미치도록 귀여워")
+				IF !RESULT
+					PRINTW 「미치지 않았으니까 이렇게 얘기할 수 있다, 라고?」
+					PRINTL 「...바, 바보 아냐?! 어떻게 고작 그런 걸로 판단해?」
+					PRINTW 「애초에, 겁도 없이 날 찾아오는 네가 더 이상한 거 아니냐고...」
+					PRINTDW 부정하지는 않는 걸 보니, 의외로 솔직한 면이 있다고 느낀 당신이었다.
+					CFLAG:50:호감도 += 50
+					CFLAG:50:신뢰도 += 60
+				ELSE
+					PRINTW 「...?」
+					CLEARLINE 1
+					PRINTW 「...?!!!?!」
+					PRINTW 「내, 내가 언제 그런 뜻으로 물어봤대?! 제대로 답하란 말이야!」
+					PRINTW 「...싫지는 않다니까, 다행이지만...」
+					CLEARLINE 1
+					PRINTDW 왠지 마지막에 플랑이 뭐라 중얼거린 것 같기도...?
+					CFLAG:50:호감도 += 100
+					CFLAG:50:신뢰도 += 30
+				ENDIF
+			CASE 2
+				PRINTL 「사람을 죽이는 짓 따위 하지 않았어.」
+				PRINTL 「최근까진, 마실 것의 형태로만 알고 있었고...」
+				PRINTW 「...파괴되기 쉽다는 건 알고 있었지만 말이야.」
+			CASE 3
+				PRINTL 「흡혈귀니까 피는 맛있는게 당연하지」
+				PRINTW 「그래도 본능이 자극받으니까, 가능한 한 피를 취하지 않도록 하고는 있지만.」
+			CASE 4
+				PRINTL 「내가 무언가 원하는게 있으면, 대체로 사쿠야가 가져와 주긴 한다만」
+				PRINTL 「그럼에도, 회화해주는 건 잠깐으로 족한 정도야.」
+				PRINTFORMW 「...생각해보니, %CALLNAME:MASTER% 이외의 상대와 얘기를 한 적이 별로 없을지도 모르고.」
+			CASE 5
+				PRINTL 「흡혈귀가 되고 싶어? 그닥 추천은 못 하겠네.」
+				PRINTL 「불편한 게 많으니까 그래. 밤말곤 일어날 수도 없고, 마늘도 못 먹어.」
+				PRINTW 「장점이라면...... 특별히 없어. 대신, 나와 수명이 비슷해진다는 거 정도?」
+			CASE 6
+				PRINTL 「마리사는, 전혀 놀아주러 와 주지 않으니까……」
+				PRINTW 「동전도 모아놨는데, 쓸모도 없게 돼 버렸네.」
+			CASE 7
+				PRINTL 「언제라도 놀러 오겠다고 말했는데」
+				PRINTW 「그 날 이후로, 레이무는 나한테 온 적이 없어.」
+			CASE 8
+				PRINTL 「험티덤티라고, 알고 있어?」
+				PRINTW 「한 번 떨어지면 다시는 되돌릴 수 없는 것……」
+				PRINTW 「마치, 내 손바닥 위의 눈과도 같아서 자꾸만 생각나.」
+				;PRINTW 「답은 달걀이라곤 하는데, 진실은 과연 어떨까……?」
+			CASE 9
+				PRINTL 「"그리고 아무도 없었다"...였나?」
+				PRINTL 「그 이야기에 비교한다면,」
+				PRINTW 「나하고 그 녀석은 서로 막상막하겠네.」
+				;안 읽어봐서 무슨 내용인지 모르겠다
+			CASE 10
+				PRINTL 「이런 날개여도 일단 날 수는 있어.」
+				PRINTW 「뭐, 실내에서 나는 건 무리겠지만.」
+			CASE 11
+				PRINTL 「붉은 달은 본 적이 없지만」
+				PRINTL 「적색 구름이 흘러가는 건 본 적이 있어.」
+				PRINTW 「환상향 바깥에선 붉은 비도 내렸었다고? 그건 무슨 요괴짓이람.」
+			CASE 12
+				PRINTL 「소악마라면... 대충 파츄리의 심부름꾼이라 보면 돼.」
+				PRINTW 「그치만 이름도 없는 심부름꾼따위 하나하나 기억하고 있진 않은데 말야.」
+			CASE 13
+				PRINTL 「그러고 보니 메이링? 하고 얘기할 기회가 생겨서」
+				PRINTW 「어느 정도 대화는 했다만, 날 무서워하고 있었더라.」
+			CASE 14
+				PRINTL 「"인생은 무언가를 이루기에는 너무나도 짧지만, 아무 것도 하지 않기엔 너무나도 길다"…라고,」
+				PRINTL 「흡혈귀의 수명이 겨우 수백에 그치는 건 아니지만…」
+				PRINTW 「495년이라는 시간을, 또 다시 혼자서 보내기는 힘들 것 같아.」
+				PRINTW 「……너랑은 상관 없거든? 100년도 못 넘기는 주제에.」
+			CASE 15
+				PRINTL 「내가 이야기하는 거, 뭐라고 해도 말이지」
+				PRINTL 「머릿속에 든게 책밖에 없어서……」
+				PRINTW 「입 밖으로 나오는 것도 책에서 본 내용 뿐이야.」
+			CASE 16
+				PRINTL 「"산 너머 저쪽 하늘 멀리" 라고도 하지만, 행복은 어디에 있는 걸까?」
+				PRINTW 「환상향엔, 푸른 새따위 날지도 않는데.」
+			CASE 17
+				PRINTL 「그쪽 목욕탕? 들어가는 것 뿐이라면 들어간다만...」
+				PRINTW 「사쿠야가 깨끗이 해주고 있으니 그닥 필요하진 않아.」
+			CASE 18
+				PRINTL 「양친도 뱀파이어라, 사랑받으며 자랐다...같은 과거 이야기는 말이야」
+				PRINTW 「철이 든 때부터 여기에 있었으니깐, 그 때에 어땠는지는 나도 잘 몰라.」
+			CASE 19
+				PRINTL 「노래, 라고 하면 조금 다를지도 모르지만」
+				PRINTW 「딱 하나 좋아하는 음악이 있어. 이 곡은 말이야...」
+			CASE 20
+				PRINTL 「복잡한 일 따위 몰라」
+				PRINTL 「만사의 도리같은 거 생각지도 않아」
+				PRINTW 「시간 떼우는 데엔 분명 그런 건 괜찮을 것 같지만 말야.」
+			CASE 21
+				PRINTL 「요즘도 몰래 밖으로 자주 나오냐고?」
+				PRINTL 「그게 말이지, 아주 잠깐만 나갔다 왔는데도 다들 난리를 피우는지라……」
+				PRINTDW 그게 하필 플랑이라서 문제였던 것 아닐까.
+			CASE 22
+				PRINTL 「내게 있어 소중했던 이라, 글쎄다…」
+				PRINTW 「애초에 누군가를 그리워하는 흡혈귀가 세상에 어디 있겠어?」
+				PRINTW 「……그럴 만한 정이 흡혈귀한테도 있으면 모를까.」
+		ENDSELECT
+	ELSE
+		;특정 이벤트 이후 주회차시에 나오는 구상, 히든루트(보류중)
+		;ELSEIF 
+			;PRINTFORMDL 현재 나오는 구상은 아직 미개발인 상태입니다.
+			;PRINTFORMDL 만일 이 글이 출력된다면 꼭 버그 제보를 해주세요.
+		;그 이외
+		SELECTCASE RAND:11
+			CASE 0
+				PRINTFORML 「지하에 있는 이유…?」
+				PRINTFORMW 「뭐, 지내기가 편해서 그렇지?」
+				PRINTFORMW 「원하는 건 대체로 여기서 다 얻을 수도 있는데 말이야.」
+			CASE 1
+				PRINTFORML 「달리 친하게 지내는 녀석은 없냐고?」
+				PRINTFORML 「뭐, 당장 너 말고는 오는 사람이 있어야 말이지.」
+				PRINTFORMW 「그렇다고 네가 좋다는 의미가 아니거든? 뭐가 그리 좋다고 웃기는.」
+			CASE 2
+				PRINTFORML 「흡혈귀라는 종족도 참 아이러니하다고 생각하지 않아?」
+				PRINTFORMW 「인간을 사냥하는 괴물이, 똑같은 인간의 모습을 하고 있잖아.」
+			CASE 3
+				PRINTL 「레밀, 그 녀석? 딱히 싫은 것만은 아냐.」
+				PRINTW 「뭐, 지하에 가두려고 한 이유도 대강 알고는 있으니까…」
+			CASE 4
+				PRINTL 「미치광이다, 라고」
+				PRINTL 「이따금 밖으로 나오다보면 종종 들려오곤 해.」
+				PRINTW 「……대체 내 어디가 미쳐있다는 걸까.」
+			CASE 5
+				PRINTL 「문지기가 있다는 건 알고 있긴 하다만…」
+				PRINTW 「얼핏 봐도 자고 있어서, 제대로 얘기한 적은 없어.」
+			CASE 6
+				PRINTL 「파츄리라… 자주 만나기는 했다만, 얘기를 나눈 적은 별로 없네.」
+				PRINTW 「책을 읽는다고 해도, 도서관에서 간간히 얼굴 비추기만 하고 가니까.」
+				;PRINTFORML 「엥? 코…어, 라니? 그런 거 난 몰라」
+				;원문이 "え、こあ...?和からないや" 인데, こあ가 뭘 말하려는 건지 잘 모르겠음
+			CASE 7
+				PRINTL 「사쿠야는, 날 만나도 무서워하지 않는 유일한 메이드려나?」
+				PRINTW 「아니면…… 그냥 원래부터 무서움을 겉으로 드러내지 않는 걸지도 모르지.」
+			CASE 8
+				PRINTL 「지하에서 혼자 뭘 하고 있었냐고?」
+				PRINTL 「……실은, 누군가가 찾아왔을 때 말고는 기억이 잘 안 나.」
+				PRINTW 「그 무녀나, 마법사나, 아님 너처럼 말이지……」
+			CASE 9
+				PRINTW 「내 능력을 한번 보고싶다고?」
+				PRINTW 「그럼…… 특별히 네가 직접 파괴당하는 기분을 느끼게 해줄게.」
+				CALL COLORMESSAGE(@"「어디 가? 딱 한 번만 죽어보자니깐??」", C_RED, 1, 1)
+			CASE 10
+				PRINTL 「가끔은 내 얘기도 더 듣고 싶다고?」
+				PRINTW 「……나 말이야?」
+				PRINTDL 플랑은 무언가를 골똘히 생각하더니, 이내 고개를 절레절레 돌렸다.
+				PRINTL 「아니, 됐어.」
+				PRINTW 「굳이 안 좋은 얘기를 들어서 좋을 거 하나도 없잖아?」
+		ENDSELECT
+	ENDIF
+	;금일 회화한 횟수 +1
+	TCVAR:351 ++
+ENDIF
+RETURN 1
+;==================================================
+;301,차를 탄다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_301
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_301
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_301_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_301_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연인
+		[SKIPSTART]
+		IF TFLAG:193 == 1
+			PRINTFORML 「아, 이 맛...」
+			PRINTFORML 「뭐라 할까, 그리운 느낌이 나」
+			PRINTFORML 「아쌈 밀크티...인가?」
+			PRINTFORMW 「――맛있네, 언니.」
+		レミリア口上から。二次創作扱いになるかもなので除外中
+		대충 레밀리아 2차 창작으로 보일 것 같아서 뺐다는데 ㅁ?ㄹ
+		[SKIPEND]
+		IF TFLAG:193 == 1
+			PRINTFORMW 기대심에 가득찬 눈이 차를 한 모금 마시자마자 부드럽게 녹아 내린다.
+			PRINTFORML 「후아아...」
+			PRINTFORMW 「앞으로 %마스터가% 타주는 차 아니면 못 살아…♪」
+		ELSEIF TFLAG:193 == 0
+			SELECTCASE RAND:3
+			CASE 0
+				PRINTFORML 「차? 고마워」
+				PRINTFORMW 「평소대로의 맛이라는 느낌. 질리지가 않아」
+			CASE 1
+				PRINTFORML 「난 말하자면 홍차파이긴 하지만 말야」
+				PRINTFORML 「%마스터가% 타주면 홍차든 보리차든 간에, 뭐든지 맛있다고 느끼게 돼.」
+				PRINTFORMW 「당신의 색에 물든다…… 라는 느낌이려나?」
+			CASE 2
+				PRINTFORML 「늘 어디에서 차가 나오는 거야?」
+				PRINTFORMW 「손만 뻗으면 눈 깜짝할 사이에 뭐가 들려있는게, 꼭 사쿠야같아.」
+				PRINTFORMW 「……%CALLNAME:MASTER%? 땀을 뻘뻘 흘리는데, 괜찮아?」
+			ENDSELECT
+		ELSEIF TFLAG:193 == -1
+			SELECTCASE RAND:3
+			CASE 0
+				PRINTFORMW 「우으음, 이런 맛은 처음인데……」
+				PRINTFORML 「새로운 영역에 도전하는 것 자체로도 큰 의미가 있지, 그럼.」
+				PRINTFORMW 「그렇지만 적어도 난, 당신이 평소에 해주던 맛을 좋아한다는 걸 알아줬음 좋겠어.」
+			CASE 1
+				PRINTFORMDL 차가 남은 걸 보니, 맘에 들지는 않았나보다.
+				PRINTFORMW 「아, 그게, 이번 건 차 하나만 즐기기엔 조금 부족해서…」
+				PRINTFORMDL 그렇게 싫은 표정으로 답해봤자 하나도 안 속는데.
+				PRINTFORML 「……참, 최근에 내가 사온 과자라도 같이 안 먹을래?」
+				PRINTFORMDW 그냥 차를 새로 타 주기로 했다.
+			CASE 2
+				PRINTFORMDL 순간 플랑의 표정이 조금 일그러지곤, 언제 그랬냐는 듯 평온하게 돌아온다.
+				PRINTFORML 「으음…… 모처럼 %마스터가% 내준 차니까.」
+				PRINTFORMW 「……응. %CALLNAME:MASTER%만의 씁쓸함이 느껴져서, 오히려 좋을지도.」
+			;CASE 3
+			;	PRINTFORML 「맛이 이도저도 아닌데, 혹시…?」
+			;	PRINTFORMDL 헉, 하며 혼자 무언가에 놀란 플랑이 %CALLNAME:MASTER%의 얼굴을 다급히 만져본다.
+			;	PRINTFORML 「어디 아픈 거야? 요즘에 힘든 일이라도 있어? 아님 내가 뭔가 잘못했다든가…」
+			;	;PRINTFORML 「혹시 우리 사이가 서운해지고 있는 거라면, 난…!
+			;	PRINTFORMDW 차에 감정이라도 실리나, 싶던 %마스터는% 플랑의 오해를 풀어줬다…
+			ENDSELECT
+		ENDIF
+	ELSEIF TALENT:연모
+		IF TFLAG:193 == 1
+			PRINTFORML 「응, 맛있어.」
+			PRINTFORML 「%CALLNAME:MASTER%하고 있으면 늘 후끈후끈한 게, 차를 마셔서 그런 걸까?」
+			PRINTFORML 「혹은 그런게 아니라면…」
+			PRINTFORMW 플랑은 이쪽을 상냥한 눈으로 응시하고 있다.
+		ELSEIF TFLAG:193 == 0
+			PRINTDATAW
+				DATALIST
+					DATA 「고마워. 잘 마실게.」
+					DATAFORM 「……응, %마스터가% 타 주는 차는 언제나 기분이 좋아♪」
+				ENDLIST
+				DATALIST
+					DATAFORM 「그러고 보니 %마스터는% 이런 차라든지 여러 가지 일에 익숙해 보이네」
+					;SIF TALENT:MASTER:아이
+					;	PRINTFORML 「생각보다 어려 보이는데도 말이야. 과거부터 이런 일을 해왔던 걸까?」
+					DATA 「그게 아님, 원래 그런 능력을 지녔든지?」
+					DATA 「――아하핫, 추궁하려 했던 건 아냐. 너무 그렇게 긴장하지 않아도 돼」
+					DATA (하도 긴장한 게 한 번 더 물어보면 쓰러질 지경이야...)
+				ENDLIST 
+			ENDDATA
+		ELSEIF TFLAG:193 == -1
+			PRINTL 「앗…!」
+			PRINTDL 눈치채고 보니 플랑에게 건네주던 찻잔이 깨져 있었다.
+			PRINTL 「저기, 모처럼 타준 건데...... 미안해」
+			PRINTDL 신경 쓰지 않아도 된다고 답하곤, 상처는 없는지 찾아본다.
+			PRINTW 「괜찮아. 걱정해 줘서 고마워.」
+		ENDIF
+	ELSEIF TALENT:사모
+		IF TFLAG:193 == -1
+			SELECTCASE RAND:2
+				CASE 0
+					PRINTL 「됐어, 오늘은 사양할게.」
+					PRINTW 「방금 네가 차 타는 방식이 엉망인 걸 보니, 영 못 마실 것 같아서.」
+				CASE 1
+					PRINTL 「……읏, 또야?」
+					PRINTW 「네 차는 다 좋은데, 제대로 안 됐을 때와의 괴리감이 도저히 적응이 안 돼…」
+				CASE 2
+					PRINTFORML 「후우… %CALLNAME:MASTER%, 나한테 불만이라도 있어?」
+					PRINTW 「괜히 내 찻잔으로 화풀이하지 말고, 할 말 있으면 얘기를 해.」
+					PRINTDW 지금 차 한 잔으로 관심법이라도 쓰는 건가?
+			ENDSELECT
+		ELSE
+			SELECTCASE RAND:2
+				CASE 0
+					PRINTFORML 「이 차, 꽤 맘에 들어. %마스터가% 한 거야?」
+					PRINTW 「어느샌가 차를 잘 타게 됐네. ...뭐라도 탄 건 아니지?」
+					PRINTFORMDW 말은 그렇게 해도 플랑은 %CALLNAME:MASTER%의 차를 즐기고 있었다.
+					;PRINTFORML 「가끔은 너한테도 차를 부탁해도 되겠는 걸.」
+				CASE 1
+					PRINTL 「오늘도 네가 타주는 거야? 어디…」
+					PRINTW 「으음, 확실히 전보다 나아졌네.」
+					PRINTW 「……그렇게 봐도 더 칭찬 안 해줄 거거든.」
+				;CASE 2
+			ENDSELECT
+		ENDIF
+	ELSE
+		IF TFLAG:193 == 1
+			PRINTFORML 「잘 받을게.」
+			PRINTFORMDW 그렇게 말하곤 한 모금 홀짝이더니, 의외라는 눈빛을 보였다.
+			PRINTFORMW 「이번 건 괜찮네. 다음에 또 부탁해도 되겠어.」
+		ELSEIF TFLAG:193 == 0
+			SELECTCASE RAND:3
+				CASE 0
+					PRINTL 「……고마워.」
+					PRINTDW 입맛에 안 맞는 건 아닌지, 홀짝홀짝 마시고 있다.
+				CASE 1
+					PRINTL 「평범해서 조금 아쉬운 걸.」
+					PRINTW 「사쿠야한테 알려달라고 해보는 건 어때?」
+				CASE 2
+					PRINTL 「음… 뭐어 일단은 말이지」
+					PRINTL 「최악은 아닌데, 이대로는 못 마시겠어.」
+					PRINTW 「차에 질리는 건 사양이라서 말이야.」
+			ENDSELECT
+		ELSEIF TFLAG:193 == -1
+			SELECTCASE RAND:2
+				CASE 0
+					PRINTL 「……맛없어.」
+					PRINTDW 그리 말하곤 플랑은 눈앞에서 먹다 남은 찻잔을 파괴해 버렸다...
+				CASE 1
+					PRINTL 「아.」
+					PRINTDL 그저 플랑에게 찻잔을 건네기만 했는데도 쨍, 하는 소리가 나며 깨졌다.
+					PRINTDL 상처가 나지 않았나 확인하려 하니,
+					PRINTL 「잘만 있으니까, 신경 쓰지 마.」
+					PRINTDW ……라고 단언한 플랑이었다.
+			ENDSELECT
+		ENDIF
+	ENDIF
+	;금일 일상 커맨드 실행 횟수 + 1
+	;TCVAR:352 += 1
+ENDIF
+RETURN 1
+;==================================================
+;302,스킨십
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_302
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_302
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_302_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_302_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연모
+		IF TALENT:연인
+			IF TFLAG:193 == -1
+				PRINTFORML 「응햐앗!? 까, 깜짝 놀랐어……」
+				PRINTFORMW 「모르고 꾸욱해 버리면 어쩌려고 진짜!」
+				PRINTFORMW 「나 때문에 %마스터가% 잘못될까 봐 걱정된단 말이야…」
+			ELSE
+				SELECTCASE RAND:4
+					CASE 0
+						PRINTFORML 「%CALLNAME:MASTER%의 손, 따뜻해……」
+						PRINTW 「손을 잡은 것만으로 이렇게나 행복하다니……」
+						PRINTFORMW 「%CALLNAME:MASTER%의 온기를 알아버린 이상, 더는 못 떼어내겠어」
+						PRINTW 「……떼어놓지 말아 줘?」
+					CASE 1
+						PRINTL 「끌어안아 줄래? 꼬～옥하고」
+						PRINTW 「그렇게 하면, 당신을 세게 느낄 수 있단 말이야. 그니까, 응?」
+					CASE 2
+						PRINTL 「내 머리 빗질해 주려고? 좋아.」
+						PRINTFORMW 「나중에 한번 %CALLNAME:MASTER%한테 머리 다듬어달라고도 부탁해 볼까? 후훗♪」
+					CASE 3
+						PRINTFORMW 「꺄아, %CALLNAME:MASTER%의 손이다아♪」
+						PRINTFORML 『하으으…… 서로 끌어안으면 온몸이 딱 달라붙는 이 촉감 좋아……%UNICODE(0x2665)%』
+						PRINTL 『언제까지 안고만 있을 거야! 서로 번갈아가면서 하기로 했잖아!』
+						PRINTFORMW 『……%CALLNAME:MASTER%, 나느은…?』
+						PRINTDW 혹시 분신들을 예뻐해 줘도 질투하려나. 
+				ENDSELECT
+			ENDIF
+		ELSE
+			IF TFLAG:193 == -1
+				PRINTL 「흐앗?! 까, 깜짝 놀랐잖아……」
+				PRINTW 「정말이지, 잘못하면 큰일난단 말이야 이 바보야!」
+			ELSE
+				SELECTCASE RAND:4
+					CASE 0
+						PRINTL 「내 머리 만지작거리고 싶어?」
+						PRINTW 「괜찮긴 하다만…… 머리는 여자아이의 생명이니까, 조심히 해야 해?」
+					CASE 1
+						PRINTL 「ㅈ, 잠깐만, 이렇게나 가까우면 좀…」
+						PRINTW 「아, 알았어, 만져도 되니까! 이 이상 부끄럽게 달라붙지 마앗―!」
+					CASE 2
+						PRINTDL 플랑의 손을 가져다 올려 보니, 곱게 뻗어있는 손톱이 보였다.
+						PRINTL 「내가 흡혈귀라 하지만, 손톱이 흉기마냥 길어지지 않도록 제대로 관리하고 있다고?」
+						PRINTW 「혹여나 당신한테 상처입히는 일이 없도록 말이지…」
+					CASE 3
+						PRINTW 「인간들이랑 비교했을 때 내 어금니는 어떨까?」
+						PRINTW 「여태 비교한 적이 없었는데, 이 참에 한번 봐 보자.」
+						PRINTDL 이윽고 플랑은 입을 크게 벌려, 자신의 송곳니를 보여왔다.
+						PRINTW 「어래허여? 어으혀 기르히?(어때 보여? 엄청 길지?)」
+						PRINTDW 약간 길고 날카로운 듯 보인다…
+				ENDSELECT
+			ENDIF
+		ENDIF
+	ELSEIF TALENT:사모
+		IF TFLAG:193 == -1
+			PRINTDL 플랑에게 접촉을 시도했지만 얼굴에 흡혈귀 펀치를 맞고 날아가 버렸다.
+			PRINTL 「그렇게 음흉한 표정으로 다가와서야, 어느 여자가 허락하겠어?」
+		ELSE
+			SELECTCASE RAND:4
+				CASE 0
+					PRINTL 「손정도라면 뭐, 좋을대로 잡아도 상관없다만.」
+					PRINTW 「……야, 변태같이 멋대로 윗쪽까지 손대려는 거야?」
+				CASE 1
+					PRINTW 「엥, 발? 만지고 싶다고??」
+					PRINTL 「으으음, 그래도 여태까지 나와 지낸 것도 있으니까…… 특별히 이번만이야.」
+					PRINTW 「혹여나 간지럽힌다거나 하면 바로 꾸욱해서 죽여버릴 거야.」
+					PRINTFORMW 「……간혹 보면 %마스터는% 참 별난 건지 그냥 변태인 건지 모르겠다니까.」
+				CASE 2
+					PRINTL 「음? 내 옆에 앉아도 되냐고?」
+					PRINTW 「……그래 뭐.」
+					PRINTDW 천천히 플랑의 옆자리에 나란히 앉는다. 조금은 수줍어하는 모습이 참……
+					CALL COLORMESSAGE("「함부로 손대기만 해봐.」", C_RED, 1,0)  
+					PRINTDW 아무래도 지금은 살기 100%인 것 같다.
+				CASE 3
+					PRINTW 「내 날개가 그렇게나 신경 쓰였어? 그럼 만져보든지.」
+					PRINTL 「……날개가 알록달록해서 예쁘다니, 이해 안 될 소리만 하기는…」
+					PRINTDW 조금 빨개진 얼굴이 비쳐보이던 플랑은 고개를 휙 돌려버렸다.
+			ENDSELECT
+		ENDIF
+	ELSE
+		IF TFLAG:193 == -1
+			PRINTDL 플랑에게 가까이 다가가려 했지만, 어느새 날아온 탄막에 휩쓸려 버렸다.
+			PRINTDATAW
+				DATA 「하아... 사쿠야가 나서지 않은 걸 다행으로 여기라고.」
+				DATA 「다음엔 네 양손을 자를 줄 알아.」
+				DATA 「……죽고 싶었으면 진작 얘기해 주지, 응?」
+			ENDDATA
+			BASE:MASTER:체력 -= 300
+		ELSE
+			SELECTCASE RAND:3
+				CASE 0
+					PRINTL 「손을 한번 잡아보고 싶다고?」
+					PRINTW 「……이상한 낌새가 보이면 바로 찌부러뜨릴 거야.」
+					PRINTDL 플랑은 귀찮다는 눈빛을 보이며 한 손을 내밀고 있다.
+					CALL ASK_YN("악수한다", "냄새를 맡는다")
+					IF !RESULT
+						PRINTDL 당신은 두 손 안에 들어오는 자그마한 손을 살포시 감쌌다.
+						PRINTDW 차가운 촉감과는 반대로, 그 안에서 꾸물거리는 여자아이의 손이 마냥 귀엽게 느껴졌다.
+						PRINTL 「언제까지 잡고만 있을 건데? 이제 그만 놓으라고.」
+						PRINTW 「……그리고 넌 표정관리를 좀 배우는 게 좋겠어, 변태같아.」
+					ELSE
+						PRINTDW 당신은 조심스레 그 손을 감싸쥐어 얼굴 쪽으로 가져오곤,
+						CALL COLORMESSAGE("쓰으으으으으으으으으읍", C_PINK, 1,1)
+						PRINTW 「…?! 잠ㄲ, 너?!」
+						SELECTCASE RAND:3
+							CASE 0
+								PRINTDW 아아. 이 손으로 자위를 했다 생각하니, 어쩐지 여자아이의 냄새가……
+							CASE 1
+								PRINTDW 오, 오오…!! 지하에서 곱게 자라온 아가씨의 정수가, 흡수된다 흡수된다!!
+							CASE 2
+								PRINTDW 우아아앗!!! 불순한 때 하나 묻지 않은 순백의 앨리스를 킁카킁카 맛보고 있다아――!
+						ENDSELECT
+						CALL COLORMESSAGE("투콰아아아앙", C_RED, 1,0)  
+						PRINTW 
+						PRINTDW 그 날 밤, 세간에서 홍마관의 지붕을 뚫고 날아오른 인간이 포착됐다고 한다……
+					ENDIF
+				CASE 1
+					PRINTL 「하아… 넌 쌩판 남한테 몸부터 들이대는 바보구나.」
+					PRINTW 「딱히 친해지지도 않은 여자아이한테 끈적하게 달라붙어서 뭘 하려는 거야?」
+				CASE 2
+					PRINTL 「갑자기 내 머리는 왜?」
+					PRINTW 「됐으니까, 머리카락 그만 헝클고 손 때.」
+				;CASE 3
+					;PRINTFORML 「……
+					;PRINTFORMW 「
+			ENDSELECT
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;303,사과한다
+;TFLAG:193 (2=과자상자성공 1=대성공 0=성공 -1=실패 -2= 과자상자실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_303
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_303
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_303_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_303_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	SELECTCASE TFLAG:193
+	;과자상자 실패
+	CASE -2
+		IF TALENT:연인
+		ELSEIF TALENT:연모
+		ELSEIF TALENT:사모
+		ELSE
+			PRINTL 「……지금 이런 걸로 네 행동이 용서받을 것 같아?」
+			PRINTW 「필요 없으니까, 저리 치워.」
+		ENDIF
+	;그냥 실패
+	CASE -1
+		IF TALENT:연인
+		ELSEIF TALENT:연모
+		ELSEIF TALENT:사모
+		ELSE
+			PRINTL 「"다시는 안 그러겠다" ?」
+			PRINTL 「내가 뭘 보고 네 말을 믿어? 이래선 목숨 구걸밖에 더 안 되잖아.」
+			PRINTW 「지금 널 용서해야할 이유 따위는 1도 없다고.」
+		ENDIF
+	;성공
+	CASE 0 TO 1
+		IF TALENT:연인
+		ELSEIF TALENT:연모
+		ELSEIF TALENT:사모
+		ELSE
+			PRINTW 「적어도... 반성은 할 줄 아는구나.」
+			PRINTL 「알아들었으면 됐어. 이번 일은 그냥 없던 걸로 해줄게.」
+			PRINTW 「억지로 널 용서하는 것보다도, 차라리 이러는 게 서로에게 편하잖아?」
+		ENDIF
+	;과자상자 성공
+	CASE 2
+		IF TALENT:연인
+		ELSEIF TALENT:연모
+		ELSEIF TALENT:사모
+		ELSE
+			PRINTDW 거듭되는 사과와 설득 끝에, 과자상자를 주고 이번 일은 없던 일로 치부하자고 합의를 봤다.
+			PRINTL 「다시금 얘기하지만, 겨우 이딴 걸로 널 용서한게 절대로 아니라고.」
+			PRINTW 「……네 성의를 봐서 딱 한 번만 더 만회할 기회를 주는 거야, 알았어?」
+		ENDIF
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;304,일을 돕는다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;CFLAG:350 (업무내용(JOB_업무내용.ERB 참조할 것))
+;TCVAR:도울수없다 (=2 도와줘도 빨리 끝나지 않거나, 시간정지 중 불가 영원정의 진찰 등)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_304
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_304
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_304_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_304_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;시간정지중
+	IF FLAG:70
+		TCVAR:도울수없다 = 1
+		PRINTW 시간을 멈춰놓고 혼자 놀아봤자 의미가 없다.
+	;통상
+	ELSE
+		;첫 실행시
+		;초면~사모 정도의 관계를 기준으로 썼기에 연모, 연인의 경우는 나중에 쓸 것
+		IF FIRSTTIME(SELECTCOM)
+			PRINTDW 당신은 혼자 책을 읽고 있는 플랑에게 다가가 말을 걸어봤다.
+			PRINTL 「뭐하고 있냐니, 그냥 놀고있는 건데.」
+			PRINTW 「평소에도 난 여기에서 시간을 보내곤 한다고?」
+			PRINTW 「정 궁금하면 한번 둘러보든가 해.」
+			PRINTL 
+			PRINTDL 확실히 창고답게 구석구석에 별의별 물건들이 쌓여있었다.
+			PRINTDW 인형이나 술, 과자에, 보드게임 등등 멀쩡한 것들도 금방 찾아냈다.
+			PRINTL 「아, 그것들도 가지고 노는 거라길래 일단은 냅뒀는데 말이야」
+			PRINTW 「아무래도 나 혼자선 제대로 못 쓰는게 많다보니까, 뭐…」
+			PRINTW 「……그걸로 같이 놀자고? 뭐, 이참에 한번쯤 써보는 것도 괜찮으려나.」
+			PRINTL
+			;PRINTFORML 「그럼 이제 뭐 할 거야, %CALLNAME:MASTER%?」
+		ELSEIF TALENT:연인
+			PRINTW 「나랑 놀아주는 거야? 응! 완전 좋아!」
+			PRINTFORMW 「%마스터가% 알려준 놀이들은 재밌었지만, 혼자서는 못 하는 것들이라 쓸쓸했다구…?」
+			PRINTL 「그럼 오늘은 뭐 하고 놀까?」
+		ELSEIF TALENT:연모
+			PRINTDW 옆에서 플랑이 가만히 쳐다보고 있다.
+			PRINTDL 당신이 고개를 돌려 눈을 맞춰주니……
+			PRINTW 「응? 아, 아냐! 암것도 아니니까…… 아, 하핫」
+			PRINTFORML 「오늘은 저기, %마스터가% 있으니까! 저번에 못 해봤던 거 한번 해볼까?」
+			PRINTDW 얼굴이 빨개지고 있지만 그냥 넘어가 주기로 했다.
+		ELSEIF TALENT:사모
+			PRINTDL 오늘도 변함없이 혼자 놀고 있던 플랑에게 다가갔다.
+			PRINTL 「음? 왜 또 혼자서 놀고 있냐고?」
+			PRINTL 「사쿠야랑 한 적도 있고, 물론 재미가 없었다는 건 아니지만」
+			PRINTW 「……아무 생각 없는 너랑 하는 것도 나쁘지만은 않으니까.」
+			PRINTDW 마지막 말을 흐리던 플랑의 귀가 왠지 뜨거워 보였다.
+		ELSE
+			PRINTW 「저번에 했던 거 또 하려고?」
+			PRINTW 「뭐, 나름 재미는 있었으니까 이번에도 어울려 줄게.」
+		ENDIF
+		
+		[SKIPSTART]
+		오래 걸릴 것 같으니 보류
+		$PLAY_WITH_FLANDRE
+		PRINTL 자, 무엇을 하며 놀까?
+		;글쎄 스포츠는 내가 잘 살릴 수 있나 잘 모르겠어서 일단 뺌
+		;PRINTFORML [0] 스포츠
+		;사실상 회화 커맨드의 연장선, 다만 일주일에 한 번 보는 거니까 약간은 더 길게 얘기해도 괜찮을 듯
+		PRINTFORML [0] 다과회
+		IF !CFLAG:1451
+			SETCOLOR 0x808080
+			PRINTPLAINFORM [1] 요리 교실
+			RESETCOLOR
+		ELSE
+			PRINTFORML [1] 요리 교실
+		ENDIF
+		SIF TALENT:연인 || TALENT: 연모
+			PRINTFORML [2] 소꿉놀이
+		PRINTFORML [3] 탄막놀이
+		INPUT
+		SELECTCASE RESULT
+			CASE 0
+				IF TALENT:연인
+				ELSEIF TALENT:연모
+				ELSEIF TALENT:사모
+				ELSE
+				ENDIF
+				SELECTCASE RAND:
+				ENDSELECT
+			CASE 0
+				PRINTL 당신은 어느 한 선반에 들어있던 티파티 세트를 꺼내왔다.
+				IF TALENT:연인 || TALENT:연모
+					PRINTFORML 「아, 오늘은 우리 둘이서 티파티하는 거네?」
+					PRINTFORMW  「가끔은 여유를 만끽하는 것도 좋으려나~」
+					SIF !TALENT:MASTER:남자
+						PRINTFORML 「나중에 사쿠야도 데려와볼까? 사람이 많아지면 분명 더 재밌을 거야」
+					SIF TALENT:16:연인 || TALENT:16:연모
+						PRINTFORML 「그 녀석도? 우으으, %CALLNAME:MASTER%랑 친하다 해도 나는 좀 거북하단 말이지……」
+					PRINTFORMW 「그럼 과자도 금방 가져올 테니 잠시만 기다려 줘♪」
+					PRINTL
+					SELECTCASE RAND:4
+						CASE 0
+							PRINTFORML
+					ENDSELECT
+				ELSEIF TALENT:사모
+					PRINTFORMW 「티파티라, 좋아.」
+					PRINTFORMW 「
+					PRINTFORMW 「
+					PRINTW 뭐라도 도우려는 듯한 플랑에게 간단한 일 몇가지를 맡기며 준비를 끝마쳤다.
+					PRINTL
+					SELECTCASE RAND:4
+						CASE 0
+							PRINTFORMW 「……있잖아, 내가 여태까지 널 너무 막 대했던 것 같아.」
+							PRINTFORML 「제대로 얘기를 들어주는 사람은 %CALLNAME:MASTER%말곤 없었으니까」
+							PRINTFORMW 「막상 직접 사람을 대하는게, 좀 그래서……」
+							PRINTFORML 「저기, 그러니까 내가……」
+							PRINTFORMW 「미안…해, %CALLNAME:MASTER%」
+						CASE 1
+							PRINTL 플랑은 자신의 한 손을 쥐락펴락하며 당신을 바라보더니,
+							PRINTW "콰앙." 하며 그 손으로 무언가를 움켜잡는 시늉을 하였다.
+							PRINTFORMW 「헤, 오랜만에 장난 한번 쳐봤어.」
+							PRINTFORMW 「장난…이랄까, 옛날에도 늘상 이랬던 적이 있었는데…」
+							PRINTDL 어느샌가 플랑은 텅 비어버린 눈으로 허공을 쳐다보고 있었다.
+							PRINTFORMW 「어느 순간 무심코 파괴해버린 바람에, 결국엔 인간들을 위협한 꼴이 되고 말았거든.」
+							PRINTFORMW 「……그 때 모두가 날 보던 그 시선은, 지금까지도 달라진 거 하나 없이 여전하더라.」
+						CASE 2
+							PRINTFORML 「그 녀석이랑 달리 난 카리스마조차 없어서」
+					ENDSELECT
+				ELSE
+					PRINTFORMW 「
+					PRINTFORMW 「
+					PRINTFORMW 「의외로 %마스터는% 이런 고상한 취향도 즐길 줄 아는구나」
+					
+					PRINTW
+					SELECTCASE RAND:5
+						CASE 0
+							PRINTFORMW 「생각해보니까, 어떤 면에서 너는 대단한 걸지도 모르겠다 싶어.」
+							PRINTFORMW 「어찌보면 악명 높은 흡혈귀의 저택에 너 스스로 들어온 셈이잖아?」
+							PRINTFORML 「게다가 다름아닌 날 만나겠다고 지하로 내려오기까지 했었다니……」
+							PRINTFORMW 「너의 그 무식함 하나만큼은 참 대단하단 말이지.」
+							PRINTFORMDL 이윽고 한숨을 내쉬더니 이쪽을 귀찮다는 눈빛으로 쳐다본다.
+							PRINTFORMW 「지금도…… 왜 그렇게 날 만나는 거에 진심인 건지, 도통 이해가 안 간다니깐.」
+						CASE 1
+							PRINTDL 달그락…
+							
+							ENDIF
+						CASE 2
+							
+							PRINTFORMW 「인간이 흡혈귀를 무서워한다는 건 어찌보면 당연한 거야.」
+							PRINTFORML 「존재 자체가 인간을 잡아먹는 족속이잖아?」
+							PRINTFORMW 「인간과 겉모습만 같을 뿐, 내용물은 전혀 다른 흉포한 괴물일 뿐이지.」
+							PRINTL
+							PRINTFORMW 「
+						CASE 3
+							PRINTFORMW 「그럼 넌 여기서 정확히 무슨 일을 해?」
+							PRINTFORMW 「심부름꾼? 날 받든다니?」
+							SIF TALENT:MASTER:아이 || TALENT:MASTER:체형 < 0
+								PRINTFORML 「내가 왜 굳이 이런 어린 애한테…?」
+							PRINTFORML 「그냥 사쿠야한테 시키면 바로 되는 거잖아?」
+							PRINTFORMW 「유감이지만 너한테 심부름을 시킬 일은 아마 없을 거야.」
+							PRINTFORMW 「……과자라면 모를까.」
+						CASE 4
+							PRINTFORML 「과자는 어디에서 났냐고? 대충 인간네들 과자점에서 사온 거야.」
+							SIF TALENT:MASTER:인간
+								PRINTFORMW 「그쪽 출신인 너라면 익숙하겠지?」
+							PRINTFORMDW 원래도 지하 밖으로 나갈 수 있었냐고 당신이 물어본다.
+							PRINTFORML 「안 될 건 없다만, 무슨 봉인같은 걸 생각한 거야?」
+							PRINTFORMW 「그냥 '여기 얌전히 있어주세요~' 해서 그렇게 있던 것 뿐이라고.」
+							PRINTFORML 「아무튼간에, 요즘엔 내가 나가는 대신 너한테 심부름을 보내고 그럴 거야.」
+							PRINTFORMW 「산 따라 내려가기만 하면 바로 인간 마을이라고? 죽지 않고 잘 할 수 있겠지?」
+					ENDSELECT
+					CFLAG:50:호감도 += 100
+					CFLAG:50:신뢰도 += 50
+				ENDIF
+			CASE 1
+				IF !CFLAG:1451
+					PRINTFORMDW 플랑에게 요리를 가르치려면 무언가 계기가 필요할 것 같다……
+					GOTO PLAY_WITH_FLANDRE
+				ELSE
+					IF TALENT:연인
+					ELSEIF TALENT:연모
+					ELSEIF TALENT:사모
+					ELSE
+					ENDIF
+					SELECTCASE RAND:(미정)
+					ENDSELECT
+					CFLAG:50:호감도 += 75
+					CFLAG:50:신뢰도 += 30
+					EXP:MASTER:요리경험 += 5
+					EXP:요리경험 += 5
+					;수치가 이게 많은지 적은지를 잘 모르겠음
+			CASE 2
+				IF !TALENT:연인 || !TALENT:연모
+					PRINTFORMDW 플랑과 좀 더 사이가 좋아지면 할 수 있을 것 같다……
+					GOTO PLAY_WITH_FLANDRE
+				ENDIF
+				IF TALENT:연인
+				ELSEIF TALENT:연모
+				ELSE
+				ENDIF
+				SELECTCASE RAND:(미정)
+				ENDSELECT
+			CASE 3
+				IF TALENT:연인
+				ELSEIF TALENT:연모
+				ELSEIF TALENT:사모
+				ELSE
+				ENDIF
+				SELECTCASE RAND:(미정)
+				ENDSELECT
+				BASE:MASTER:체력 -= 200
+				BASE MASTER:기력 -= 200
+				BASE:체럭 -= 200
+				BASE:기력 -= 200
+				EXP:MASTER:전투경험 += 5
+				EXP:전투경험 += 5
+				CFLAG:50:호감도 += 50
+				;어차피 플랑 업무 시간도 1시간이라 이정도면 괜찮은 것 같다.
+			CASEELSE
+				PRINTFORML 「으음…… 미안, 그런 건 여기에 없어서 못 하겠어.」
+				PRINTFORMW 「지금 있는 걸로 하는 게 어떨까?」
+				GOTO PLAY_WITH_FLANDRE
+		ENDSELECT 
+		[SKIPEND]
+		
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;305,무릎베개받는다
+;TFLAG:193 (-5=MASTER가 TARGET보다 거구인 경우 (TALENT:MASTER:체형 > TALENT:체형 + 2) 1=대성공 0=성공 -1=실패) (-5 이외에는 지문 분기 없음)
+;ABL:친밀 (6이상=얼굴을 들여다보면서 머리를 쓰다듬어 준다 3이상=그냥 머리를 쓰다듬어 준다 2이하=웅크리고 있다)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_305
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_305
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_305_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_305_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+;무릎베개는 없으면 많이 서운하죠 아잉
+IF LOCAL
+	IF TALENT:연인
+		SELECTCASE RAND:3
+		CASE 0
+			PRINTL 「무릎베개? 그래, 이리 와♪」
+			PRINTFORMW 「%마스터는% 이런 딱딱한 다리가 좋은 거지?」
+			PRINTFORMDW 플랑은 사랑스러운 눈빛으로 %CALLNAME:MASTER%의 머리를 쓰다듬고 있다.
+		CASE 1
+			PRINTL 「남들만큼 살이 있거나 따뜻하진 않다만, 그래도 괜찮아?」
+			PRINTW 「어, 아냐? 내 다리인 거니까 좋다고…?」
+			PRINTW 「……뭐야, 쑥스럽게시리♪」
+		CASE 2
+			PRINTL 「푸~른 하~늘 은~하수……」
+			PRINTL 「하~얀 쪽~배에~」
+			PRINTFORMDW 왠지 %CALLNAME:MASTER%에게 익숙하게 들려오는 노랫가락에 잠이 솔솔 온다……
+		ENDSELECT
+	ELSEIF TALENT:연모
+		SELECTCASE RAND:3
+		CASE 0
+			PRINTW 「ㅁ, 무릎베개?! 갑자기 그런 걸 해달라니……」
+			PRINTW 「애초에 말이야…! 내 다리는 가늘기만 하고 또, 부드러운 것도 아니잖아?」
+			PRINTDL 당신은 그 말에 분노하여 여자아이의 다리의 매력에 대해 상세히 늘어놓기 시작했다…
+			PRINTW 「아, 알겠으니까아//// 그런 부끄러운 얘기는 그만…!!!」
+		CASE 1
+			PRINTFORML 「……졸려, %CALLNAME:MASTER%?」
+			PRINTW 「난 괜찮으니, 잠깐 눈좀 붙여도 돼.」
+			PRINTW (이렇게 가만히만 있으면 의외로 볼만한 얼굴인데…♪)
+		CASE 2
+			PRINTL 「으음… 왠지 이상한 곳에 더 가까워진 것 같지 않아?」
+			PRINTFORMW 「으햣?! 가, 간지러워 %CALLNAME:MASTER%, 으하핫!」
+			PRINTW 「거기는, 더 안 되니까, 이제 그마안♪」
+		ENDSELECT
+	ELSEIF TALENT:사모
+		SELECTCASE RAND:3
+		CASE 0
+			PRINTL 「뭐? 무릎베개라니, 나보고?」
+			PRINTW 「……여자아이한테 잘도 그런 부탁을 하는구나.」
+			PRINTW 「정 그렇담 해주는데, 이상한 생각한게 티나면 바로 죽여버릴 거야.」
+			PRINTW
+			PRINTDW 말은 살벌했지만 의외로 순순히 다리 위에 눕혀주는 플랑이었다.
+			PRINTL 「……뭘 봐, 변태같아.」
+			PRINTDW 당신을 지그시 바라보다가도, 눈을 마주치려 하면 피하는게 은근히 귀엽기도 하다.
+		CASE 1
+			;PRINTFORMDW 사전에 플랑이 엄한 데에 손대지 말라고 경고한 탓일까,
+			;PRINTFORMDW %마스터는% 플랑의 다리에 눕힌 채 꼼짝도 못 하고 있었다.
+			PRINTL 「너…… 지금 많이 긴장한 채로 있는 거 알아?」
+			PRINTW 「이 정도는 괜찮으니까, 긴장 풀고 편하게 있어.」 
+			PRINTD 그럼 쓰담쓰담해…… 
+			PRINTW 「싫어.」
+		CASE 2
+			PRINTL 「으으음, 뭔가 낯간지럽달까…?」
+			PRINTW 「내 다리에 계속 보슬보슬한 느낌이 드니까, 이거…」
+			PRINTW 「ㄸ, 딱히 이상한 생각 안 했거든?!」
+		CASE 3
+			PRINTL 「...졸려?」
+			PRINTFORMDW 플랑은 자신의 다리 위에서 꾸벅꾸벅 조는 %마스터를%, 의아하다는 듯 쳐다보고 있다.
+			PRINTW 「내 곁에 있어도 이렇게 편하게 있을 수가 있구나...」
+			PRINTW 「...그닥 싫지는 않네.」
+			PRINTDL 으에, 뭐라고 했어?
+			PRINTW 「으앗?! 갑자기 일어나지 마!」
+		ENDSELECT
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;306,배를 어루만진다
+;TFLAG:193 (1=ABL:친밀6이상 및 임신시 0=성공 -1=ABL:친밀5이하)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_306
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_306_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_306_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;시간정지중
+	IF FLAG:70
+	;통상
+	ELSE
+		IF TALENT:연인 || TALENT:연모
+			IF TALENT:임신
+			;書ける気がしない
+			;쓸 수 있을 것 같지가 않다
+			ELSEIF TCVAR:미약 || TCVAR:발정
+			;274スレの694がよかったので採用
+				PRINTL 「아, 저기…… 배만 만져서는 부족하지 않아?」
+				PRINTL 「그 위쪽이 아니라, 좀 더, 아래라든가…」
+				PRINTL 「자, 어서 만져봐?」
+				PRINTDW 그리 말하곤 당신의 손을 잡아, 더 아래쪽으로 이끌어 간다…
+			ELSE
+				PRINTW 「잠잘 때 있지,」
+				PRINTL 「이렇게 누군가 내 배를 쓰다듬으면서」
+				PRINTW 「날 재워주는 듯한 느낌이 들곤 해.」
+				PRINTL 「인제 와서 진짠지 아닌지는 모르지만」
+				PRINTW 「어느새 잠들어버릴 정도로, 안심이 돼.」
+				SIF TALENT:연인
+					PRINTFORMW 「%마스터가% 나를 지켜준다는 걸, 마음 속 깊이 알고 있는 걸 거야.」
+			ENDIF
+		ELSEIF TALENT:사모
+			IF TCVAR:미약 || TCVAR:발정
+				PRINTW 「저기, 잠깐, 지금은…」
+				PRINTL 「뭔가, 이상한 느낌이 들어서… 그, 그만!」
+				PRINTDW 의지할 곳도 없이 단호히 거절당했다.
+			ELSE
+				PRINTDL 슬그머니 배에 손을 올려보려 했지만, 플랑에게 잡혀버리고 말았다.
+				PRINTDW 아무 말도 없이 당신을 싸늘한 눈으로 보고 있다…
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;307,볼을 잡아당긴다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)(지문 분기 없음)
+	;이하는 먼저 쓴 조건이 우선된다
+	;TALENT:연모 (받아들이면서 웃는 얼굴로 맞받아친다)
+	;ABL:친밀 (6이상=머뭇머뭇 맞받아친다)
+	;ABL:순종 (5이상=해지는 대로)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_307
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패(주의, 껴안기모드 중에는 자동 성공), 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_307
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_307_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_307_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;시간정지중
+	IF FLAG:70
+	;수면중
+	ELSEIF CFLAG:수면
+	;통상
+	ELSE
+		IF TALENT:연인
+			PRINTL 「우므으으…… 나도오」
+			PRINTDL 플랑의 볼따구에 손을 뻗으니, 플랑도 당신의 뺨에 손을 가져다 댄다.
+			PRINTDL 그대로 서로의 얼굴이 가까워져 가며, 둘의 이마나 코끝을 맞대어 본다.
+			PRINTFORML 「저, %CALLNAME:MASTER%…… 키스, 해줘」
+			IF TALENT:키스미경험
+				PRINTL 「……이마에다가.」
+				PRINTDL 조금 아쉽기도 했지만 그런 내색 없이 이마에 키스해주었다.
+				PRINTL 「으응…… 조만간, 내가 직접 처음을 주고 싶으니까. 그 때까지만 기다려 줘?」
+			ELSE
+				PRINTFORML 「물론, 내 입에…… 앗%UNICODE(0x2665)%」
+				EXP:TARGET:키스경험 += 1
+			ENDIF
+		ELSEIF TALENT:연모
+			PRINTL 「……뺨을 만지는게, 그렇게나 재밌어?」
+			PRINTDL 플랑의 볼따구는 부드러워서 좋다, 라고 답하자
+			PRINTL 「그렇담, 나도」
+			PRINTDW 라는 말과 함께, 둘은 서로의 뺨을 가지고 놀았다.
+		ELSEIF TALENT:사모
+			PRINTL 「……므어해애――?」
+			PRINTDW 뭐해, 라고 말하고 싶었던 건가? 뭔가 귀엽게 변해 버렸다.
+			PRINTW 「우으므읏! 이어 얼렁 앙나?! (이거 얼른 안 놔?!)」
+			PRINTDW 이 이상은 뿔이 날 것 같으니 그만두기로 했다.
+		ELSE
+			PRINTDW 차악, 하고 손이 뺨에 닿기도 전에 쳐내 버렸다……
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;308,볼을 콕콕 찌른다
+;동침중 or 수면중 한정
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_308
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패(주의, 껴안기모드 중에는 자동 성공), 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_308
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_308_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_308_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;수면중
+	IF CFLAG:수면
+	;통상
+	ELSE
+		IF TALENT:연인
+			PRINTL 「응…… 아움믓―」
+			PRINTDW 비몽사몽하게 눈을 뜬 플랑에게 손가락을 물려버렸다.
+			PRINTDL 안쪽에서 혀가 닿으니 조금은 근질근질하다.
+			PRINTL 「무으? 으흐응♪」
+			PRINTDW 아기처럼 젖병 빨듯이 손가락을 물어 딱 달라붙는게 귀엽다.
+		ELSEIF TALENT:연모
+			PRINTL 「우응…… 안녀엉~ %CALLNAME:MASTER%」
+			PRINTDW 아직 해가 지지 않았다고 답하자,
+			PRINTL 「으응…… 그럼, 다시 잘 자아~」
+			PRINTDW 지금은 수면이 더 중요하다는 듯이, 그대로 눈을 감고 잠들어버렸다.
+		ELSEIF TALENT:사모
+			PRINTDL 볼을 손가락 끝으로 가볍게 쿡쿡 찔러본다.
+			PRINTL 「……으휴.」
+			PRINTDW 희미하게 눈을 떠 이쪽을 보곤, 딱히 아무 말도 않은 채 그대로 잠들었다.
+		ELSE
+			PRINTDL 볼에 손가락 끝을 가까이 하니, 어느새 날아온 날개에 치여버렸다.
+		;사모にもなってないのに同衾することある？
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;309,머리를 쓰다듬는다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;ABL:친밀 (6이상=통상성공시 분기)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_309
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패(주의, 껴안기모드 중에는 자동 성공), 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_309
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_309_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_309_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;시간정지중
+	IF FLAG:70
+	;수면중
+	ELSEIF CFLAG:수면
+	;통상
+	ELSEIF TALENT:연인
+		SELECTCASE RAND:2
+		CASE 0
+			PRINTL 「응!」
+			PRINTDW 쓰다듬겠다고 말만 했을 뿐인데 머리를 이쪽으로 내밀어 온다.
+			PRINTDW 옳지옳지하고 쓰다듬고 있으니, 기쁘다고 눈을 가늘게 뜬 채 당신을 바라본다.
+			PRINTW 「우웅…… 좀 더어♪」
+		CASE 1
+			PRINTL 「당신한테 언제나 쓰다듬어질 수 있도록」
+			PRINTW 「모자…… 한동안 안 쓰게 될 것 같아.」
+		ENDSELECT
+	ELSEIF TALENT:연모
+		SELECTCASE RAND:2
+		CASE 0
+			PRINTL 「당신에게 쓰다듬어지면, 마음이 차분해져.」
+			PRINTW 「계속, 이렇게 쓰다듬어지고 싶어.」
+		CASE 1
+			PRINTL 「머리, 흐트러져 버렸네.」
+			PRINTFORMW 「…내 머리, %마스터가% 단정하게 해 줄래?」
+		ENDSELECT
+	ELSEIF TALENT:사모
+		SELECTCASE RAND:4
+		CASE 0
+			PRINTDL 무심코 머리를 쓰다듬으려 손이 나갔다가, 모자가 있음을 깨닫고 이내 멈춘다.
+			PRINTL 「……뭐해, 그렇게 가만히만 있을 거야?」
+			PRINTDL 멀뚱멀뚱히 보고만 있자 플랑은 마지못한 듯이 직접 모자를 벗는다.
+			PRINTL 「자, 됐지?」
+			PRINTW 「모자가 불편하면…… 나한테 말을 하면 되잖아.」
+			PRINTDW 왠지 토라져있는 플랑을 만족할 때까지 쓰다듬어 줬다.
+		CASE 1
+			PRINTL 「으음, 조금은 만져도 괜찮긴 한데 말이야……」
+			PRINTL 「오늘 이 머리 스타일이 마음에 드니까」
+			PRINTW 「멋대로 머리 모양 바꾸지는 마, 알겠어?」
+		CASE 2
+			PRINTW 「내가 네 애완동물도 아니고, 뭐하는 거야?」
+			PRINTW 「이런 걸 좋아하는 여자아이는 그리 많지 않다고.」
+			PRINTDL 무뚝뚝한 얼굴 뒤로 두 날개가 들썩이고 있었다……
+			PRINTW 「……뭐, 왜. 마저 안 해?」
+		CASE 3
+			PRINTL 「이런 걸 하면 기분이 좋다니까, 한 번 해보는 거지만...」
+			PRINTW 「……마치 날 바보 취급 하는 것 같잖아.」
+			PRINTDW 말과는 달리 의외로 플랑은 얌전히 쓰다듬어지고 있었다……
+		ENDSELECT
+	ELSE
+		SELECTCASE RAND:3
+		CASE 0
+			PRINTL 「머리는 막 엄청 정돈하고 있는 건 아니긴 한데…」
+			PRINTW 「그다지 흐트러뜨리지 말았으면 좋겠어.」
+		CASE 1
+			PRINTW 「뭐어… 일단은 손으로 매만지기만 하는 건 괜찮으니까.」
+			PRINTW 「잠깐, 야! 함부로 머리 늘어뜨리지 마!」
+		CASE 2
+			PRINTL 「쓰다듬어도 되냐니, 난 네 애완동물이 아니거든?」
+			PRINTW 「아 정말! 무릎까지 꿇을 일이 아니잖아?!」
+			PRINTW 「……자, 모자 벗었으니까, 얼른 하고 끝내.」
+			PRINTL (남의 머릿카락이 그렇게 기분이 좋나, 표정이 참...)
+			PRINTDL 그렇게 당신은 보들보들한 플랑의 머릿결을 음미할 수 있었다……
+		ENDSELECT
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;331,차를 탄다(약 넣음)
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_331
+;성공실패 판정
+;TFLAG:192 (-2=강제실패(주의, 커맨드 종료 X), -1＝강제실패, 0=COM의존, 1=강제성공or대성공(주의, 수면제 아이스티는 졸음이 오면 먹지 않는다))
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_331
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_331_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_331_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TCVAR:미약 == 210
+		LOCALS = 媚薬
+	ELSEIF TCVAR:이뇨제 == 210
+		LOCALS = 利尿剤
+	ELSEIF TCVAR:춘약 == 210
+		LOCALS = 惚れ薬
+	ELSEIF TCVAR:수면제차사용
+		LOCALS = 睡眠薬
+	ELSE
+		LOCALS = 薬
+	ENDIF
+	IF TALENT:연인 || TALENT:연모
+		IF TFLAG:193 == -1
+			IF TCVAR:미약 == 210
+				PRINTW 「우으으, 이 이상은 한계……」
+				PRINTL 「이젠 안 돼! 이 이상은 내가 날뛰어서 위험해지니까...」
+				;PRINTFORMW 「너무 흥분하면 %마스터를% 공격할 수도 있단 말이야」
+				PRINTFORMW 「……%CALLNAME:MASTER%에게 상처 입히고 싶지 않으니까, 꾹 참고있는 거라고...!」
+			ELSE
+				PRINTL 「미안하지만, 이런 방식으로는 싫어.」
+				PRINTW 「내 의사와 무관하게 강제로 흥분하게 되는 그 심정을, 조금은 알아줬으면 좋겠어.」
+				PRINTFORMW 「……대신 다음엔 %마스터가% 원하는 대로 해줄게, 알았지?」
+			ENDIF
+		ELSE
+			IF TCVAR:미약 == 210
+				PRINTDL 차를 건네니 조금 의아한 얼굴을 띠었지만, 곧 바로 이해한 듯 차를 들이켰다.
+				PRINTDW 다 마시고 나니 플랑은 얼굴이 빨개진 채 거친 숨을 쉬고 있었다.
+				PRINTL 「……여기다가 피 넣었지? 난 흡혈귀니까, 당연히 알아채지.」
+				PRINTW 「엷어지긴 했지만, 본능을 자극시키기엔 충분해……」
+				PRINTDW 곧 이어 치마를 걷어 올리곤, 금새 흠뻑 젖은 가랑이를 보여온다.
+				PRINTFORMW 「날 이렇게 만든 이상…… 실컷 만족시켜줘야 해?%UNICODE(0x2665)%」
+			ELSE
+				PRINTL 「차야? 고마워」
+				PRINTW 「음? 저기, 이거……」
+				PRINTDL 무언가를 눈치 챈 플랑은 이내 침묵하곤 묵묵히 차를 들이마셨다.
+				PRINTW 「어흠, 아무 것도 아냐. 차가 맛있어서 감동하느라.」
+				PRINTFORMW 「……오늘 밤은 무척 기대되는 걸%UNICODE(0x2665)%」
+			ENDIF
+		ENDIF
+	ELSEIF TALENT:사모
+		IF TFLAG:193 == -1
+			PRINTDW 플랑은 경멸하는 눈빛을 보이며 찻잔을 들고만 있다.
+			PRINTL 「너는 이미 알고 있겠지? 내가 피를 마시면 흥분한다는 걸.」
+			PRINTW 「그런데도 내 차에 피를 탔다는 건… 그런 속셈이라는 거겠지?」
+			PRINTDW 피를 탄 차를 바닥에 버리고 나서, 손가락에 걸린 찻잔이 쨍, 하고 파괴된다.
+			;PRINTFORMW 「그렇게 안 봤는데, %CALLNAME:MASTER%. 실망이야.」
+			CFLAG:TARGET:호감도 -= 100
+			CFLAG:TARGET:신뢰도 -= 25
+		ELSE
+			PRINTFORML 「피를 탄 차라니. 무슨 속셈일까, %CALLNAME:MASTER%?」
+			PRINTL 「아무렇지도 않게 건네준 걸 보니 이미 다 알고있는 거겠지.」
+			PRINTL 「뭐, 음흉하기 짝이 없긴 하지만… 그간의 얼굴을 봐서 이번만 어울려주는 거야.」
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;332,술을 대접한다
+;TFLAG:193 (0=술을못함 성공 -1=술을못함 실패 -2=술을못함 대실패 -5=술을못함 포기)
+;TFLAG:194 (51=탁주 52=청주 53=오니고로시)
+;ALCOHOL_TASTE(TFLAG:194) (15이상=마음에 듦 9이하=입에 맞지 않음)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_332
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_332_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_332_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연인 || TALENT:연모
+		IF ALCOHOL_TASTE(TFLAG:194) >= 15
+			PRINTFORML 「이거 되게 맛있다 %CALLNAME:MASTER%!」
+			PRINTL 「이제부터 피 대신으로 마셔도 나쁘지 않겠는데?」
+		ELSEIF ALCOHOL_TASTE(TFLAG:194) <= 9
+			PRINTL 「……맛없어.」
+			PRINTFORML 「입가심으로라도 %CALLNAME:MASTER%의 피 마시게 해주면 안 돼?」
+		ELSE
+			PRINTL 「의외로…… 맛있을지도.」
+			PRINTL 「조금, 어질어질해 버려서...」
+		ENDIF
+	ELSE
+		IF ALCOHOL_TASTE(TFLAG:194) >= 15
+			PRINTL 「……뭐어, 맛있긴 하네.」
+		ELSEIF ALCOHOL_TASTE(TFLAG:194) <= 9
+			PRINTL 「어린 여자아이한테, 맛없는 술을 먹이고선 뭘 하고 싶은 거야?」
+		ELSE
+			PRINTL 「그다지 맛있지는 않으려나.」
+			PRINTL 「좀 더 센 거로 가져와 줄래?」
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;333,푸념을 듣는다
+;TFLAG:193 (6=대성공(취기) 5=성공(취기) 4=실패(취기) 3=대성공 2=성공 1=실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_333
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_333
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_333_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_333_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	SELECTCASE TFLAG:193
+	;성공•대성공(취기)
+	CASE 5 TO 6
+		IF TALENT:연인
+		ELSEIF TALENT:연모
+		ELSE
+		ENDIF
+	;실패(취기)
+	CASE 4
+		IF TALENT:연인
+		ELSEIF TALENT:연모
+		ELSE
+		ENDIF
+	;성공•대성공
+	CASE 2 TO 3
+		IF TALENT:연인
+		ELSEIF TALENT:연모
+		ELSE
+		ENDIF
+	;실패
+	CASE 1
+		IF TALENT:연인
+		ELSEIF TALENT:연모
+		ELSE
+		ENDIF
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;334,잔을 주고받는다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;CFLAG:임신자가상태 (1=식사)
+;TALENT:술내성 (-2=식사)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_334
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_334
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_334_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_334_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	SELECTCASE TFLAG:193
+		CASE 1
+		;대성공
+		CASE 0
+		;성공
+		CASE -1
+		;실패
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;335,간호한다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_335
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_335
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_335_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_335_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	SELECTCASE TFLAG:193
+		CASE 1
+		;대성공
+		CASE 0
+		;성공
+		CASE -1
+		;실패
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;336,무릎베개한다
+;ABL:친밀 (4이하=불편하게 9이하=수줍게 그이상=기쁜듯이)
+;TIME_PROGRESS(TFLAG:무릎베개)(44以下=失敗
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_336
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_336
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_336_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_336_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TFLAG:193 > 0
+	;잠들어버렸다
+		PRINTDL 어디서 고요히 숨소리가 난다 하더라니, 무릎베개를 받던 플랑이 어느새 잠들어있었다.
+		PRINTDW 몸을 웅크리며 당신에게 바짝 달라붙는게, 응석부리는 아기같아서 사랑스럽다.
+		IF TALENT:연인
+			PRINTFORML 「우으음―― 안녀엉 %CALLNAME:MASTER%」
+			PRINTW 「너무 포근한게, 잠이 솔솔 와서 그만…헤헤♪」
+		ELSEIF TALENT:연모
+			PRINTL 「으음...? 내가 왜 여기서...」
+			PRINTFORMW 「졸고 있어서 눕혔다니, %마스터가%?」
+			PRINTFORMW 「……%CALLNAME:MASTER%의 다리... %CALLNAME:MASTER%의?!」
+			PRINTFORMDW 화들짝 놀란 플랑은 %조사처리(CALLNAME:MASTER,"로")%부터 후다닥 달아났다……
+		ELSEIF TALENT:사모
+			PRINTL 「어라, 언제 잠들었…」
+			PRINTW 「?!??!?!!?!!!」
+			PRINTL
+			PRINTDW 이후 레바테인을 꺼낸 플랑에게 한참을 쫓기고 나서야 진정이 되었다……
+		ENDIF
+	ELSE
+	;그 이외
+		IF TALENT:연인
+			PRINTL 「부끄러운 것보다도, 당신에게 닿고 있다는 게」
+			PRINTL 「나에게 있어선 더 소중할 거야.」
+			PRINTW 「후아아―― 무척 안심돼. 잠들어버릴 것 같은 정도로 말이야...」
+		ELSEIF TALENT:연모
+			PRINTL 「저, 이거 조금 부끄러운데」
+			PRINTW 「근데도…… 왜 이리 이상하게끔 안심이 되는 건지.」
+		ELSEIF TALENT:사모
+			SELECTCASE RAND:2
+			CASE 0
+				PRINTL 「……부끄러워.」
+				PRINTW 「나한테 수치플이라도 하고 싶은 거야? 받는 건 너무 어색하다고...」
+				PRINTL 「우으으, 아무래도 도저히 오래는 못 하겠단 말이야……」
+			CASE 1
+				PRINTL 「딱딱해... 넌 이런 게 좋아서 나한테 시킨 거야?」
+				PRINTW 「금방 좋아질 거라니, 그런 이상한 소리 하지 말고!」
+			CASE 2
+				PRINTL 「머, 머리 들썩이지 말라고?」
+				PRINTW 「그렇게 말해도 이거 생각보다 불편하단 말이야!」
+				PRINTDW 이 쪽은 최대한 참고 있는 건데요...!
+			ENDSELECT
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;350,덮친다 (시간(時姦)시 장난친다)
+;TFLAG:194 (0=성공 1=남의 눈이 있다　2=야외는 싫사옵니다　3=다수와의 플레이는 양해　4=합의가 있어도 무드가 부족하다　100=합의는 있으나 구상 특수판정으로 실패)
+;TCVAR:껴안고첫회　1=보통으로 합의 겟　2=먼저 키스정도는 하고　3=미약or발정에는 이길 수 없었다…　4=억울해…각인만 없었으면 움찔움찔
+;5=강요당하면 거절할 수 없다(소질 겁쟁이 전용) 6=그다지 나쁘지 않다　7=안돼　8=논외 98=구상내 특수판정에 의한 실패 99=구상내 특수판정에 의한 성공
+;구상내 특수 판정은 해당 CFLAG가 0이면 무효
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_350
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_350_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_350_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연인
+		;誰がこの分岐見るねん
+		;누가 이 분기 보려나
+		IF TCVAR:껴안고첫회
+			PRINTW 「이제야 해주는 거구나.」
+			PRINTW 「줄곧 기다렸는데… 정말이지 심술궂은 사람이네.」
+			PRINTL 「그래도 내 몸에 흥미가 없는 건 아니라서 다행이야.」
+			PRINTW 「만일 그랬다면, 내 전부를 당신에게 줄 수 없을테니깐.」
+			PRINTFORMW 「……와 줘%UNICODE(0x2665)%」
+			PRINTW 애처롭게 그리 말하는 플랑을, 당신은 상냥하게 끌어안았다.
+		;ここまでABLあげるやつおらんやろ・・・おらんよな？
+		;이만큼 ABL 올리는 녀석 없을 거야... 없겠지?
+		ELSEIF ABL:TARGET:1 >= 20 && ABL:TARGET:2 >= 20 && ABL:TARGET:3 >= 20 && ABL:TARGET:4 >= 15 && ABL:TARGET:0 >= 20
+			PRINTL 「아, 와주는 거구나……」
+			PRINTW 「기뻐, 그것도 엄청. 응? 왜냐니」
+			PRINTL 「나의 가슴도, 그곳도, 입도, 엉덩이도」
+			PRINTW 「내가 기분 좋아지도록 당신이 전부 조교 시켜버렸으니까.」
+			PRINTW 「자위해도 부족할 정도로, 깊고 또 깊게…… 내 온몸에 쾌락을 새겼잖아.」
+			PRINTL 「이젠 당신에게 안기지 않으면 만족할 수 없으니까……」
+			PRINTFORMW 「책임지고, 기분 좋게 해줘 %CALLNAME:MASTER%……%UNICODE(0x2665) *3%」
+		ELSE
+			PRINTL 「응, 이제 하는 거구나」
+			PRINTW 「기뻐라…… 왜냐니, 그야」
+			PRINTW 「당신의 사랑을 이 몸으로 듬~뿍 느낄 수 있으니까, 랄까?」
+			PRINTFORMW 「그러니, 당신이 좋을대로 날 안아줘…%UNICODE(0x2665)%」
+		ENDIF
+	ELSEIF TALENT:연모
+		IF TCVAR:껴안고첫회
+			PRINTL 「ㄴ, 나를 껴안고 싶어?」
+			PRINTW 「……응, 좋아」
+			PRINTL 「그다지 사귄 때부터 좋아했다든가, 그렇게……생각하지는 않았지만」
+			PRINTW 「좋아하게 된 이에게 처음을 줄 수 있다면, 그걸로 좋으니까」
+			PRINTW 「만약 잘못 됐다고 생각이 든다면, 책임지고 사귀어주면 돼.」
+			PRINTW 「그러니 지금은……안아줘?」
+		ELSE
+			PRINTL 「나하고 또 하고 싶은 거야?」
+			PRINTW 「아직도 서로 몸을 겹쳤으니 책임을 지라는 동화같은 말은 하지 않을 테지만…」
+			PRINTW 「내가 당신을 좋아한다는 건 진짜니까, 그거엔 답을 해줬으면 하는데.」
+			PRINTW 「이 정사가 끝난 후에도… 응?」
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;351,데리고 나간다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_351
+;데리고 나간다 에는 TRAIN_MESSAGE가 없다
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_351_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_351_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;TARGET 데리고 나간다
+	IF CFLAG:동행 == 60
+		IF TALENT:연모
+			PRINTFORML 「어디로 데려가는 거야?」
+			PRINTFORML 「인간마을? 신사? 그것도 아님 달인가?」
+			PRINTFORMW 「뭐어, 어디라도 따라갈 거지만.」
+			SIF TALENT:연인
+				PRINTFORMW 「%CALLNAME:MASTER% 옆이 내가 있을 곳이니까 말이야♪」
+		ELSEIF TALENT:사모
+			PRINTFORML 「내가 있으면 어딜 가더라도 사람들이 피한다고 생각한다만…」
+			PRINTFORMW 「그래도 상관 없다면, 네 마음대로 해.」
+		;사모 직전에나 겨우겨우 볼 수 있을 듯
+		ELSE
+			PRINTFORML 「날 데려가서 뭘 하려는 거야?」
+			PRINTFORMW 「언제든지 간단하게 죽일 수 있으니까, 이상한 짓은 생각 안 하는 게 좋을 거야.」
+		ENDIF
+	;TARGET이외 데리고 나간다 (TARGET 동행중 한정)
+	ELSE
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;352,고백한다
+;FLAG:생활능력무 (1=실패)
+;TFLAG:193 (1=성공 0=실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_352
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+
+TFLAG:192 =0
+
+;이건 좀 아닌 것 같아서 폐기
+;IF CFLAG:1502 >= 10
+;	TFLAG:192 == -1
+;ELSE
+;	TFLAG:192 =0
+;ENDIF
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_352
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_352_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_352_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연모
+		IF TFLAG:193 == 1
+			SELECTCASE CFLAG:1502
+				CASE 0
+				;플랑보다 먼저 선방
+					PRINTL 「좋아해? 나를?」
+					PRINTFORMW 「응, 나도 %마스터를%…… 좋아해」
+					PRINTFORML 「저기, %마스터는% 나하고 쭉 함께 있어줄 거야?」
+					PRINTL 「난 흡혈귀고, 당신은 인간이니까. 그리 생각해서 호의를 가지는 걸 꾹 참고 있었지만」
+					PRINTL 「당신이 받아들여준다면...... 계속 함께 있고 싶어」
+					PRINTW 「내게도 방법이 다 있어. 더 이상 이별에 슬퍼하지 않아도 될 거야」
+					PRINTW 「――당신도, 나와 똑같은 괴물이 된다면...!」
+					PRINTW
+					PRINTL 「……그렇구나. 아직은 아니라는 거지」
+					PRINTL 「남는 미련이 다 없어진다면, 이라」
+					PRINTL 「으응, 괜찮아. 그걸로 좋으니까, 날 당신만의 것으로 해줘.」
+					PRINTW 「언젠가 당신을, 나만의 것으로 둘 때까지. 알았지?」
+				CASE 1
+				;첫 고백 거절 직후
+					PRINTL 「에, 좋아한다고?」
+					PRINTFORMW 「진짜, 정말이지 %CALLNAME:MASTER%??」
+					PRINTW 「아아…… 다행이야, 정말로」
+					PRINTDL 점차 몸이 떨리던 플랑을 끌어당겨 꼭 안아주자, 쌓였던 설움을 울음에 흘려 보내기 시작했다.
+					PRINTDW 잠시 이대로 있어주기로 한 당신이었다.
+					PRINTW
+					PRINTFORML 「흑, 나, 나느은… %마스터가%, 으흑……」
+					PRINTW 「그 나알, 이후로, 흐극… 싫어, 싫어할까봐아……」
+					PRINTDW 그럴 리가 없다고, 머리를 쓰다듬어주며 말했다.
+					PRINTW 「우으으... 흑, 고마워어...... 나도오」
+					PRINTFORMW 「%마스터를% 좋아해......」
+				CASE 2 TO 9
+				;원래는 8번째 고백까지, 근데 아직 9번째 고백 거절 직후를 안 만들어서 일단 이거로 우려먹기
+					PRINTL 「응? 좋아합니다, 사귀어주세요?」
+					PRINTW 「뭐야. 내쪽이 요청받는 건 처음이네」
+					PRINTDW 혹시, 플랑은 싫은 거야?
+					PRINTW 「무슨 소리를 하는 거야! 나는……」
+					PRINTW 「너무 기뻐서, 어쩔 줄, 모르겠단 말이야……」
+					PRINTW 「지금 이게 꿈인지 현실인지 구분이 안 돼서, 한편으론 너무 무섭기도 해……」
+					PRINTFORMW 「그러니까 %CALLNAME:MASTER%. 뭐든 상관없으니 좋을대로 날 껴안아줘」
+					PRINTFORMW 「혹여나 이게 꿈이더라도, 눈 뜨면 %CALLNAME:MASTER%의 온기가 남도록 꼬~옥해줘……」
+				CASEELSE
+				;9번째 고백 거절 직후(아직 미실장)
+				;우선 최초 고백 구상이 그나마 분위기가 맞는 것 같으니 이걸로 대체
+					PRINTL 「좋아해? 나를?」
+					PRINTFORMW 「응, 나도 %마스터를%…… 좋아해」
+					PRINTFORML 「저기, %마스터는% 나하고 쭉 함께 있어줄 거야?」
+					PRINTL 「난 흡혈귀고, 당신은 인간이니까. 그리 생각해서 호의를 가지는 걸 꾹 참고 있었지만」
+					PRINTL 「당신이 받아들여준다면...... 계속 함께 있고 싶어.」
+					PRINTW 「내게도 방법이 다 있어. 더 이상 이별에 슬퍼하지 않아도 될 거야」
+					PRINTW 「――당신도, 나와 똑같은 괴물이 된다면...!」
+					PRINTW
+					PRINTL 「……그렇구나. 아직은 아니라는 거지」
+					PRINTL 「남는 미련이 다 없어진다면, 이라」
+					PRINTL 「으응, 괜찮아. 그걸로 좋으니까, 날 당신만의 것으로 해줘.」
+					PRINTW 「언젠가 당신을, 나만의 것으로 둘 때까지. 알았지?」
+			ENDSELECT
+		ELSEIF TFLAG:193 == 0
+		[SKIPSTART]
+		;10번째 고백 거절 이후
+			PRINTFORMDL 저기, 플랑. 이번에 할 말이……
+			PRINTFORMW 「쉿, 뭔 말인지 다 알아. 아무래도 이제야 마음이 생긴 것 같네」
+			PRINTFORMW 「네, 저도 당신을 좋아하고 있습니다. 우리 사귀도록 해요」
+			PRINTL
+			PRINTFORMW 「……라는 그런 형편 좋은 말만 할 줄 알았어? 정말 어이가 없어서.」
+			PRINTFORMW 「%마스터는% 내 고백을 거절했는데도, 여전히 사랑을 속삭이면서 헷갈리게 만들고 있고……」
+			PRINTFORMW 「마지막에도 %마스터는% 분명…… 내 마음을 가차없이 밀어내 버렸잖아.」
+			PRINTFORMW 「그래놓고 지금에 와서야 이미 떠난 사랑을 구하는 거야?」
+			PRINTFORMW 「지금 장난해? 어디서 듣도보도 못 할 얘기를 하고 자빠졌어…!」
+			PRINTFORMW 「날 싫어하는 건지, 아님 좋아하는 건지 둘중 하나만 하란 말이야!!」
+			PRINTL
+			PRINTL
+			PRINTW
+			;이건 진짜 아닌 것 같다... 현타올듯;
+			;고백에 실패하면 그대로 손절, 관계 회복 루트로 갈까 싶은데
+			PRINTFORMW 「난 이제 %CALLNAME:MASTER%의 사랑놀음에 지쳤어. 다시는 내 눈앞에 보이지 마.」
+			CFLAG:TARGET:호감도 == 0
+			CFLAG:TARGET:신뢰도 == 0
+			IF TALENT:연모 == 1
+				TALENT:연모 = 0
+			ELSEIF TALENT:사모 == 1
+				TALENT:사모 = 0
+			ENDIF
+			ABL:50:친밀 == 0
+			TALENT:일선을넘지않음 == 1
+			CUP:TARGET:반감 += 4000
+			CUP:TARGET:불쾌 += 4000
+		[SKIPEND]
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;353,장난한다
+;FLAG:생활능력무 (1=실패)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_353
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_353_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_353_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;354,동침한다 (상대는 일어나서 이불 속으로 초대하는 느낌)
+;CFLAG:쇠약 (1이상=일어나지 않는다)
+;CFLAG:초대 (0이외=일어나지 않는다)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_354
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_354_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_354_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연인 || TALENT:연모
+		PRINTDL 침대 위에 떡하니 자리잡은 관을 향해 다가간다.
+		SELECTCASE RAND:2
+			CASE 0 
+				PRINTDL 이젠 킹사이즈 관으로 바뀐 침소에서, 플랑의 흑심이 엿보였다……
+			CASE 1
+				PRINTDL 언제 새 관을 마련한 건지, 사이즈가 더 커진게 2명이 널널하게 들어갈 수 있을 정도였다.
+		ENDSELECT
+		PRINTDW 관 속을 들여다 보니 앙증맞은 한 소녀가 새근새근 잠자고 있었다.
+		IF CFLAG:쇠약
+			SELECTCASE RAND:3
+				CASE 0 
+					PRINTL 「스으으, 우므음……」
+					PRINTDW 안색이 좋지 않은 플랑의 옆에 나란히 누워 살포시 껴안아주었다.
+				CASE 1
+					PRINTDL 안쪽에 들어가 눕자마자, 플랑이 무의식적으로 눈치챈 듯 몸을 뒤척인다.
+					PRINTL 「우으, 으으응……」
+					PRINTDW 이 쪽으로 힘겹게 팔을 뻗고 있길래 가까이 붙어 안아주었다.
+				CASE 2
+					PRINTL 「웅읏… 가지, ㅁ……zzz」
+					PRINTFORMDW 꿈에서 떠나버린 %CALLNAME:MASTER% 대신으로 직접 옆에 누워주기로 했다.
+			ENDSELECT
+		ELSEIF CFLAG:초대
+			SELECTCASE RAND:3
+				CASE 0
+					PRINTL 「무으으, 우흣, 에헤헤……」
+					PRINTFORMW 꿈 속에서도 %마스터와% 함께 있어서 좋은 듯 하다.
+				CASE 1
+					PRINTW 「스으으…… 믕, 우므음?」
+					PRINTL 「이리 와아……zzz」
+					PRINTDW 옆자리에 앉자마자 바로 반응하여 이 쪽으로 손을 휘적거린다.
+				CASE 2
+					PRINTL 「어디 가아……」
+					PRINTL 「또오, 나마안……」
+					PRINTDL 꿈에서 쓸쓸해 하는 플랑을, 머리를 쓰다듬으며 달래주는 당신이었다.
+			ENDSELECT
+		ELSE
+			SELECTCASE RAND:2
+				CASE 0
+					PRINTFORML 「우응…… %CALLNAME:MASTER%? 아, 같이 자는 거구나」
+					PRINTL 「좋아. 이리 와♪」
+					PRINTL 「예전엔 이러지는 않았는데, 요즘은 혼자서 자고 있으면 외로우니까……」
+					PRINTW 「그래서, 이렇게 있으면 무척 기뻐♪」
+				CASE 1
+					PRINTFORMW 「같이 잘래, %CALLNAME:MASTER%?」
+					PRINTL 「서로 딱 붙어 있으니까 온종일 따뜻하게 잘 수 있겠지?」
+			ENDSELECT
+		ENDIF
+	;사모에서도 동침이 된다면 어떤 상황일지 잘 몰?라서 보류
+	ELSE
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;355,시간정지（지문의 개변 정도로 그쳐야)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_355
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_355_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_355_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;360,몸을 맡긴다
+;TCVAR:20 (27=골짜기를 과시한다 32=앞에서 안겨든다 35=치마 속을 드러낸다 53=파이즈리 73=파후파후 77=젖을 빨게 한다 85=V삽입한다 86=정말좋아 hold 87=A삽입한다 88=V허리흔들기 89=A허리흔들기)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_360
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_360_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_360_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+;MASTER:EXの時の口上を個別で作る必要がありそう？埋めたら作る
+;MASTER:EX 때의 구상을 개별적으로 만들어야 할 것 같아? 채우면 만든다
+;処女失う可能性もあり？そのうち埋める
+;처녀를 잃을 수도 있고? 조만간 채운다
+;あとなんかM向けな気がするのでMASTERのM気での分岐を細かくするかも
+;그리고 뭔가 M용인 것 같아서 MASTER의 M끼에서의 분기를 세세하게 할지도 몰라
+
+;아무래도 우후후모드 할 때 그 우후후플랑인지라, 이 부분은 나름 채워져있음
+;근데 막상 플랑이 당하는 애무•성교 구상을 안 쓴 건 괘씸하거든요
+IF LOCAL
+	SELECTCASE TCVAR:20
+	;키스와 딥키스
+	CASE 30,60
+		;여기 첫키스 뺏길 가능성 있다고?
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「응…츄루웃, 쪽……푸하앗, 하아……」
+			PRINTW 「한 번만 더, 우응…」
+			IF TALENT:키스미경험
+				PRINTFORML 「하아아, 응읏……저기, %CALLNAME:MASTER%?」
+				PRINTW 「방금 거, 말야. 내……첫키스였는데 말이야」
+				PRINTFORML 「좀처럼 %마스터가% 빼앗아주지 않으니까」
+				PRINTFORMW 「내가 직접 바쳐서 빼앗기게 해버렸어. 후후훗%UNICODE(0x2665)%」
+			ENDIF
+		ELSE
+		ENDIF
+	;앞에서 껴안는다
+	CASE 32
+		IF TALENT:연인 || TALENT:연모
+			PRINTDL 플랑이 당신에게 살짝 기댄다.
+			PRINTL 「이거어, 들려? 내 고동 말야」
+			PRINTDW 당신보다 조금 더 높은 소녀의 체온과 더불어, 고동도 조금 빠르게 치는 것을 느꼈다.
+		ELSE
+		ENDIF
+	;가슴을 비비게 한다
+	CASE 33
+		IF TALENT:연인 || TALENT:연모
+			PRINTFORML 「자아, %CALLNAME,MASTER%. 여.기♪」
+			PRINTD 당신은 천천히 플랑의
+			IF TALENT:TARGET:가슴사이즈 == -2
+				PRINTDW 상당히 소심한 가슴에 손을 뻗었다.
+			ELSEIF TALENT:TARGET:가슴사이즈 == -1
+				PRINTDW 소극적인 가슴에 손을 뻗었다.
+			ELSE
+				PRINTDW 가슴에 손을 뻗었다.
+			ENDIF
+			PRINTL 「으응, 정말 능숙, 하네엣…」
+			PRINTFORMW 「앗, 응, 좀 더엇…… 아앗%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;여기 CASE 34에서 고간을 더듬는다가 있다
+	;게다가 꽤 발동하고 있는 것 같아서 조만간 만든다
+	;치마 속을 드러낸다
+	CASE 35
+		IF TALENT:연인 || TALENT:연모
+			PRINTFORML 「봐봐, %CALLNAME:MASTER%♪」
+			PRINTDL 플랑은 무릎을 굽혀 절하듯이 치맛자락을 살짝 집어 올렸다.
+			PRINTFORMW 「젖어 있다는 거, 알고 있으려나아%UNICODE(0x2665)%」
+			IF TALENT:TARGET:처녀
+				PRINTFORMW 「%CALLNAME:MASTER%한테 덮쳐칠 수 있지 않을까, 하고 두근두근거리고 있다구?」
+			ELSE
+				PRINTFORMW 「%CALLNAME:MASTER%의 것을 원해서, 얻고 싶어서어……참을 수가 없어%UNICODE(0x2665)%」
+			ENDIF
+			PRINTDW 애달픈 플랑의 모습에, 당신의 성욕이 들끓는 것이 느껴졌다.
+		ELSE
+		ENDIF
+	;수음
+	CASE 50
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「아하핫♪우뚝 섰다아~」
+			PRINTDW 플랑의 조그마한 손이 천천히 자지를 문지른다.
+			PRINTW 「단단하고, 뜨겁고, 찌걱찌걱하는게 엄청 흥분 됐나보네……♪」
+			PRINTDL 점차 속도를 올려가며, 플랑이 귀에 대고 속삭인다.
+			PRINTFORMW 「나로 이렇게나 단단하게 됐으니…… 상으로 기분좋게 해줄게, %CALLNAME:MASTER%%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;펠라치오(MASTER가 여성이라면 쿤니)
+	CASE 51
+		IF TALENT:연인 || TALENT:연모
+			;마스터가 여자
+			IF TALENT:MASTER:성별 == 1
+			;남자 또는 후타나리
+			ELSE
+				PRINTL 「이거, 엄천 단단해져 있네에♪」
+				PRINTDL 슥슥― 하고 플랑의 손끝이 자지의 뒷줄을 따라 문질러간다.
+				PRINTW 「……할짝. 우음―, 츄루, 쥬븟, 쥬루루릇……츄우」
+				SELECTCASE TALENT:MASTER:형상
+				;미성숙 또는 허접자지
+				CASE 1,2
+					PRINTFORML 「조금 핥기만 해도 부르르 떠는게……귀여워%UNICODE(0x2665)%」
+					PRINTFORMW 「또 한 번 더 받아갈게? 츄우%UNICODE(0x2665)%」
+				;방망이 자지&말자지(신묘마루 요술망치로 경이적인 양물을 만들 경우)
+				CASE 6,10
+					PRINTL 「……아무렴 그렇다 쳐도 큼직하네」 
+					PRINTFORMW 「입 안에 전부 들어갈 순 없겠지만, 이런게 보통인 걸까……츄웃%UNICODE(0x2665)%」
+				;발광자지, 보통, 돌기 부착 자지
+				CASEELSE
+					PRINTFORML 「큼직하다아, %CALLNAME:MASTER%」
+					PRINTL 「이거, 내 안에 넣으려고 이리 된 거겠지?」
+					PRINTFORMW 「……왠지 이상하게나마 기쁠지도, 츄우%UNICODE(0x2665)%」
+				ENDSELECT
+			ENDIF
+		ELSE
+		ENDIF
+	;스마타(카이아와세貝合わせ)					
+	CASE 52
+		IF TALENT:연인 || TALENT:연모
+			;마스터가 여자
+			IF TALENT:MASTER:성별 == 1
+			ELSE
+				PRINTFORML 「%CALLNAME:MASTER% 거 잠시 빌릴게?」
+				PRINTFORMW 「응, 우앗……%CALLNAME:MASTER% 거 단단해서어, 자위잇%UNICODE(0x2665)% 기분 좋아……우읏%UNICODE(0x2665)%」
+			ENDIF
+		ELSE
+		ENDIF
+	;파이즈리
+	CASE 53
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「남자들은 이렇게 하는 걸 좋아한다고 책에서 읽었었는데」
+			PRINTW 「어떠, 려나아. 나 잘 하고 있는 거 맞아?」
+			IF TALENT:TARGET:가슴사이즈 >= 0
+				PRINTDL 플랑의 가슴에 뒤덮여 훑어지니 상상 이상으로 기분이 좋았다.
+				PRINTFORMW 「좋은 느낌이야? 다행이야…… 자아, 이대로 가버려라%UNICODE(0x2665)%」
+			ELSE
+				PRINTDL 플랑의 다소곳한 가슴……이라고나 할까, 맞닿은 면이 따뜻해지는 감각이 예상외로 기분이 좋았다.
+				PRINTFORML 「기분 좋아? 완전 변태씨네에%UNICODE(0x2665)%」
+				PRINTFORMW 「이대로 계속할 거니까, 원할 때 가버려도 된다고? 변태씨%UNICODE(0x2665)%」
+			ENDIF
+		ELSE
+		ENDIF
+	;풋잡
+	CASE 54
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「발로 밟혀도 기분이 좋다고 어디에선가 들었는데……」
+			PRINTW 「우와아, 진짜였구나. 부들부들거려……」
+			PRINTL 「……이런 조그마한 여자아이한테 밟혀서 부끄럽지도 않은 거야?」
+			PRINTFORMW 「정말 변태 취향이네, %CALLNAME:MASTER%%UNICODE(0x2665)%」
+			PRINTFORMW 「자아, 좋을대로 가버려라%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;애널애무
+	CASE 55
+		IF TALENT:연인 || TALENT:연모
+			;마조끼와 A감각으로 분기
+			IF ABL:MASTER:15 >= 2 && EXP:MASTER:2 >= 20
+				PRINTL 「엉덩이에 손가락, 간단하게 들어가 버렸네에♪」
+				PRINTFORML 「여기, 떼굴떼굴――하면은, 아하핫%UNICODE(0x2665)%」
+				PRINTFORMW 「자지가 부들부들 하는게, 기분 좋은가 봐%UNICODE(0x2665)%」
+			ELSE
+				PRINTFORML 「있잖아, %마스터는% 이 쪽 써본 적이 있어?」
+				PRINTDL 쓰윽― 하고 플랑의 손가락이 애널 주변을 어루만진다.
+				PRINTW 「나도 여기 좋아하는데, 잠깐 시험해보지 않을래?」
+			ENDIF
+		ELSE
+		ENDIF
+	;애널핥기
+	CASE 56
+		IF TALENT:연인 || TALENT:연모
+			IF ABL:MASTER:15 >= 2 && EXP:MASTER:2 >= 20
+				PRINTL 「응읏, 할짝, 쪼옥……」
+				PRINTL 「혀를 넣으니, 꽈악 오므라들었는데?」
+				PRINTW 「간단하게 받아들이도록 돼버린 거네에♪」
+				PRINTL 「게다가, 자지 뿐만이 아니고, 몸 속에서도 부들부들하는게……」
+				PRINTFORMW 「하아~ 귀여워라, %CALLNAME:MASTER%. 츄우웃%UNICODE(0x2665)%」
+			ELSE
+				PRINTL 「우응, 할짝……응? 그런 곳은 더럽다니?」
+				PRINTFORMW 「%CALLNAME:MASTER%의 몸 어디에도 그런 곳은 없다구, 츄우우……」
+			ENDIF
+		ELSE
+		ENDIF
+	;손가락 넣기(MASTER가 여자일 떄만?)
+	CASE 57
+	;가슴애무(MASTER가 여자일 때만?)
+	CASE 58
+	;유두공격
+	CASE 59
+		IF TALENT:연인 || TALENT:연모
+			IF ABL:MASTER:15 >= 2 && EXP:MASTER:3 >= 20
+				PRINTFORML 「쪽, 츄릇……쮸압, 츄웃%UNICODE(0x2665)%」
+				PRINTFORMW 「……%CALLNAME:MASTER%, 젖꼭지 느끼고 있지?」
+				PRINTL 「딱히 부끄러워하지 않아도 돼. 나도 느껴버리니깐」
+				PRINTFORMW 「그러니, 좀 더 기분 좋아지자? 할짝, 츄웃%UNICODE(0x2665)%」
+			ELSE
+				PRINTL 「젖꼭지, 단단해져있어…… 츄웃」
+				PRINTL 「츄릇, 쮸압, 응…… 계속 이렇게 기분 좋아지는 거야?♪」
+			ENDIF
+		ELSE
+		ENDIF
+	;커닐링구스강제
+	CASE 70
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「자아, 이거, 봐줘어, 나의……거기이」
+			PRINTFORML 「무척 젖어있지 않아? 그러니까……핥아줘, %CALLNAME:MASTER%?」
+		ELSE
+		ENDIF
+	;애널봉사
+	CASE 72
+		IF TALENT:연인 || TALENT:연모
+			;플랑쨩의 A감각 분기（플랑쨩의 초기 A감각은 1일 것)
+			IF ABL:TARGET:2 >= 2 
+				PRINTFORML 「엉덩이, 얼른 핥아줘어…… %CALLNAME:MASTER%%UNICODE(0x2665)%」
+				PRINTFORML 「나에게 잔뜩 가르쳐준 건 %조사처리(CALLNAME:MASTER,"였")%으니까아……」
+				PRINTFORMW 「책임지고, 내가 갈 때까지 핥아줘어%UNICODE(0x2665)%」
+			ELSE
+				PRINTL 「저기, 이 쪽에……핥아줬음 하는데에」
+				PRINTL 「나, 가끔 이곳도 만지니깐, 말이야…… 기분 좋게, 될 수 있을지도…?」
+				PRINTFORMW 「늘 깨끗히 해 놓으니까, 부탁할게……우응읏%UNICODE(0x2665)%」
+			ENDIF
+		ELSE
+		ENDIF
+	;파후파후
+	CASE 73
+		IF TALENT:연인 || TALENT:연모
+			IF TALENT:TARGET:가슴사이즈 >= 0
+				PRINTL 「부비부비~ 랄까 장난이야」
+				PRINTL 「내 가슴이 그렇게 기분 좋아? 그럼 좋을대로 써 줘」
+				PRINTW 「조금, 부끄럽긴 해도……실컷 해도 돼」
+			ELSE
+				PRINTL 「부, 부비부비이~……」
+				PRINTL 「……미안. 그게, 작은 탓에 끌어안아도 그닥 변함은 없을지도」
+				PRINTFORMW 「오히려 좋다고? ……고마워%UNICODE(0x2665)%」
+			ENDIF
+		ELSE
+		ENDIF
+	;젖맞대기(존재하는 건가?)
+	CASE 74
+	;강제 그곳 애무
+	CASE 76
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「얼르은, 나의 그곳, 만져 줘어……」
+			PRINTFORML 「으응, 당신에게 만져지면, 우흐읏%UNICODE(0x2665)%」
+			PRINTFORMW 「금방, 젖어서엇, 앗, 응, 으읏%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;젖을 빨게 한다
+	CASE 77
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「내 가슴, 핥아줄래?」
+			SIF TALENT:TARGET:가슴사이즈 < 0
+				PRINTL 「조금 작기만 할 뿐이지만……」
+			PRINTFORMW 「앗, 읏으응…… 기분 좋긴 한데, 마치 아가같네에……%CALLNAME:MASTER%%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;엉덩이즈리(존재하는지 모른다)
+	CASE 78
+	;정상위당한다(아마 남자가 위쪽인 소위 정상위? 여자애가 위쪽이 되는 역정상위는 아닌 것 같아)
+	CASE 80
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「이 자세, 날개에 부담이 가니까… 상냥하게, 해줘?」
+			PRINTFORML 「응읏, 거깃, 기분 좋아, 앗, %CALLNAME:MASTER%」
+			PRINTFORMW 「그대로, 으흐읏, %CALLNAME:MASTER%, %CALLNAME:MASTER%――%UNICODE(0x2665) *3%」
+		ELSE
+		ENDIF
+	;후배위당한다
+	CASE 83
+		IF TALENT:연인 || TALENT:연모
+			PRINTFORML 「동물처럼 뒤로부터 한다니, 음탕해라 %CALLNAME:MASTER%%UNICODE(0x2665)%」
+			PRINTFORML 「자아, 안쪽까지 마음대로 와줘어……후으읏%UNICODE(0x2665)%」
+			PRINTFORMW 「앗, 응앗, 핫, 격렬해, 앳, %CALLNAME:MASTER%, 응하앗%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;기승위당한다
+	CASE 85
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「작디 작은 여자아이한테, 위로 올라 타져서 범해지는 기분은 어때?」
+			PRINTL 「이렇게 질내를 꽈~악하고 조이면서 움직이면……아핫♪」
+			PRINTL 「큼지막하게 되곤, 내버릴까봐 참고있다는 걸 알아버려」
+			PRINTFORMW 「자아, 참지 말고, 가 버리자아?%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;죠아죠아포옹(だいしゅきほーるど)
+	CASE 86
+		IF TALENT:연인 || TALENT:연모
+			PRINTFORML 「응, 아앗, 꼬옥, 하고옷, 안아줘어%UNICODE(0x2665)%」
+			PRINTFORMW 「%CALLNAME:MASTER%――, 이대로, 아흐응, 앗, 계소옥, %CALLNAME:MASTER%, 응으읏%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;기승위A
+	CASE 87
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「작디 작은 여자아이한테, 위로 올라 타져서 범해지는 기분은 어때?」
+			PRINTL 「이렇게 엉덩이를 꽈~악하고 조이면서 움직이면……아핫♪」
+			PRINTL 「큼지막하게 되곤, 내버릴까봐 참고있다는 걸 알아버려」
+			PRINTFORMW 「자아, 참지 말고, 가 버리자아?%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;허리흔들기V
+	CASE 88
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「허리를 그냥 흔드는 게 아니거든?」
+			PRINTFORML 「이렇게 돌려서어, 꽉 잡으면서 뽑아낸, 다하앙, …라든가아%UNICODE(0x2665)%」
+			PRINTFORMW 「아앗, 좋아앗, %CALLNAME:MASTER%, 좀 더어%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;허리흔들기A
+	CASE 89
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「으응, 허리를 써서, 배 안쪽을 휘저으면……」
+			PRINTFORML 「아흣, 그거어, 장속이잇, 아흐앙%UNICODE(0x2665)%」
+			PRINTFORMW 「그, 그래애, 좀 더, 좀 더 휘저어 줘어%CALLNAME:MASTER%%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	;후배위A 삽입당한다(여기부터 후타나리. 또한 남자만 쓰고 조만간 플랑짱 새드 조건을 달지도 몰라)
+	CASE 90
+		IF TALENT:연인 || TALENT:연모
+			IF TALENT:MASTER:2 == 2
+				IF ABL:MASTER:15 >= 2 && EXP:MASTER:2 >= 20
+					PRINTFORML 「꾸물꾸물~하고, 아핫♪ 내 것이 들어가 버렸어 %CALLNAME:MASTER%~」
+					PRINTL 「엉덩이는 정말 느낌이 좋구나, 이제 알겠어. 나도 그렇고, 무엇보다도……」
+					PRINTL 「전립선 근처를 조금씩 밀면, 자지가 부르르 떨려버리네~?」
+					PRINTFORMW 「자아, 여자아이한테 엉덩이 범해져서…… 가버려어%UNICODE(0x2665)%」
+				ELSE
+				ENDIF
+			ELSE
+			ENDIF
+		ELSE
+		ENDIF
+	;이라마치오 당한다(아나타의 자지 크기로 분기할지도)
+	CASE 91
+		IF TALENT:연인 || TALENT:연모
+			IF TALENT:MASTER:2 == 2
+				IF ABL:MASTER:15 >= 2 && ABL:TARGET:0
+					PRINTFORML 「아앗%UNICODE(0x2665)% %CALLNAME:MASTER%의 입, 기분 좋아아%UNICODE(0x2665) *2%」
+					PRINTFORMW 「목구멍, 응읏%UNICODE(0x2665)%안엣, 앗, 가버려엇……!%UNICODE(0x2665) *3%」
+				ELSE
+				ENDIF
+			ELSE
+			ENDIF
+		ELSE
+		ENDIF
+	;허리흔들기 역A(즉 당신이 박힐 때의 구상)
+	CASE 93
+		IF TALENT:연인 || TALENT:연모
+			IF TALENT:MASTER:2 == 2
+				IF ABL:MASTER:15 >= 2 && EXP:MASTER:2 >= 2
+				ELSE
+				ENDIF
+			ELSE
+			ENDIF
+		ENDIF
+	;정상위A 삽입당한다(여기까지 후타나리)
+	CASE 94
+		IF TALENT:연인 || TALENT:연모
+			IF TALENT:MASTER:2 == 2
+				IF ABL:MASTER:15 >= 2 && EXP:MASTER:2 >= 20
+				ELSE
+				ENDIF
+			ELSE
+			ENDIF
+		ELSE
+		ENDIF
+	;抱きつき,抱きしめ（차이를 몰라서 함께 한다）
+	;이 두 개가 각각 뭐라고 번역되는지 모르겠다 (껴안는다? 안는다?)
+	CASE 122,123
+		IF TALENT:연인 || TALENT:연모
+			PRINTL 「세게, 꽈악 안아서, 꼬옥하고 품에 안겨줄게」
+			PRINTFORML 「……난 어디에도 가지 않으니까, %CALLNAME:MASTER%도 떨어지지 말아 줘?」
+			PRINTFORMW 「……응, 들었다면 다행이야. 좋아해, %CALLNAME:MASTER%」
+		ELSE
+		ENDIF
+	;볼 쓰다듬기
+	;근데 지 볼따구를 쓰담쓰담받는
+	CASE 124
+		IF TALENT:연인 || TALENT:연모
+			PRINTFORML 「%CALLNAME:MASTER%의 손, 나보다도 크고 따뜻해……」
+			PRINTFORML 「……나, %CALLNAME:MASTER%를 위해서라면 뭐든 할 테니까, 응?」
+			PRINTW 「히야앗, 녜 퍄암 어르은 냐져어~ (내 뺨 얼른 놔 줘~)」
+		ELSE
+		ENDIF
+	;냄새를 맡는다
+	CASE 127
+		IF TALENT:연인 || TALENT:연모
+			PRINTFORML 「킁킁…… 응. 평소대로의 %CALLNAME:MASTER%의 냄새야」
+			PRINTW 「내가 좋아하는, 목 말라지는 냄새…… 스으으――」
+		ELSE
+		ENDIF
+	;목덜미 핥기
+	CASE 129
+		IF TALENT:연인 || TALENT:연모
+			PRINTFORML 「쪼옥, 할짝…… 응, %CALLNAME:MASTER%의 맛이 나」
+			PRINTFORMW 「조금 짜긴 하지만, 감미로워서, 엄니를 세우게 돼 버려%UNICODE(0x2665)%」
+		ELSE
+		ENDIF
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;361,저항한다
+;TCVAR:20 (27=골짜기를 과시한다 32=앞에서 안겨든다 35=치마 속을 드러낸다 53=파이즈리 73=파후파후 77=젖을 빨게 한다 85=V삽입한다 86=정말좋아 hold 87=A삽입한다 88=V허리흔들기 89=A허리흔들기)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_361
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_361_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_361_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;363,읽어준다 ([유치]소유 전용)
+;TFLAG:193 (1=대성공 0=성공 -1=실패)(지문 분기 없음)
+;CFLAG:동침중 (1=이불or침대 속에서 책을 읽음)
+;MASTER가 TARGET보다 더 큰 체격일 경우, 무릎 위에 TARGET를 올려주는
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_363
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_363
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_363_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_363_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;364,콩뿌리기 (스이카, 유우기, 스칼렛자매용)
+;TFLAG:193 (콩뿌리기에 참여하는 인원)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_364
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_364_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_364_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+;豆まきの仕様が曖昧なのでLOCAL0のままで、そのうち確認します
+;콩뿌리기의 사양이 애매해서 LOCAL0인 채로 조만간 확인하겠습니다
+
+;오니인 플랑이 자신에게 콩을 뿌리도록 몸을 내주지만 아나타가 이를 거절하고 서로 꽁냥꽁냥한다는 내용인데
+;이에 맞춰 콩뿌리기를 캔슬하는 걸 매끄럽게 만들기가 어려웠는지 아예 폐기됐음
+;그냥 RETURN 0 하면 콩뿌리기 커맨드가 실행되지 않도록 만들면 좋을 것 같은데... 아닌가?
+	IF TALENT:연인
+		PRINTFORML 本日は節分である。そのため、豆を用意したのだが……。
+		PRINTFORML あなたが大好きなフランに豆を投げつけ、外に行けと言うのはいかがなものか。
+		PRINTFORML などと考え歩いていると、フランに出会った。
+		PRINTFORML 「ん、%CALLNAME:MASTER%。%CALLNAME:MASTER%も豆を投げに来たの？」
+		PRINTFORML 「いいよ。%CALLNAME:MASTER%が幸せになれるように、好きなだけ投げて」
+		PRINTFORML その覚悟を決めたような目にあなたは、豆を投げることなどできず、フランを抱きしめ”鬼は内”と言った。
+		PRINTFORML 「……別に、鬼は外なんて言われたって気にしないって、言うつもりだったのに」
+		PRINTFORML 「ホント……、卑怯だよ%CALLNAME:MASTER%は」
+		PRINTFORML 大事なフランに外に行けなどと言えるはずもない。それよりも、一緒に豆でも食べようと誘う。
+		PRINTFORMW 「年の数は食べられないけどね。そうしよっか」
+		PRINTFORMW 「――――ありがと、%CALLNAME:MASTER%」
+	ENDIF
+ENDIF
+;実際に試してないから表示してません。自己責任で
+;실제로 시도하지 않았기 때문에 표시하지 않았습니다. 자기 책임으로
+RETURN 1
+;==================================================
+;365,모리야신사로 이동 (사나에、카나코、스와코용)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_365
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_365_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_365_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;368,자유행동에 어울린다 
+;기능계의 행동은 기능레벨이 1이상이면 발생
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_368
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_368_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_368_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	SELECTCASE Activity_Type:TARGET
+		CASE 0
+			;▼생각［어떤 생각하는지］
+			;TFLAG:193,-1=어물쩍 넘겨지다
+			IF TFLAG:193 == -1
+				IF TALENT:연인 || TALENT:연모
+					PRINTFORMW 「잠시 생각하던 거라면… 손톱이 좀 자랐네, 라든가? 진짜 이게 다야.」
+				ELSE
+					PRINTFORMW 「적어도, %CALLNAME:MASTER%하고 관련없는 일이려나.」
+				ENDIF
+			ELSE
+				IF TALENT:연인
+					PRINTFORML 「으음, 뭐어…… 여러 가지 있는데 뭘 들려줄까?」
+					$ASK_TO_FLANDRE
+					CALL ASK_M("잡다한 이야기", CFLAG:1601 < 3, "야한 얘기", EXP:이상경험 >= 1 || MARK:고통각인 >= 1, "호칭에 대해서(미작동)", EXP:애정경험 > 9999, "앞으로 서로 어떡할지" , EXP:데이트경험 >= 100 && !EXP:출산경험, "아무 것도 아니야", 1)
+					SELECTCASE RESULT
+					CASE 0
+						IF CFLAG:1601 == 0
+							PRINTFORML 「아무 거나 얘기해도 괜찮다고? 이야기가 좀 많이 길고 지루할텐데, 정말로?」
+							CALL ASK_YN("응", "아니")
+							IF !RESULT
+								PRINTFORMW 「뭐, %마스터가% 괜찮다고 하니 상관 없겠지.」
+								PRINTL
+								PRINTFORMW 「……사랑이란 건 분명, 이루어진다면 끝나버리는 것일까.」
+								PRINTFORML 「사랑을 애타게 그리는 사이는, 또 이루어지지 않는 사이는」
+								PRINTFORMW 「자신들이 스스로 포기하기 전까지는 그 상대를 좋아하게 되지.」
+								PRINTFORMW 「하지만, 이루어진 후에는 어떨까.」
+								PRINTL 
+								PRINTFORMW 「사랑이 이루어진다면, 맹목의 시간이 끝나고 싫어하는 부분이 눈에 들어오거나 하지.」
+								PRINTFORML 「우리같은 경우엔 %마스터가% 내 생활에 맞춘 탓에 야행성이 돼버린 거라든가」
+								PRINTFORMW 「가능하다면 마늘은 먹지 말아달라고 하는 거라든가」
+								PRINTFORMW 「……%마스터를% 독점하고 싶어 하는, 내 속마음이라든가.」
+								PRINTL
+								PRINTFORMW 「%CALLNAME:MASTER%하고 사귈 때까지는 단지 사귀는 것만으로도 좋았는데」
+								PRINTFORMW 「그런 나에게 맞춰주지 않았다고, %마스터가% 조금 싫다고 생각해버려」
+								PRINTFORMW 「이런 나 자신이, 정말로…… 싫다고 느껴」
+								PRINTFORMW 「내가, %마스터를% 좋아한다는 마음은, 그 사랑은…… 끝나버린 걸까아……」
+								PRINTW
+								PRINTW
+								PRINTFORML 「――미안, 진짜로 시원찮은 이야기가 됐네.」
+								PRINTFORMW 「오늘 얘기했던 건 그만 잊어버려. 내일은, %마스터가% 좋아하는 나로 있을 테니까」
+								CFLAG:1601 += 1
+							ELSE
+								PRINTFORML 「아무래도 그렇겠지? 별거 아닌 잡생각이니까.」
+								PRINTFORMW 「또 물어볼 거 있으면 언제든지 들어줄게.」
+							ENDIF
+						ELSEIF CFLAG:1601 == 1
+							;두 번째 선택
+							PRINTFORML 「아무 거나 얘기해보라고 해도 말이지…」
+							PRINTFORML 「그렇게까지 끄집어낸다 해도 잘 안 떠오르는데……」
+							PRINTFORMW 「그렇담 이전의 이야기를 마저 다뤄볼까?」
+							PRINTL
+							PRINTFORMW 「어음…… 뭐어 그니깐, 내가 %마스터를% 좋아한다는 건 확실해. 그치그치」
+							PRINTFORML 「하지만. 사귀기 시작하고 나서 %CALLNAME:MASTER%에게 불만……이라기 보단, 부탁같은 것도 분명히 있어」
+							PRINTFORMW 「내 사랑이 애정으로 승화된 건지도, 잘 모르겠고.」
+							PRINTFORMW 「……애정이란 건 뭘까?」
+							PRINTL
+							PRINTFORMW 「%마스터를% 「사랑」했을 때는 기억하고 있어.」
+							PRINTFORMW 「죽이지 않아도 되는 인간이 아닌, 죽이고 싶지 않은 인간으로 봤던 때였지」
+							PRINTFORMW 「자연스레 사랑했었고, 훗날 스스로도 그 감정을 알게 됐지. 나에게 있어 「사랑」은 이래.」
+							PRINTFORMW 「그럼……「애정」은?」
+							PRINTL
+							PRINTFORMW 「이때까지 %CALLNAME:MASTER% 이외엔 좋아하게 된 적도 없는데」
+							PRINTFORML 「여러 책을 읽어 찾아보아도, 명확한 조건같은 것도 없고.」
+							PRINTW 「"상대의 싫은 부분까지 좋아하게 되는 것이 「애정」" 이라든가…… 그리 써져있긴 했는데」
+							PRINTFORML 「그렇지만, 난 %CALLNAME:MASTER%의 바람기인 부분까지는 좋아해 주지 못 해서……」
+							PRINTFORMW 「결국, 그런 독점욕이 강한 나 자신이 싫어져」
+							PRINTL
+							PRINTFORMW 「%마스터를% 줄곧 좋아할 수 있었던, 어느 불만도 없던 내가 없어지면 사랑이 끝나겠지」
+							PRINTFORMW 「하지만, 추한 내 독점욕이 이 감정을, 「애정」이 되지 못 한 무언가에 억누르고 있어.」
+							PRINTL 와락――
+							PRINTFORMW 「……%마스터를% 붙잡고 떨어지지 않는다면, 이건 애정이 되는 걸까?」
+							PRINTL
+							PRINTW
+							PRINTFORMW 「――거짓말이야. 적어도, 지금은」
+							PRINTFORMW 「자, 이번 이야기도 잊어 줘」
+							PRINTFORMW 「괜찮아. 사랑이나 애정이나 둘 다 아니라고 해도, 나는 %마스터가% 좋아. 그것만큼은 확실하다구?」
+							CFLAG:1601 += 1
+						ELSEIF CFLAG:1601 == 2
+							;다음은 세 번째
+							PRINTFORMW 「또 그 잡다한 얘기 해달라고? 아니, 뭐어, 일단 나름대로 진전이 있었다만…」
+							PRINTL
+							PRINTFORMW 「언니하고, 이따금 이야기해봤는데」
+							SETCOLOR 0xFFB6C1
+							PRINTFORML 『그거 참 보잘 것 없는 생각이구나.』
+							RESETCOLOR
+							PRINTFORMW 「하곤 웃더라.」
+							PRINTL 「이번만큼은 '역시 이 새끼 죽여 버릴까' 싶었는데」
+							PRINTFORMW 「……비교적, 납득할만한 얘기를 하더라.」
+							PRINTL
+							SETCOLOR 0xFFB6C1
+							PRINTFORMW 『지금까지 인간관계가 거의 없던 너는 몰랐을 테지만, 우선 현실은 그 말대로 딱 들어맞았던 경우같은 건 없단다.』
+							PRINTFORMW 『사랑이나, 애정이나, 그런 말들은 감정 표현 중 하나일 뿐… 정답도 오답도 없지.』
+							RESETCOLOR
+							PRINTW
+							PRINTFORML 「그렇기에, 응. 나는, %CALLNAME:MASTER%에게 사랑받지 않는게 무서워서, 정답같은 걸 찾고있었을 뿐이라는 걸 알았어.」
+							PRINTFORML 「다음부턴 내 매력으로 %마스터를% 꼼짝도 못 하게 해줄 거야.」
+							PRINTFORML 「좀 더 나를 좋아하게 될 테니까, 각오하고 있으라고!」
+							PRINTFORML 「절대로 놓치지 않을 거야, %CALLNAME:MASTER%%UNICODE(0x2665)%」
+							CFLAG:1601 += 1
+						ELSE
+							PRINTFORML 「미안. 이제 얘깃거리는 그 이야기를 끝으로 더는 생각이 안 나」
+							PRINTFORML 「나중에 또 뭔가 고민거리가 있으면, 그 때 알려줄게.」
+							PRINTFORMW 「지금은 다른 주제라면 이야기해줄 수 있을 것 같아.」
+							GOTO ASK_TO_FLANDRE
+						ENDIF
+					CASE 1
+						PRINTFORML 「……그런 걸 얘기할 땐, 좀 더 무드같은게 있어야 한다고 생각하는데」
+						PRINTFORMW 「그치만 이리 말해도 아무 소용 없을 테니…… 뭐어, 들어보긴 할게.」
+						CALL ASK_M("S처럼 대해줘라", ABL:마조끼 <= 3, "M처럼 굴어라", ABL:새드끼 <= 3, "오줌을 눠라", TALENT:마조, "가슴 빨고 싶다", EXP:출산경험)
+						SELECTCASE RESULT
+						CASE 0
+							IF ABL:새드끼 >= 4
+								PRINTFORML 「……후응♪」
+								PRINTFORML 「나도 %CALLNAME:MASTER%가 좋아하는 모습이 돼버린 걸까」
+								PRINTFORMW 「왠지, 더 말하지 않아도…%UNICODE(0x2665)%」
+								TALENT:새드 = 1
+							ELSE
+								PRINTFORML 「……내가 그리 하는게 취향인가 보네.」
+								PRINTFORML 「%마스터가% 좋아하는 모습이 되도록, 노력해보긴 한다만」
+								PRINTFORMW 「너무 그렇게 기대하진 않아도 되니깐…」
+								ABL:새드끼 += 1
+								ABL:마조끼 -= 1
+							ENDIF
+						CASE 1
+							IF ABL:마조끼 >= 4
+								PRINTFORMW 「……우으읏%UNICODE(0x2665)% 이번에도, 벌을 주는 구나아……」
+								PRINTFORML 「나아, 이제엔…그런 말, 하지 않아도옷%UNICODE(0x2665)% 몸잇, 움찔거려서어……」
+								PRINTFORML 「계속 이랬으면 좋겠어…… 우흐읏%UNICODE(0x2665)%」
+								PRINTFORMW 「~~~~으으읏%UNICODE(0x2665)% 더는 못 참겠어엇%UNICODE(0x2665)% 얼른 저를 %마스터를% 의 육변기로 부려주세요오%UNICODE(0x2665) *3%」
+								TALENT:마조 = 1
+							ELSE
+								PRINTFORML 「어으음……응」
+								PRINTFORMW 「잘은 모르겠지만, 한 번 열심히 해볼까」
+								PRINTFORMW 「ㅈ, 저르을, 마음껏 범해주세요……!」
+								SIF ABL:마조끼 < 2
+									PRINTFORMW 「마, 마음에 안 든다니…! 엄청 부끄럽게 만들고선 이게――!!」
+								ABL:마조끼 += 1
+								ABL:새드끼 -= 1
+							ENDIF
+						CASE 2
+							PRINTFORML 「뭐?」
+							PRINTFORML 「내가 뭘 잘못 들은 건가? 진짜로?」
+							PRINTFORMW 「……제대로 들은게 맞구나」
+							PRINTFORML 「정말로 %마스터가% 그런 파렴치한 짓을 시킨다곤 생각치도 않았는데……」
+							CALL ASK_M("진심이다", 1, "미안하다", 1)
+							SELECTCASE RESULT
+								CASE 0
+									PRINTFORMW 「……」
+									PRINTFORMW 「이 변태, 음란마귀, 로리콘, 바람둥이, 이 이상성욕자 같으니.」
+									PRINTFORMW 「……바보야%UNICODE(0x2665)%」
+								CASE 1
+									PRINTFORML 「어어, 그래그래」
+									PRINTFORMW 「지금이라도 사과했음 됐지, 으응……」
+									PRINTFORMDW 유난히 아쉬워하는 기색의 플랑을 뒤로 하였다……
+							ENDSELECT
+						CASE 3
+							PRINTFORML 「……이젠 큼직한 아기 행세야?」
+							;PRINTFORMDL 응애. 나 애기 %CALLNAME:MASTER%, 맘마 줘.
+							PRINTFORMW 「하아… 아기 것까지 다 먹지는 마?」
+						ENDSELECT
+					CASE 2
+					;現状選ばれないように条件難化
+					;현상 선택되지 않도록 조건난화
+
+					;뭔가 문제가 있는지 선택되지 않도록 조건을 늘려서 막았다고 해서 일단 보류
+					;치트로 애정경험 9999 이상으로 올리든가 하고 무슨 문제가 일어나도 난 ㅁㄹ
+						PRINTL 「어떻게 불렀으면 좋겠어?」
+						CALL ASK_M("오라버니", TALENT:MASTER:성별 == 1, "언니", !TALENT:MASTER:성별 == 1, "당신", 1, "주인님", TALENT:마조, "지금 이대로", 1)
+						SELECTCASE RESULT
+						CASE 0
+							MASTERNAME:50 = 오라버니
+							PRINTFORML 「오라버니, 오라버니, 구나.」
+							PRINTFORML 「뭔가 느낌이 이상하네. 피가 이어지지 않았는데도 오라버니라니」
+							PRINTFORML 「만약 진짜 오라버니였다면, 지난 500년도 분명 즐거웠을 텐데……」
+							PRINTFORMW 「――랄ー까! 그런 생각도 나지 않을 만큼, 행복하게 해 줘야 해, %MASTERNAME:50%%UNICODE(0x2665)%」
+						CASE 1
+							MASTERNAME:50 = 언니
+							PRINTFORML 「언니, 언니, 구나.」
+							PRINTFORML 「뭔가 느낌이 이상하네. 피가 이어지지 않았는데도 언니라니」
+							PRINTFORML 「만약 진짜 언니였다면, 지난 500년도 분명 즐거웠을 텐데……」
+							PRINTFORMW 「――랄ー까! 그런 생각도 나지 않을 만큼, 행복하게 해 줘야 해, %MASTERNAME:50%%UNICODE(0x2665)%」
+						CASE 2
+							MASTERNAME:50 = 당신
+							PRINTFORML 「서로 사귀고 있는 사이라면, 메이저한 이름이겠네.」
+							PRINTFORMW 「동화 속의 두 연인처럼, 행복하게 해 줘야 해, %MASTERNAME:50%%UNICODE(0x2665)%」
+						CASE 3
+							MASTERNAME:50 = 주인님
+							PRINTFORML 「……그런 걸 좋아하는구나, %CALLNAME:MASTER%」
+							PRINTFORMW 「이제 부탁하지 말고, 명령해 주기만 하면 된다구, %MASTERNAME:50%%UNICODE(0x2665)%」
+						CASE 4
+							MASTERNAME:50 = %CALLNAME:MASTER%
+							PRINTFORML 「뭐어, 지금까지도 그랬고」
+							PRINTFORMW 「이게 제일 익숙한 이름이니까. 그치, %MASTERNAME:50%?」
+						ENDSELECT
+					CASE 3
+						PRINTFORMW 「지금까지, 나는 %CALLNAME:MASTER% 덕분에 여러 가지 것들을 알았어.」
+						PRINTW 「예를 들면? ……그런 말 해도 얘기하기가 어렵지만, 사랑이라든가?」
+						PRINTW 「……가만히 보고만 있진 말아 줘. 부끄럽잖아」
+						PRINTFORMW 「뭐어, 그래서 말야. %CALLNAME:MASTER%한테서 애정이란 걸 배워서」
+						PRINTFORMW 「나도 지금, %마스터를% 사랑하고 또 사랑받고 있다고 실감이 나.」
+						PRINTFORMW 「그래도, 저기, 결국엔 %마스터는% 혈연관계인 건 아니잖아?」
+						PRINTFORMW 「그래서 %마스터를% 사랑한다 해도…… 가족애를 모르는 나에겐, 말이지」
+						PRINTFORMW 「%CALLNAME:MASTER% 이외의 가족에게, 나, 나는……」
+						PRINTW
+						PRINTW 「……나도 사랑해줄 수 있는 걸까?」
+						CALL ASK_M("사랑해줄 수 있다", EXP:애정경험 >= 50 && !TALENT:임신소망 && !TALENT:임신, "・・・", 1)
+						SELECTCASE RESULT
+						CASE 0
+							PRINTW 「……정말로?」
+							PRINTL 「지금으로선 그러지 않고 있지만, 난 사람을 잡아먹는 요괴고」
+							PRINTW 「원래 당신은 잡아먹혀야 할 쪽인 인간인데」
+							PRINTW 「우리 사이의 아이는 이도저도 아니게 돼서…… 분명 배척당할 거야.」
+							PRINTW 「그럼 그 슬픔이 태어날 거라면, 태어나지 않고 애초부터 슬픔이 없는게 더 낫지 않을까……?」
+							CALL ASK_M("우리가 있다", 1, "・・・", 1)
+							SELECTCASE RESULT
+								CASE 0
+									PRINTL 「우리, 구나」
+									PRINTW 「……그래. 괜찮겠네」
+									PRINTW 「우리 둘이라면 극복할 수 있단 말은 좀 진부하긴 하지만」
+									PRINTW 「그래도, 응. 믿어도 되려나」
+									PRINTL
+									PRINTFORMW 「있잖아, %CALLNAME:MASTER%.」
+									PRINTFORMW 「나, %CALLNAME:MASTER%하고 아이를 가지고 싶어!」
+									TALENT:임신소망 = 1
+								CASE 1
+									PRINTDL 당신은 결국 그 마지막 말에 답하지 못 했다.
+									PRINTL 「……그렇지? 어려운 문제니깐 어쩔 수 없지.」
+									PRINTL 「이 슬픔이 이어져 또 다른 불행을 만드는 건 싫으니까」
+							ENDSELECT
+						CASE 1
+							PRINTL 「……미안. 이상한 얘기였지」
+							PRINTW 「방금 건 그냥 잊어 줘.」
+						ENDSELECT
+					CASE 4
+						PRINTFORML 「그래? 그럼 이번엔, %CALLNAME:MASTER%에 대해서도 더 들려줘!」
+					ENDSELECT
+				ELSEIF TALENT:연모
+				ELSEIF TALENT:사모
+				ELSE
+				ENDIF
+			ENDIF
+		CASE 1
+			;▼놀기［함께 놀기］
+			;※[유치]소유만
+			;TFLAG:193,1=크게 달아오른다,-1=별로 흥이 나지 않는다
+			;PRINTFORMW 
+		CASE 2
+			;▼식사［함께 식사하기］
+			;TFLAG:193,-1=MASTER는 배가 고프지 않았다
+			;PRINTFORMW 
+		CASE 3
+			;▼집어먹기［함께 집어먹기］
+			;※[요정]소유와 루미아, 코이시, 유우코, 시온만
+			;TFLAG:193,-1=MASTER는 배가 고프지 않았다
+			;PRINTFORMW 
+		CASE 4
+			;▼청소［청소를 돕기］
+			;※[청소부]소유 또는 악취내성-1 이하만
+			;PRINTFORMW 
+		CASE 5
+			;▼운동［함께 운동하기］
+			;※[음악지식]소유자는 제외 (연주가 된다)
+			;PRINTFORMW 
+		CASE 6
+			;▼독서［책의 감상을 듣기］
+			;TFLAG:193,-1=집중하고 있어 대답해 주지 않는다
+			;PRINTFORMW 
+		CASE 7
+			;▼요리［요리를 돕기］→［요리를 나눠받기］
+			;TFLAG:193,2=요리를 돕기,0=만든 요리를 먹는다,-1==MASTER는 배가 고프지 않았다 (먹을 때)
+			;PRINTFORMW 
+		CASE 8
+			;▼연주［세션을 함께하기］or［음악 반주하기］
+			;※[음악지식]소유자만 (TALENT:음악지식으로 변화）
+			;TALENT:음악지식,1=연주하고 있다,2=노래하고 있다,3=춤추고 있다
+			;TFLAG:193,1=리듬을 타며,0=성공,-1=실패,-2=악기가 없어서 보고만 있다
+			;PRINTFORMW 
+		CASE 9
+			;▼채집［채집을 돕기］
+			;PRINTFORMW 
+		CASE 10
+			;▼낚시［함께 낚시하기］
+			;TFLAG:193,-1=낚싯대가 없어서 보고만 있다
+			;PRINTFORMW 
+		CASE 11
+			;▼실험［실험을 돕기］
+			;PRINTFORMW 
+		CASE 12
+			;▼한가로이［함께 한가로이 쉬기］
+			;PRINTFORMW 
+		CASE 13
+			;▼저녁반주(晩酌)［저녁반주를 함께하기］
+			;※술내성 0 이상만
+			;PRINTFORMW 
+		CASE 14
+			;▼쇼핑［쇼핑을 돕기］
+			;PRINTFORMW 
+		CASE 15
+			;▼설교［상황을 살핀다］
+			;※신령・봉래인은 제외
+			;TFLAG:193,-1
+			;PRINTFORMW 
+		CASE 16
+			;▼함정［장난을 같이한다］or［상황을 살핀다］
+			;※삼월정・치르노・클라운피스만
+			;나머지는 떨어지는 쪽
+			;PRINTFORMW 
+	ENDSELECT
+ENDIF
+RETURN 1
+;==================================================
+;380, 프로포즈한다 (KR판 오리지널)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_380
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_380_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_380_1
+;-------------------------------------------------
+;기입 체크(=0, 비표시, 1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;성공시
+	IF TFLAG:193
+		PRINTL
+		PRINTW 옛날옛날에~ 사람들과 놀기 좋아하던 한 아가씨가 있었답니다.
+		PRINTL 그런데? 실수로 어떤 사람을 다치게 해 버린 바람에
+		PRINTW 무서운 괴물이라면서, 아가씨의 방에 가둬 버리고 말았어요.
+		PRINTW 그렇게 그 아가씨는 홀로 외로워하며 긴 시간을 지냈어요.
+		PRINTW 그러던 어느 날, 어느 한 인간이 그 방의 문을 열어줬답니다?
+		PRINTL 모두가 무서워했지만, 그 인간은 전혀 무서워하지 않고
+		PRINTW 외로워하던 아가씨의 소중한 친구가 되어 주었답니다.
+		PRINTW 그리고 둘은 모두의 앞에서 아가씨의 오해를 풀어, 행복하게 살았답니다……
+		PRINTW
+		SETCOLOR 0xFFB6C1
+		PRINTW 『좋은 이야기구나. 사쿠야, 잠시 아이를 부탁할게.』
+		PRINTW 『……그리워하고 있구나.』
+		PRINTL 『아직은 힘들 텐데, 너무 무리하지 않아도 돼 플랑.』
+		PRINTW 『하루종일 애 보느라 고생했어. 들어가서 같이 쉬자?』
+		RESETCOLOR
+		PRINTW 「……」
+		PRINTFORMW 「%CALLNAME:MASTER%하고 약속했어.」
+		PRINTFORMW 「%마스터가% 알려준 따스함과 사랑을 잊지 않겠다고.」
+		PRINTW 「그리고, 다른 이들에게도 사랑을 베풀어 주겠다고.」
+		PRINTW
+		PRINTL
+		PRINTW 「……절대 못해!!」
+		PRINTW 「난 그런 거 절대로 못 한단 말이야!」
+		PRINTFORMW 「%마스터가% 없으면 더는 사랑하는 법을 알 수도 없어!」
+		PRINTFORMW 「%마스터가% 없으니 사랑이 뭔지도 잊혀져 가…!」
+		PRINTFORML 「%마스터가% 있어야 난, 나느은……」
+		SETCOLOR 0xFFB6C1
+		PRINTW 『플랑…』
+		RESETCOLOR
+		PRINTW 「도와줘, 언니…」
+		PRINTW 「나아, 이대로는, 약속을 못 지켜어…!」
+		PRINTW 「그리워, 만나고 싶어, 더는 잊고 싶지가 않아아…」
+		PRINTW 「근데 나 이제, 어떻게 해야 될지, 모르겠어…」
+		PRINTFORMW 「제발, 도와줘어, %CALLNAME:MASTER%……」
+		PRINTW
+		PRINTDL 띠링――
+		PRINTFORMW 「으흑, %CALLNAME:MASTER%…」
+		PRINTW 「……꿈?」
+		PRINTL 「꿈이라 하기엔 너무…… 하아, 됐다.」
+		PRINTFORML 「그럼 %CALLNAME:MASTER%도 여기에서 자고 있고…」
+		PRINTW 「참 다행이야…… 이게 얼마나 반가운 얼굴인지 몰라.」
+		PRINTFORML 「……%마스터는% 결국 인간으로 남겠다고 했었지.」
+		PRINTW 「그럼 조만간 날 두고 먼저 가겠다는 거잖아, 이 바보야.」
+		PRINTW 「그래서 꿈에서 나랑 그런 약속을…」
+		PRINTFORMW 「……%CALLNAME:MASTER% 이 천하의 바보변태페도이상성욕자 같으니.」
+		PRINTFORMW 「%마스터가% 없어도 천년만년은 사랑이 갈만큼 응석부릴 거니까!」
+		PRINTW 「그 약속을 직접 듣기 전까진 절대 못 죽어, 알았어?」
+		PRINTFORMW 「……여보%UNICODE(0x2665)%」
+		PRINTW
+		PRINTDL 저기, 저 이미 깨어 있는데요……
+		PRINTW 「죽어 이 바보야――!!!」
+	;실패시?
+	ELSE
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;402,취침
+;TFLAG:193 (0=통상 1=아이를 사이에 두고 함께 잔다)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_402
+;취침에 TRAIN_MESSAGE는 없음
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_402_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_402_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연인
+		PRINTFORML 「잘 자, %CALLNAME:MASTER%. 내일 또 봐~」
+		PRINTW 「또 다시 내일도, 함께하자」
+	ELSEIF TALENT:연모
+		PRINTFORMW 「잘 자 %CALLNAME:MASTER%. 내일 또 보자」
+	ELSEIF TALENT:사모
+		PRINTL 「이제 자는 거야?」
+		PRINTW 「그럼 자리 비워줄게. 또 봐.」
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;403,휴식
+;CFLAG:TARGET:수면 (1=TARGET이 자는 옆에서 휴식)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_403
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_403_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_403_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;405,나간다 (동행시 데이트)
+;조건이 복잡하기 때문에, COMF405 외출한다.ERB를 참조할 것
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_405
+;외출한다에 TRAIN_MESSAGE는 없음
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_405_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_405_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	;TARGET과 데이트
+	IF CFLAG:동행
+		IF TALENT:연인
+			PRINTL 「데이트야? 물론, 가고말고」
+			PRINTL 「당신이 있으면 어디라도 좋아」
+		ELSEIF TALENT:연모
+			PRINTL 「데이트, 데리고 가는구나」
+			PRINTL 「좋아. 즐겁게 해줘야 해?」
+		ELSE
+			PRINTL 「데이트? 치곤 권유가 일방적인데...?」
+			PRINTL 「재미 없으면 꾸욱 해버릴 거라고.」
+		ENDIF
+	;TARGET이외와 데이트
+	ELSEIF CFLAG:MASTER:동행
+	;외출 배웅
+	ELSE
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;410,청소
+;FLAG:70 (1=시간정지중)
+;TFLAG:193 (0=보고만 있다 1=같이 청소)
+;TFLAG:194 (3=오염 고 2=오염 중 1=오염 저 0=오염 최소)
+;OUTROOF(CFLAG:현재위치)(야외청소 (겨울은 눈치우기)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_410
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_410_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_410_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+	ELSE
+		IF TALENT:연인 || TALENT:연모
+			IF TFLAG:193 == 1
+				IF ABL:TARGET:40 >= 5
+					PRINTL 「나도 이제 부수기만 하지 않고, 당신처럼 청소도 할 수 있게 됐어.」
+					PRINTFORMW 「이걸로 나도 %마스터를% 거들어줄 수 있다구♪」
+				ELSEIF ABL:TARGET:40 >= 2
+					PRINTL 「서투르긴 하지만, 나도 도와줄게」
+					PRINTFORMW 「%CALLNAME:MASTER%의 부담을 조금이라도 덜하도록 말이야.」
+				ELSE
+					PRINTL 「돕고는, 싶었는데…」
+					PRINTW 「오히려 쓰레기를 늘려버렸을지도…… 미안.」
+				ENDIF
+			ELSEIF TFLAG:193 == 0
+				IF ABL:MASTER:40 >= 5
+					PRINTL 「어라, 거길 벌써 끝냈다고? 우와아―! 진짜로 말끔해졌네?」
+					PRINTL 「사쿠야처럼 손만 닿으면 금새 깨끗해지는게 신기해!」
+					PRINTW 「인간들은 청소를 순식간에 해내는 능력이라도 있는 걸까??」
+				ELSEIF TFLAG:194 == 0
+					PRINTFORMW 「의외로 %마스터는% 깔끔 떠는 성격이구나?」
+					PRINTDL 먼지한테조차 우리의 정사를 엿보이게 하기는 싫…
+					PRINTW 「ㅁ, 뭔 소릴 하는 거야―!」
+				ELSE
+					SELECTCASE RAND:2
+					CASE 0
+						PRINTFORML 「오래 걸릴 것 같아? 응, 기다리고 있을게.」
+						PRINTFORMW 「난 %마스터를% 보는 것만으로도 하루를 날 수 있으니깐」
+					CASE 1
+						PRINTFORMDL 플랑은 청소하고 있는 당신으로부터 눈을 떼지 않고 있다.
+						PRINTFORMW 「우으으…… 눈앞에 %마스터가% 있는데도 기다려야 한다니, 정말!」
+					ENDSELECT
+				ENDIF
+			ENDIF
+		ELSEIF TALENT:사모
+			IF TFLAG:193 == 1
+				PRINTFORML 「뭐어, 청소라면 도와줄게.」
+				PRINTFORMW 「이게 도움이 될지는 잘 모르겠지만...」
+			ELSEIF TFLAG:193 == 0
+				PRINTFORML 「난 부수기 위해 태어난 존재일 테니까」
+				PRINTFORMW 「도와주더라도, 큰 의미는 없겠는걸…」
+				PRINTFORMDL [0] 그렇다
+				PRINTFORMDL [1] 아니다
+				PRINTFORMDL [2] 쓰다듬는다
+				$FLANDRE_CLEAN
+				INPUT
+				SELECTCASE RESULT
+				CASE 0
+					PRINTL 「……너 방금 1도 망설이지 않고 답한 것 같다? 응??」
+					PRINTL 「이제와서 말 바꿔봤자지, 됐거든!」
+					PRINTFORMDW %CALLNAME:MASTER%의 반응에 삐졌는지 고개를 휙 돌리고 혼자 청소하고 있었다…
+				CASE 1
+					PRINTL 「부수지 않고 지켜주는 점에서 의미가 있다고?」
+					PRINTW 「다름아닌 내가 무언가를 지킨다라……」
+					PRINTW 「……혹시 널 말하는 건 아니지?」
+					PRINTL 「뭐, 죽이지는 않아도 되니 틀린 말은 아니려나?」
+					PRINTDW 기분이 좋아졌는지 마무리를 같이 도와주는 플랑이었다.
+				CASE 2
+					PRINTDL 조금 침울해진 플랑의 기분을 풀어주려 머리를 쓰다듬어주었다.
+					PRINTL 「우아앗, 갑자기 뭐하는 거야?」
+					PRINTW 「나름 진지하게 얘기하는데 이렇게 넘겨버리면…!」
+					PRINTL 앞에서 뭐라 하든, 당신은 플랑의 모자도 넘겨 머리를 어루만지고 있었다.
+					PRINTDW 「……뭐든 제멋대로 군다니까…」
+				CASEELSE
+					GOTO FLANDRE_CLEAN
+				ENDSELECT
+			ENDIF
+		ELSE
+			
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;411,전투훈련
+;TFLAG:194 (3=여름의 낮 2=위험한날씨 1=악천후 0=실내or통상날씨)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_411
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_411_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_411_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF ABL:MASTER:전투능력 >= 6
+		PRINTDL 길고 길었던 495년은 곧 공중에 쏘아올린 조그마한 불꽃이 되어 사방에서 터져나간다.
+		PRINTDW 마치 피날레를 장식하는 듯 불꽃놀이를 연상시키는 스펠카드였다.
+		PRINTL 「내 스펠카드 전부를 그렇게 쉽게……」
+		PRINTDL 쿠콰앙――
+		PRINTW
+		PRINTDL 격추당하여 힘없이 추락하는 플랑을 공주님 안기로 받아냈다.
+		PRINTFORML 「……놀랐어. 정말 강하네, %CALLNAME:MASTER%.」
+		PRINT 「여태 난 진심이었는데도,
+		IF TALENT:연인 || TALENT:연모
+			PRINTW 설마 이렇게까지 차이가 날 줄은 몰랐는 걸.」
+			IF TALENT:연인
+				PRINTL 당신의 목에 팔을 감아오는 플랑을 살포시, 꼬옥하고 안아주었다.
+				PRINTFORMW 「이젠 %마스터가% 날 지켜줄 수 있겠네.」
+				PRINTW 「앞으로 이렇게나 든든한 사람한테 안겨 지켜진다고 생각하면…후훗♪」
+			ELSE
+				PRINTDL 당신이 플랑을 내려주려 하자...
+				PRINTL 「아, 잠깐만, 이대로 있게 해 줘.」
+				PRINTW 「왠지 네 품이 편하니까……」
+			ENDIF
+		;ELSEIF TALENT:연모
+		;	PRINTFORMW 상처도 못 낼 정도로 압도적이야…」
+		;	PRINTFORMW 
+		ELSEIF TALENT:사모
+			PRINTW 털끝조차 건드리지 못 한다니……」
+			PRINTL 당신과 대련해준 플랑에게 감사 인사를 건넸다.
+			PRINTW 「……내가 크게 도와준 건 없으니까, 상관 없잖아.」
+			PRINTL 「것보다, 계속 이 상태로 있을 거야?」
+			PRINTDW 당신에게 안긴 플랑이 째려보며 내려달라고 닥달하고 있다.
+			PRINTDW 왠지 플랑의 얼굴이 빨개보였다……
+		ELSE
+			PRINTW 이렇게나 압도적으로 지다니……」
+			PRINTDW 수고 많았다며 밥 한번 사주겠다고 하자……
+			PRINTL 「됐으니까, 얼른 이거 안 내려놔?!」
+			PRINTDW 순간 엄청난 살기가 느껴져서 얼른 땅바닥에 내려줬다.
+		ENDIF
+	ELSEIF ABL:MASTER:전투능력 == 5
+		SELECTCASE RAND:2
+			CASE 0
+				PRINTW 여태까지의 탄막을 당신이 버티는 모습을 보고 플랑은 박수를 친다.
+				PRINTFORML 「강하네에~ %CALLNAME:MASTER%.」
+				PRINTW 「이렇게까지 고전한 건 홍백무녀와 마리사 이래이려나?」
+				SIF TALENT:연인 || TALENT:연모
+					PRINTFORMW 「도중에 %마스터를% 걱정하지 않아도 될 정도로 든든해졌구나♪」
+				PRINTDL 비록 훈련이라 할지라도, 플랑은 지금 당신과의 탄막놀이가 즐거운 듯 하다.
+				PRINTW 「이젠 써야겠어…… Q.E.D 「495년의 파문」!」
+			CASE 1
+				PRINTL 투콰앙――
+				PRINTW
+				PRINTL 「후우…… 내가 탄막에 맞지 않으려고 파괴할 정도라니.」
+				PRINTFORMW 「더 이상 %마스터를% 얕보면 안 되겠네.」
+				PRINTL 「좋아! 이번 건, 아무한테나 쓰지 않는 큰 거 한 방이야!」
+				PRINTW 「금기 「포비든 프루츠」!」
+		ENDSELECT
+	ELSE
+		;훈련 내용, 스펠카드나 탄막같은 거 묘사
+		SELECTCASE RAND:2
+			CASE 0
+				PRINTDL 플랑 한명으로도 벅찬데 넷이서 탄막을 쏘니 죽을 맛이다.
+				PRINTDL 이런게 훈련이라니 도대체 어떻게……
+				PRINTDW 콰앙――
+				PRINTW
+			CASE 1
+				PRINTL 「아직 이 정도로 지치면 안 된다고?」
+				PRINTL 「금탄「과거를 새기는 시계」!」
+		ENDSELECT
+		;훈련 이후 플랑의 평가
+		IF TALENT:연인 || TALENT:연모
+			;SELECTCASE RAND:2
+			;	CASE 0
+					PRINTFORML 「아직은 멀었네, %CALLNAME:MASTER%.」
+					PRINTL 「그래도 내가 지켜줄테니까 괜찮아.」
+					PRINTW 「난 언제나 곁에 있으니까, 그치?」
+			;	CASE 1
+					
+			;ENDSELECT
+		ELSEIF TALENT:사모
+			SELECTCASE RAND:2
+				CASE 0
+				CASE 1
+			ENDSELECT
+		ELSE
+			SELECTCASE RAND:2
+				CASE 0
+				CASE 1
+			ENDSELECT
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;412,공부
+;ABL:교양 (ABL:MASTER:교양 보다 높다=MASTER가 가르침을 받는다 ABL:MASTER:교양보다 적다=TARGET이 가르침을 받는다)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_412
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_412_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_412_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:사모 || TALENT:연모 || TALENT:연인
+		IF ABL:MASTER:교양 > ABL:TARGET:교양
+		;フランちゃんは習得遅い持ち(関係ないかもだけど
+		;플랑쨩은 습득이 느린 편(상관없을지도 모르지만)
+			PRINTFORML 「%마스터는% 머리가 좋네」
+			PRINTL 「근데, 조금 이해하기 어려운데 잠깐만…」
+			PRINTDL 그리 말하곤 노트에 뭔가를 쓰기 시작했다.
+			PRINTL 「그러니깐, 이렇다는 건가? 아냐? 그렇구나…」
+			PRINTDL 플랑 나름대로 해석하고 정리했겠지만, 유감스럽게도 중간중간에 정정할 부분이 있었다.
+			PRINTL 「정말, 내 머리가 약한게 다 드러나네.」
+			SIF TALENT:연모 || TALENT:연인
+				PRINTW 「이렇게라도 당신과 지내는 시간이 늘어나니 좋긴 하다만…」
+		ELSEIF ABL:MASTER:교양 == ABL:TARGET:교양
+			PRINTL 「서로 간에 가르침이 있고, 서로 간에 같은 수준의 교양이 있다면」
+			PRINTL 「회화도 조금은 활기가 띨 거라고 생각한단 말이지.」
+			PRINTW 「너무 현명한 사람과 이야기해도, 뭘 얘기하는 건지 알 수가 없다든가 하니깐.」
+		ELSE
+			PRINTL 「나보다 공부를 못 하는 거야? 의외네」
+			PRINTL 「금방 빠져버릴 거라고 생각하지만, 괜찮다면 그동안에 알려줄게.」
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;413,요리
+;TFLAG:194 (100이상=금단의 메뉴 3=디저트 2=주식 1=간식)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_413
+;TFLAG:194가 100이상인 경우에만
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_413_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_413_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연인
+	ENDIF
+
+ENDIF
+RETURN 1
+;==================================================
+;414,식사한다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;TFLAG:194 (1=노팬티 샤브샤브 2=금단의메뉴 31=도핑 콘소메 수프 30=모짜렐라 치즈와 토마토의 샐러드 34=긴기 요리)
+;TCVAR:MASTER:308 (bit0=진한 맛 bit1=담백한 맛 bit3=몹시 매운 bit4=몹시 단 bit5=와사비 bit6=몹시 신)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_414
+;성공실패 판정
+;TFLAG:192 (-2=커맨드(비TARGET시 강제실패), -1=강제실패, 0=COM의존(비TARGET시 강제성공), 1=강제 성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_414
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_414_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_414_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;415,식사를 대접한다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;TCVAR:MASTER:308 (bit0=진한 맛 bit1=담백한 맛 bit3=몹시 매운 bit4=몹시 단 bit5=와사비 bit6=몹시 신)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_415
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_415
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_415_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_415_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;416,연주한다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;TFLAG:사용악기 (1=키보드 2=피아노 3=기타 4=트럼펫 5=바이올린)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_416
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_416
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_416_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_416_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;417,낮잠잔다
+;TFLAG:193 (0=MASTER를 다키마쿠라로 하고 자고 있다 1=MASTER의 무릎을 베고 자고 있다 2=자는 얼굴에 키스 당했다 3=자는 얼굴을 들여다 보였다 4=MASTER가 무릎을 베고 있다 5=가랑이or페니스 비비기)
+;CFLAG:동침중 (1=함께 자고 있다)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_417
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_417_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_417_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;421,발원한다
+;조건이 복잡하기 때문에 COMF421 발원함.ERB및, EVENT_MESSAGE_COM400.ERB의 발원함 항을 참조할 것
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_421
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_421_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_421_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;422~430는, 특수 커맨드이므로 템플릿으로는 대응하지 않습니다
+;==================================================
+
+;==================================================
+;431,욕탕에서 쉰다
+;TFLAG:209 (4=인간마을 목욕탕에서 카운터짱을 화나게 했다 1=목욕탕에 들어갔다)
+;TFLAG:211 (4=지저의 온천에서 카운터 요괴를 화나게 했다 1=온천에 들어갔다)
+;TFLAG:194 (1=연속입욕불가(표시 안될 가능성 있음?))
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_431
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_431_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_431_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;432,욕탕에서 쉰다
+;표시 타이밍은 입욕 후이므로, 목욕 끝난 후로
+;TFLAG:209 (4=인간마을 목욕탕에서 카운터짱을 화나게 했다 1=목욕탕에 들어갔다)
+;TFLAG:211 (4=지저의 온천에서 카운터 요괴를 화나게 했다 1=온천에 들어갔다)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_432
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_432_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_432_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;436,독서
+;TFLAG:193 (선택지 문학(1=인살 (문학?) 2=실패 3=문학), 선택지 실용서(4=실패 5=실용서), 선택지 야한 책(6=얇고 비싼 책 7=보건체육 8=카마수트라))
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_436
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_436_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_436_1
+;==================================================
+;440,기다린다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_440
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_440_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_440_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;441,수업을 받는다 (케이네 전용)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_441
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_441_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_441_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;442,벌채한다 (미실장)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_442
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_442_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_442_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;442以降のコマンドは、実行しても口上はおそらく表示されないのでテンプレでもスルー
+;442 이후의 커맨드는, 실행해도 구상은 아마 표시되지 않으므로 템플릿에서도 스루
+;==================================================
+
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;데이트계 커맨드
+;데이트계 구상은 문자 그대로 외출처에서 발생
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+[SKIPSTART]
+;현재 미실장
+;==================================================
+;600,데이트 회화
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_600
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_600_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_600_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;601,데이트 스킨십
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_601
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_601_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_601_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;602,데이트 키스
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_602
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_602_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_602_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+[SKIPEND]
+
+;==================================================
+;603,손을 잡는다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)(실패라도 뿌리치거나 하지는 않습니다)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_603
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_603
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_603_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_603_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연인
+		PRINTW 「에스코트 해 주시겠나요, 오라버~님?」
+		PRINTW 「……농담이야. 조금 부끄럽다아, 우으으…… 이만 잊어 줘!」
+		PRINTDL 당신은 일부러 공손하게 손을 쥐곤, 귀여운 아가씨께 달달한 말을 전했다.
+		PRINTFORMW 「~~~~읏! 정말, %마스터는% 날 너무 잘 알아서 문제라니깐…」
+		PRINTDW 그리 말하곤 플랑은 팔까지 휘감아,  웃는 얼굴로 앞으로 가도록 재촉하였다.
+	ELSEIF TALENT:연모
+		PRINTL 「지그시……」
+		PRINTDW 이쪽을 뚫어져라 바라보며 비어있는 손을 드러내 보이는 플랑.
+		PRINTDL 뭘 바란 건가 싶더니 손이었나, 고요한 요구에 따라 손을 잡으니 방긋하고 웃는다.
+		PRINTW 「후흥~♪ 그럼, 가볼까?」
+	ELSEIF TALENT:사모
+		PRINTDL 손을 달라는 부탁에, 플랑은 의아해하며 순순히 응해줬다.
+		PRINTL 「도망가지 않을 건데, 딱히 손 잡고 가지 않아도 되잖아?」
+		PRINTW 「그냥 손을 잡고 싶은 거라고? ……더 이해가 안 되는 걸.」
+	ENDIF
+ENDIF
+RETURN 1
+
+;==================================================
+;604,산책한다
+;데이트중일 경우, CFLAG:현재위치 에 이동장소가 이미 들어가있다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_604
+;산책한다 에는 TRAIN_MESSAGE가 없다
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_604_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_604_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;605,어딘가 들른다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)(地の文無し
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_605
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_605
+;어딘가 들른다 에는 TRAIN_MESSAGE가 없다
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_605_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_605_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;610,식사를 권유한다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_610
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_610
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_610_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_610_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;==================================================
+;613,돈을 번다 (제외되었습니다)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_613
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_613
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_613_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_613_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;614,식재료 장보기
+;TFLAG:193 (1=구매&데이트경험 업 0=구매 -1=미구매)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_614
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_614_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_614_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;615,도시락을 먹는다
+;실행 가능 장소　지장길, 수양버들아래, 안개의 호수, 현무의늪, 큰두꺼비의연못, 절경의언덕, 산의호수, 천계
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;ABL:요리기능 (2미만=미묘한 만듦새 4미만=그럭저럭 맛있다 4이상=일품)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_615
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_615_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_615_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;617,단것을 먹자고 한다
+;TFLAG:193 (1=대성공 0=성공 -1=실패)(지문 분기는 대성공만 추가
+;==================================================
+@M_KOJO_ふらん_SUCCESS_COM_K50_617
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_617
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_617_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_617_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;618,꽃집 (구상은 표시되지 않는 모양?)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_618
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_618_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_618_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;620,스즈나안
+;TFLAG:193 (1=대출OK 0=대출불가)
+;ITEM:10X (X=1 전술지도서 X=2 조리지도서 X=3사전 X=4 단편소설)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_620
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_620_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_620_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;621,낚시를 한다
+;TFLAG:193 (0=낚이지 않음 1~4=물고기 11~15=맛있는물고기 610=목재 131=모리야부적 21=로터 609 = 얼음의비늘 606=용의손톱)
+;TFLAG:194 (1000이상이면 TARGET이 낚은)
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_621
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_621_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_621_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;660,독서
+;TFLAG:193 (선택지 문학(1=인살 (문학?) 2=실패 3=문학), 선택지 실용서(4=실패 5=실용서), 선택지 야한 책(6=얇고 비싼 책 7=보건체육 8=카마수트라))
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_660
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_660_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_660_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;698,방에 들어간다
+;TARGET의 방에 들어가는 경우에만 표시
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_698
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_698_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_698_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+;==================================================
+;699,밖으로 나온다
+;==================================================
+@M_KOJO_ふらん_MESSAGE_COM_K50_699
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_COM_K50_699_1
+RETURN RESULT
+
+@M_KOJO_ふらん_MESSAGE_COM_K50_699_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+
+ENDIF
+RETURN 1
+
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;파생 커맨드
+;※※※※※※※※※※※※※※※※※※※※※※※※※
+;==================================================
+;60,귀이개
+;전턴 무릎베개 후 스킨십 커맨드
+;TFLAG:193 (1=대성공 0=성공 -1=실패)(실패하는 건 TARGET)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_SCOM_K50_60
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_SCOM_K50_60
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_SCOM_K50_60_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_SCOM_K50_60_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연모 || TALENT:연인
+		PRINTL 「힘조절은 어떻게 하는진 기억하니까, 이젠 실수하지 않는다고?」
+		PRINTW 「안심하고 맡겨줘♪」
+	ELSEIF TALENT:사모
+		PRINTL 「귀이개? 내가 하는 거야?」
+		PRINTW 「……난 서투르니까, 실수해도 불평하진 마.」
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;61,다키마쿠라
+;(TARGET수면시간or쇠약)동침중, 전턴을 껴안고 취침 커맨드
+;분기 없음
+;==================================================
+@M_KOJO_ふらん_MESSAGE_SCOM_K50_61
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_SCOM_K50_61_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_SCOM_K50_61_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연인
+		PRINTFORML 「가지마아, %CALLNAME:MASTER%……」
+		PRINTDW 조용히 흘러내리는 플랑의 눈물을 본 당신은, 이 어린 소녀를 떼지 않으려 세게 끌어안았다.
+	ELSEIF TALENT:연모
+		PRINTL 「우으, 으흐흥~」
+		PRINTDW 플랑은 꼬옥하고 당신을 끌어안아, 새근새근 숨소리를 내고 있다.
+	ELSEIF TALENT:사모
+		PRINTL 「……언니이」
+		;PRINTDW 평소엔 그 녀석이라고 부르고 있는 플랑의 의외인 면을 엿본 당신이었다.
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;62,이마 뽀뽀
+;전턴 머리를 쓰다듬고 키스하기
+;TFLAG:193 (1=대성공 0=성공 -1=실패)(지문 분기 없음)
+;ABL:욕망 (5이상=부족하다)
+;ABL:친밀 (5이상=쑥스러워하다)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_SCOM_K50_62
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_SCOM_K50_62
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_SCOM_K50_62_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_SCOM_K50_62_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 1
+;-------------------------------------------------
+IF LOCAL
+	IF TALENT:연인 || TALENT:연모
+		IF EXP:TARGET:27 >= 1
+			PRINTL 「이마만으로 만족하는 거야?」
+			PRINTW 「여기엔, 안 줄 거고…?」
+			PRINTDW 조금 눈물이 맺힌 플랑이 애원하는 눈빛으로 바라보고 있다.
+		ELSEIF EXP:TARGET:27 == 0
+			PRINTL 「있잖아, 저어, 입에 해주지 않아도 괜찮나…싶은데」
+			PRINTDW 그렇게 말하는 동안 플랑의 얼굴은 빨개지고 있었다.
+		ENDIF
+	ELSEIF TALENT:사모
+		PRINTW 「우앗, 근질거리잖아… 정말.」
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;63,좀 더 키스한다
+;전턴 키스 후 키스한다
+;분기조건은 EVENT_MESSAGE_COM500.ERB 참조
+;==================================================
+@M_KOJO_ふらん_SUCCESS_SCOM_K50_63
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_SCOM_K50_63
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_SCOM_K50_63_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_SCOM_K50_63_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	IF FLAG:70
+	ELSE
+	ENDIF
+ENDIF
+RETURN 1
+;==================================================
+;80,손을 잡아당긴다
+;데이트 출발 후 목적지에 도착할 때까지
+;TFLAG:193 (1=대성공 0=성공 -1=실패)
+;==================================================
+@M_KOJO_ふらん_SUCCESS_SCOM_K50_80
+;성공실패 판정
+;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
+TFLAG:192 =0
+
+@M_KOJO_ふらん_MESSAGE_SCOM_K50_80
+CALL TRAIN_MESSAGE
+CALL M_KOJO_ふらん_MESSAGE_SCOM_K50_80_1
+RETURN RESULT
+@M_KOJO_ふらん_MESSAGE_SCOM_K50_80_1
+;-------------------------------------------------
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;IF TALENT:연인
+	;ELSEIF TALENT:연모
+	;ELSEIF TALENT:사모
+	;ENDIF
+ENDIF
+RETURN 1
