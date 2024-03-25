@@ -4,12 +4,12 @@
 ;==================================================
 ;0,애무
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50
+@M_KOJO_우후후플랑_MESSAGE_COM_K50
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 1
@@ -279,12 +279,12 @@ RETURN 1
 ;==================================================
 ;1,커닐링구스
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_1
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_1_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_1_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_1_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_1_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -351,12 +351,12 @@ RETURN 1
 ;==================================================
 ;2,펠라한다
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_2
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_2
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_2_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_2_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_2_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_2_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -397,12 +397,12 @@ RETURN 1
 ;==================================================
 ;3,손가락삽입
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_3
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_3
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_3_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_3_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_3_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_3_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -442,12 +442,12 @@ RETURN 1
 ;==================================================
 ;4,애널핥기
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_4
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_4
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_4_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_4_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_4_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_4_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -488,12 +488,12 @@ RETURN 1
 ;==================================================
 ;5,애널애무
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_5
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_5
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_5_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_5_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_5_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_5_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -534,12 +534,12 @@ RETURN 1
 ;==================================================
 ;6,가슴애무
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_6
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_6
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_6_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_6_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_6_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_6_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -580,12 +580,12 @@ RETURN 1
 ;==================================================
 ;7,유두자극
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_7
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_7
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_7_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_7_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_7_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_7_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -626,12 +626,12 @@ RETURN 1
 ;==================================================
 ;8,보지벌리기
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_8
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_8
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_8_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_8_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_8_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_8_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -672,12 +672,12 @@ RETURN 1
 ;==================================================
 ;9,자위
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_9
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_9
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_9_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_9_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_9_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_9_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -715,12 +715,12 @@ RETURN 1
 ;==================================================
 ;10,유두빨기
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_10
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_10
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_10_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_10_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_10_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_10_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -757,12 +757,12 @@ RETURN 1
 ;==================================================
 ;11,유두빨기
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_11
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_11
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_11_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_11_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_11_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_11_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -802,12 +802,12 @@ RETURN 1
 ;==================================================
 ;12,가슴주무르기
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_12
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_12
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_12_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_12_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_12_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_12_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -847,12 +847,12 @@ RETURN 1
 ;==================================================
 ;13,애널벌리기
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_13
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_13
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_13_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_13_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_13_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_13_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -893,12 +893,12 @@ RETURN 1
 ;==================================================
 ;15,클리애무
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_15
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_15
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_15_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_15_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_15_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_15_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -942,12 +942,12 @@ RETURN 1
 ;==================================================
 ;19,키스한다
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_19
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_19
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_19_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_19_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_19_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_19_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -988,12 +988,12 @@ RETURN 1
 ;==================================================
 ;20,키스한다
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_20
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_20
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_20_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_20_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_20_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_20_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -1035,12 +1035,12 @@ RETURN 1
 ;==================================================
 ;21,아무것도 안 한다
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_21
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_21
 ;CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_21_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_21_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_21_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_21_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -1081,12 +1081,12 @@ RETURN 1
 ;==================================================
 ;22,유혹한다
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_22
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_22
 ;CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_22_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_22_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_22_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_22_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -1126,12 +1126,12 @@ RETURN 1
 ;==================================================
 ;23,필로토크
 ;==================================================
-@M_KOJO_ふらん_MESSAGE_COM_K50_23
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_23
 CALL TRAIN_MESSAGE
-CALL M_KOJO_ふらん_MESSAGE_COM_K50_23_1
+CALL M_KOJO_우후후플랑_MESSAGE_COM_K50_23_1
 RETURN RESULT
 
-@M_KOJO_ふらん_MESSAGE_COM_K50_23_1
+@M_KOJO_우후후플랑_MESSAGE_COM_K50_23_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
