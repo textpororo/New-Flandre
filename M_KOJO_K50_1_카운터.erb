@@ -62,11 +62,11 @@ CALL M_KOJO_우후후플랑_MESSAGE_COUNTER_K50_4_1
 RETURN RESULT
 @M_KOJO_우후후플랑_MESSAGE_COUNTER_K50_4_1
 IF TALENT:연인
-	PRINTFORML 「%조사처리(CALLNAME:MASTER, "는")% 내 냄새가 좋다곤 하지만」
-	PRINTFORML 「항상 같은 냄새인 건 아니니까, 오늘도 %조사처리(CALLNAME:MASTER, "가")% 좋아하는 냄새일지 또 어떨지 모르는데…」
-	PRINTFORML 「그러니, 한번 맡아봐. %조사처리(CALLNAME:MASTER, "가")% 좋아하는 향이 맞는지 확인해주는 거야?」
+	PRINTFORML 「%마스터는% 내 냄새가 좋다곤 하지만」
+	PRINTFORML 「항상 같은 냄새인 건 아니니까, 오늘도 %마스터가% 좋아하는 냄새일지 또 어떨지 모르는데…」
+	PRINTFORML 「그러니, 한번 맡아봐. %마스터가% 좋아하는 향이 맞는지 확인해주는 거야?」
 ELSEIF TALENT:연모
-	PRINTFORML 「%조사처리(CALLNAME:MASTER, "는")% 어떤 향수가 좋아?」
+	PRINTFORML 「%마스터는% 어떤 향수가 좋아?」
 	PRINTFORML 「ㄴ, 내 냄새가 좋다고?」
 	PRINTFORML 「뭔가… 되게 쑥스러워……」
 ENDIF
@@ -139,8 +139,8 @@ RETURN RESULT
 IF TALENT:연모
 	PRINTFORML 「%CALLNAME:MASTER%의 품은 따뜻하네~」
 	IF TALENT:연인
-		PRINTFORML 「나도, %조사처리(CALLNAME:MASTER,"를")% 따뜻하게 해줄 수 있으려나?」
-		PRINTDL 플랑은 당신의 품에 꾹 눌려 온기를 전하고 있다.
+		PRINTFORML 「나도, %마스터를% 따뜻하게 해줄 수 있으려나?」
+		PRINTFORMDL 플랑은 %CALLNAME:MASTER%의 품에 꾹 눌려 온기를 전하고 있다.
 	ELSE
 	    PRINTDL 플랑은 마치 고양이가 자기 소유라고 냄새를 묻히듯이 %CALLNAME:MASTER%의 품에 몸을 이리저리 비벼대고 있다.
 	ENDIF
@@ -156,7 +156,7 @@ CALL M_KOJO_우후후플랑_MESSAGE_COUNTER_K50_15_1
 RETURN RESULT
 @M_KOJO_우후후플랑_MESSAGE_COUNTER_K50_15_1
 IF TALENT:연모
-	PRINTFORMDL 플랑은 행복해보이는 얼굴로 %조사처리(CALLNAME:MASTER,"를")% 응시하고 있다.
+	PRINTFORMDL 플랑은 행복해보이는 얼굴로 %마스터를% 응시하고 있다.
 	IF TALENT:연인
 		PRINTL 「보고만 있는데도 기뻐 보인다고?」
 		PRINTL 「그야, 좋아하는 사람의 얼굴이잖아. 보고만 있어도 싫증이 안 나는 걸?」

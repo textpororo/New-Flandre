@@ -33,12 +33,12 @@ IF LOCAL
 			SELECTCASE RESULT
 				CASE 0
 					PRINTFORMW 플랑의 고개를 돌리곤 기습적으로 키스를 하였다.
-					PRINTFORMW 「우믓?! …웅, 햐읍, 후으읏%UNICODE(0x2665)% 쪼옥, 우응……」
+					PRINTFORMW 「우믓?! …웅, 햐읍, 후으읏♥ 쪼옥, 우응……」
 					PRINTFORMW 당황한 표정을 짓다가도 점점 키스에 몰두해 가는 모습이 무척 흥분됐다.
 					PRINTFORMW 「푸하아아… 방금, 뭐랄까. %CALLNAME:MASTER%의 맛에 취하는 느낌이였어……」
 					SIF TALENT:키스미경험
-						PRINTFORMW 「첫키스는, 무척이나 달콤한 거구나. 조금 놀랐긴 했지만…… 그래도 정말 좋아%UNICODE(0x2665)%」
-					PRINTFORML 「아앗, 응, 히으응! 이상해…앳, 흐야앙%UNICODE(0x2665)% 온몸잇, 찌릿찌릿해서어……!」
+						PRINTFORMW 「첫키스는, 무척이나 달콤한 거구나. 조금 놀랐긴 했지만…… 그래도 정말 좋아♥」
+					PRINTFORML 「아앗, 응, 히으응! 이상해…앳, 흐야앙♥ 온몸잇, 찌릿찌릿해서어……!」
 					PRINTFORMW 키스 덕분에 긴장이 풀린 건지 이전보다 잘 느끼고 있는 것 같아 다행이라 여긴 당신이였다.
 					CALL ADD_KISS(50)
 				CASE 1
@@ -50,7 +50,7 @@ IF LOCAL
 					PRINTFORMW 「응…… 알았어」
 					PRINTFORMW 「얼른 내 몸도 %조사처리(CALLNAME:MASTER, "를")% 좋아하게 됐으면……」
 					PRINTFORML 플랑은 말끝을 흐리면서 시선을 아래로 향하는 듯 했다.
-					PRINTFORMW 「……%UNICODE(0x2665)%」
+					PRINTFORMW 「……♥」
 				CASE 2
 					PRINTFORMW 와락― 하고 플랑을 끌어안고선, 잘했어잘했어 하고 머리를 쓰다듬어주었다.
 					PRINTFORMW 「ㅁ, 무, 무슨 일 있어?? 하다 말고 갑자기 이렇게 안아주면, 저기이……」
@@ -62,8 +62,8 @@ IF LOCAL
 					PRINTL
 					PRINTW
 					PRINTFORMW 「응, 이제 충분한 것 같아. 아이마냥 달래진 건 좀 쑥스럽긴 하다만……」
-					PRINTFORMW 「%조사처리(CALLNAME:MASTER, "가")% 상냥하다는 걸 다시금 느낄 수 있어서, 편히 몸을 맡길 수 있을 것 같아」
-					PRINTFORMW 「……고마워. %CALLNAME:MASTER%%UNICODE(0x2665)%」
+					PRINTFORMW 「%마스터가% 상냥하다는 걸 다시금 느낄 수 있어서, 편히 몸을 맡길 수 있을 것 같아」
+					PRINTFORMW 「……고마워. %CALLNAME:MASTER%♥」
 			ENDSELECT
 		ELSEIF TALENT:연모
 			PRINTFORML 「읏, 후으으…아앗, 응! 하아……」
@@ -93,9 +93,9 @@ IF LOCAL
 							PRINTFORMW 어째 조용해진 플랑의 섬붉은 눈가에 눈물이 조금 맺혀있다. 아니, 눈물이 점점 더 흐르고 있다.
 							PRINTFORMW ……막상 해보니까 싫어진 걸까?
 							PRINTFORMW 「아아…… 진짜로 했어, %CALLNAME:MASTER%와의 첫키스……」
-							PRINTFORMW 「날 마음에 두지 않았을까 했는데, 정말로 %조사처리(CALLNAME:MASTER, "가")% 와줬어…!」
+							PRINTFORMW 「날 마음에 두지 않았을까 했는데, 정말로 %마스터가% 와줬어…!」
 							PRINTFORML 당신이 그 말에 의아해하고 있던 사이에, 어느새 플랑이 다가와 스스로 키스를 해왔다.
-							PRINTFORMW 「햐웁, 응츄웃, 츄루르……%UNICODE(0x2665)% 햐읍, 웅후아아, 죠아앗……%UNICODE(0x2665)%」
+							PRINTFORMW 「햐웁, 응츄웃, 츄루르……♥ 햐읍, 웅후아아, 죠아앗……♥」
 							PRINTFORMW 수줍어하던 모습과 반대되어 이젠 입술부터 입안 혀까지 모두 허용해버린 모습이 무척이나 사랑스러웠다.
 							PRINTFORMW 「~~~우므읏, 푸하아아…… 하아아, %CALLNAME:MASTER%……」
 							PRINTFORMW 「언젠가, 나와――」
@@ -118,7 +118,7 @@ IF LOCAL
 							PRINTW
 							PRINTFORML 「으응, 진정됐어. 갑자기 그렇게 돼서, 미안해……」
 							PRINTFORMW 당신은 사과를 거듭하고 일련의 행동들에 이유를 대며 겨우겨우 달랠 수 있었다.
-							PRINTFORMW 「그러니까, 내가 너무 사양만 하니까 %조사처리(CALLNAME:MASTER, "가")% 신경 써줬다는 거네」
+							PRINTFORMW 「그러니까, 내가 너무 사양만 하니까 %마스터가% 신경 써줬다는 거네」
 							PRINTFORMW 「……아까 그건 좀 심한 장난이였던 것 같지만.」
 							PRINTFORMW 「그래도 이제 무슨 뜻인지는 알았으니까, 앞으로는 %CALLNAME:MASTER%에게 부탁해볼게」
 							PRINTL
@@ -130,14 +130,14 @@ IF LOCAL
 					PRINTFORMW 기습적인 뽀뽀에 수줍어하며 닫혀버린 입술.
 					PRINTFORML 혀로 그 사이를 비집어 들어가려하자 큰 저항 없이 열리게 된다.
 					PRINTFORMW 「햐우읍…! 응, 후우…… 쪽, 아하앗……」
-					PRINTFORML 「후으응%UNICODE(0x2665)% 츄웃, 헤으읍……웅후웃!%UNICODE(0x2665) *2%」
+					PRINTFORML 「후으응♥ 츄웃, 헤으읍……웅후웃!%UNICODE(0x2665) *2%」
 					PRINTFORMW 무의식적으로 허용해버린 입안은 곧 쾌감으로 뒤덮어져 망설임이 흩어져간다.
 					PRINTFORMW 그렇게, 소녀의 마음만 남을 때까지 키스를 계속 해주었다……
 					PRINTL
 					PRINTW
 					PRINTFORMW 「후아아아, 하아…… %CALLNAME:MASTER%, %CALLNAME:MASTER%……」
 					PRINTFORML 당신은 키스에 함락되어 반쯤 발정하게 된 플랑을 마음껏 음미하고자 하였다.
-					PRINTFORMW 「히야앗…! 아, 아흐응%UNICODE(0x2665)% 가, 가스음, 거기도옷, 괴롭히며언%UNICODE(0x2665)%」
+					PRINTFORMW 「히야앗…! 아, 아흐응♥ 가, 가스음, 거기도옷, 괴롭히며언♥」
 					PALAM:욕정 += 3000
 					EXP:키스경험 += 1
 					EXP:MASTER:키스경험 +=1
@@ -174,14 +174,14 @@ IF LOCAL
 		;정상위 애무
 		ELSEIF PREVCOM == 60
 			PRINTFORML 당신은 피스톤질을 이어나감과 동시에 유두와 클리를 같이 고문하기 시작했다.
-			PRINTFORMW 「아앗, 안댓, 흐야앙%UNICODE(0x2665)% 지금 그렇게 만지는 거, 반칙이야앗%UNICODE(0x2665)%」
-			PRINTFORMW 「응후아앗%UNICODE(0x2665)% 돌기만 괴롭히면, 나, 금방 가서어%UNICODE(0x2665)%」
+			PRINTFORMW 「아앗, 안댓, 흐야앙♥ 지금 그렇게 만지는 거, 반칙이야앗♥」
+			PRINTFORMW 「응후아앗♥ 돌기만 괴롭히면, 나, 금방 가서어♥」
             PRINTFORMW 자극을 줄 때마다 안쪽에서 움찔거리는 것도 그렇고, 계속할 수록 점점 더 육봉을 조여와 서로가 엄청난 쾌감을 느끼고 있다. 
             RETURN 1
 		;후배위 애무
 		ELSEIF PREVCOM == 61
-			PRINTFORML 「아하으응! 내 뒤에 자지이, 좀 더 격렬하게에……%UNICODE(0x2665)% 아, 잠깐 그쪽ㅇ……응히익%UNICODE(0x2665) *3%?!」
-			PRINTFORMW 「히야앙, 아, 후응앗%UNICODE(0x2665)% 앙댸앳…! 클리, 만져주면 곧 가버려엇……히그응%UNICODE(0x2665) *2%」
+			PRINTFORML 「아하으응! 내 뒤에 자지이, 좀 더 격렬하게에……♥ 아, 잠깐 그쪽ㅇ……응히익%UNICODE(0x2665) *3%?!」
+			PRINTFORMW 「히야앙, 아, 후응앗♥ 앙댸앳…! 클리, 만져주면 곧 가버려엇……히그응%UNICODE(0x2665) *2%」
 			PRINTFORMW 쓸쓸해보이던 클리를 문질러주니 가드가 완전히 풀린 듯 온몸으로 쾌감을 느끼기 시작한 플랑이였다.
 			PRINTFORMW 「햐으응…! ㅈ, 젖꼭지됴오, 떼굴떼굴……좋아앙%UNICODE(0x2665) *2%」
 			PRINTFORMW 온몸을 감싸쥘 때마다 달콤한 소리를 내며 반응하는 사랑스러운 모습에 당신은 더욱더 흥분되어 간다.
